@@ -54,6 +54,91 @@ canvas{display:block;width:100%;height:auto;touch-action:manipulation;background
   .card{padding:17px}
 }
 @media(prefers-reduced-motion:reduce){.toast{transition:none}}
+
+/* Footer de autor: estilos aislados para no interferir con el juego */
+.laa-author-footer{
+  max-width:1100px;
+  margin:14px auto 0;
+  padding:0 14px 18px;
+  color:var(--cream);
+}
+.laa-author-footer__panel{
+  border:1px solid #ffffff1f;
+  border-radius:20px;
+  background:linear-gradient(180deg,#ffffff0c,#ffffff06);
+  box-shadow:0 14px 42px #0003;
+  padding:22px;
+}
+.laa-author-footer__eyebrow{
+  margin:0 0 8px;
+  color:var(--gold);
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.laa-author-footer__name{
+  margin:0;
+  color:#fff8df;
+  font-size:clamp(1.12rem,3vw,1.45rem);
+  line-height:1.25;
+}
+.laa-author-footer__description{
+  max-width:820px;
+  margin:10px 0 0;
+  color:#d7e8d9;
+  font-size:.92rem;
+  line-height:1.65;
+}
+.laa-author-footer__quote{
+  margin:12px 0 0;
+  color:#a9c1ae;
+  font-size:.82rem;
+  font-style:italic;
+  line-height:1.5;
+}
+.laa-author-footer__actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid #ffffff14;
+}
+.laa-author-footer__button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:0 16px;
+  border-radius:13px;
+  background:var(--gold);
+  color:#2c2104;
+  font-size:.86rem;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:inset 0 -3px #b88613;
+  transition:transform .18s ease,filter .18s ease;
+}
+.laa-author-footer__button:hover{filter:brightness(1.04);transform:translateY(-1px)}
+.laa-author-footer__button:focus-visible{outline:3px solid #fff8df;outline-offset:3px}
+.laa-author-footer__copyright{
+  margin:0;
+  color:#a9c1ae;
+  font-size:.76rem;
+}
+@media(max-width:650px){
+  .laa-author-footer{padding:0 8px 14px;margin-top:10px}
+  .laa-author-footer__panel{padding:17px;border-radius:18px}
+  .laa-author-footer__actions{align-items:stretch}
+  .laa-author-footer__button{width:100%}
+  .laa-author-footer__copyright{width:100%;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .laa-author-footer__button{transition:none}
+}
 </style>
 </head>
 <body>
@@ -138,6 +223,19 @@ canvas{display:block;width:100%;height:auto;touch-action:manipulation;background
   </div>
   <div class="footer">Juego comunitario inspirado en la identidad cañera del Poblado 3 · HTML5 Canvas</div>
 </main>
+
+<footer class="laa-author-footer" aria-label="Información del autor">
+  <div class="laa-author-footer__panel">
+    <p class="laa-author-footer__eyebrow">AUTOR</p>
+    <h2 class="laa-author-footer__name">Luis Alberto Antonio Narciso</h2>
+    <p class="laa-author-footer__description">Ingeniero en Electrónica y profesional de Quality Assurance, automatización de pruebas y tecnología educativa. Desarrolla experiencias web interactivas orientadas al aprendizaje, combinando educación, tecnología, diseño y herramientas digitales.</p>
+    <p class="laa-author-footer__quote">“Recurso diseñado y desarrollado por Luis Alberto Antonio Narciso”.</p>
+    <div class="laa-author-footer__actions">
+      <a class="laa-author-footer__button" href="https://narciso1516.github.io/narcisotesting.com/" target="_blank" rel="noopener noreferrer">Conocer al autor</a>
+      <p class="laa-author-footer__copyright">© 2026 Luis Alberto Antonio Narciso</p>
+    </div>
+  </div>
+</footer>
 
 <script>
 (() => {
