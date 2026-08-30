@@ -6,6 +6,9 @@
 (async()=>{
  const r=await fetch('./Cortador_de_Cana_Poblado_3_Musica.html?v='+Date.now());
  let h=await r.text();
+ h=h.replace("ctx.fillStyle='#5b3e28';ctx.fillRect(35,H*.39,9,70);ctx.fillStyle='#f3dba8';ctx.fillRect(11,H*.33,190,60);","ctx.fillStyle='#5b3e28';ctx.fillRect(48,H*.39,13,82);ctx.fillRect(258,H*.39,13,82);ctx.fillStyle='#f3dba8';ctx.fillRect(16,H*.285,286,90);");
+ h=h.replace("ctx.fillStyle='#24351f';ctx.textAlign='center';ctx.font='900 19px system-ui';ctx.fillText('POBLADO 3',106,H*.365);","ctx.fillStyle='#24351f';ctx.textAlign='center';ctx.font='900 28px system-ui';ctx.fillText('POBLADO 3',159,H*.335);");
+ h=h.replace("ctx.font='800 12px system-ui';ctx.fillText('TRES VALLES, VERACRUZ',106,H*.397);","ctx.font='800 16px system-ui';ctx.fillText('TRES VALLES, VERACRUZ',159,H*.385);");
  const css=`<style>
 .laa-author-footer{width:min(1100px,calc(100% - 28px));margin:18px auto 20px;padding:22px 20px;border:1px solid #ffffff1f;border-radius:18px;background:#173323e8;color:#fff8df;text-align:left;box-shadow:0 14px 36px #0004;box-sizing:border-box}
 .laa-author-footer__eyebrow{margin:0 0 7px;color:#f3c34f;font-size:.72rem;font-weight:900;letter-spacing:.14em}
