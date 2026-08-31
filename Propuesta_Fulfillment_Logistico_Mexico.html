@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Propuesta ejecutiva para una empresa de fulfillment y logística e-commerce en México." />
+  <title>Propuesta Fulfillment México</title>
+  <style>
+    :root{
+      --navy:#102A43;
+      --blue:#1F5EFF;
+      --cyan:#00A6A6;
+      --gold:#F4B740;
+      --ink:#1F2937;
+      --muted:#64748B;
+      --line:#DCE5EF;
+      --surface:#F7FAFC;
+      --white:#FFFFFF;
+      --success:#0F9D75;
+      --shadow:0 16px 40px rgba(16,42,67,.10);
+      --shadow-soft:0 8px 24px rgba(16,42,67,.08);
+      --radius-xl:28px;
+      --radius-lg:20px;
+      --radius-md:14px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,#F8FBFF 0%,#FFFFFF 30%,#F7FAFC 100%);
+      line-height:1.6;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .container{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      backdrop-filter:blur(14px);
+      background:rgba(255,255,255,.88);
+      border-bottom:1px solid rgba(220,229,239,.85);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      min-height:72px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:-.02em;
+      color:var(--navy);
+    }
+
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      color:white;font-weight:900;
+      background:linear-gradient(135deg,var(--blue),var(--cyan));
+      box-shadow:0 10px 22px rgba(31,94,255,.22);
+    }
+
+    .nav-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      font-size:.94rem;
+      color:var(--muted);
+    }
+    .nav-links a:hover{color:var(--blue)}
+
+    .hero{
+      padding:84px 0 54px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:44px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#EAF0FF;
+      color:var(--blue);
+      font-weight:800;
+      font-size:.82rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+
+    h1,h2,h3{line-height:1.15;margin:0;color:var(--navy)}
+    h1{
+      margin-top:18px;
+      font-size:clamp(2.5rem,6vw,5.25rem);
+      letter-spacing:-.055em;
+      max-width:850px;
+    }
+
+    .hero p{
+      font-size:1.12rem;
+      color:var(--muted);
+      max-width:760px;
+      margin:24px 0 0;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:30px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 20px;
+      border-radius:14px;
+      font-weight:800;
+      transition:.2s ease;
+      border:1px solid transparent;
+    }
+    .btn-primary{background:var(--blue);color:white;box-shadow:0 12px 26px rgba(31,94,255,.25)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(31,94,255,.30)}
+    .btn-secondary{background:white;border-color:var(--line);color:var(--navy)}
+    .btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+
+    .hero-card{
+      position:relative;
+      overflow:hidden;
+      padding:28px;
+      border-radius:var(--radius-xl);
+      background:linear-gradient(145deg,var(--navy),#163F66 60%,#0D6F75 130%);
+      color:white;
+      box-shadow:var(--shadow);
+    }
+    .hero-card::after{
+      content:"";
+      position:absolute;
+      width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle,rgba(244,183,64,.35),rgba(244,183,64,0));
+      right:-60px;top:-50px;
+    }
+    .hero-card h3{color:white;font-size:1.35rem;position:relative;z-index:1}
+    .hero-card p{color:rgba(255,255,255,.78);font-size:.98rem;margin:10px 0 22px;position:relative;z-index:1}
+
+    .metric-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      position:relative;z-index:1;
+    }
+    .metric{
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .metric strong{display:block;font-size:1.45rem;color:white}
+    .metric span{display:block;font-size:.82rem;color:rgba(255,255,255,.72);margin-top:2px}
+
+    section{padding:34px 0 54px}
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:24px;
+      margin-bottom:24px;
+    }
+    .section-head p{margin:0;max-width:650px;color:var(--muted)}
+    h2{font-size:clamp(1.8rem,3vw,2.7rem);letter-spacing:-.035em}
+
+    .cards-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.94);
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      padding:24px;
+      box-shadow:var(--shadow-soft);
+    }
+    .card h3{font-size:1.15rem;margin-bottom:8px}
+    .card p{margin:0;color:var(--muted)}
+    .icon{
+      width:46px;height:46px;border-radius:14px;
+      display:grid;place-items:center;
+      margin-bottom:16px;
+      font-size:1.3rem;
+      background:linear-gradient(135deg,#EAF0FF,#EAF9F7);
+    }
+
+    .process{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    .step{
+      position:relative;
+      padding:24px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:18px;
+      min-height:200px;
+    }
+    .step-num{
+      display:inline-flex;
+      width:40px;height:40px;border-radius:12px;
+      align-items:center;justify-content:center;
+      background:var(--navy);color:white;font-weight:900;
+      margin-bottom:18px;
+    }
+    .step h3{font-size:1.1rem;margin-bottom:7px}
+    .step p{margin:0;color:var(--muted);font-size:.94rem}
+
+    .band{
+      background:linear-gradient(120deg,#F0F5FF,#EFFAF8);
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+
+    .revenue-table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:18px;
+      background:white;
+      box-shadow:var(--shadow-soft);
+    }
+    .revenue-table th,.revenue-table td{padding:15px 18px;text-align:left;border-bottom:1px solid var(--line)}
+    .revenue-table th{background:var(--navy);color:white;font-size:.9rem}
+    .revenue-table tr:last-child td{border-bottom:none}
+    .revenue-table td:first-child{font-weight:800;color:var(--navy);width:26%}
+    .revenue-table td:last-child{color:var(--muted)}
+
+    .tech-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:22px;
+      align-items:start;
+    }
+    .stack{
+      display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;
+    }
+    .pill{
+      padding:9px 12px;border-radius:999px;
+      border:1px solid var(--line);background:white;
+      color:var(--navy);font-weight:700;font-size:.88rem;
+    }
+
+    .timeline{
+      display:grid;
+      gap:12px;
+    }
+    .timeline-item{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:14px;
+      align-items:start;
+      padding:16px;
+      border-radius:16px;
+      background:white;
+      border:1px solid var(--line);
+    }
+    .dot{
+      width:34px;height:34px;border-radius:50%;
+      display:grid;place-items:center;
+      background:#EAF0FF;color:var(--blue);font-weight:900;
+    }
+    .timeline-item strong{display:block;color:var(--navy);margin-bottom:2px}
+    .timeline-item span{color:var(--muted);font-size:.92rem}
+
+    .callout{
+      border-radius:var(--radius-xl);
+      padding:34px;
+      background:linear-gradient(135deg,var(--navy),#183F66);
+      color:white;
+      box-shadow:var(--shadow);
+    }
+    .callout h2{color:white}
+    .callout p{color:rgba(255,255,255,.78);max-width:900px}
+
+    .next-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:24px;
+    }
+    .mini{
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .mini strong{display:block;color:white;margin-bottom:4px}
+    .mini span{font-size:.86rem;color:rgba(255,255,255,.72)}
+
+    /* Footer de autor: estilos aislados para no interferir con el resto de la página */
+    .lan-author-footer{
+      padding:0 0 44px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+    .lan-author-footer__panel{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:28px;
+      align-items:center;
+      padding:28px 30px;
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      background:rgba(255,255,255,.94);
+      box-shadow:var(--shadow-soft);
+    }
+    .lan-author-footer__eyebrow{
+      display:block;
+      margin-bottom:7px;
+      color:var(--blue);
+      font-size:.76rem;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .lan-author-footer__name{
+      margin:0 0 8px;
+      color:var(--navy);
+      font-size:1.2rem;
+      font-weight:850;
+      line-height:1.25;
+    }
+    .lan-author-footer__description{
+      max-width:790px;
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+    }
+    .lan-author-footer__quote{
+      margin:12px 0 0;
+      color:var(--navy);
+      font-size:.88rem;
+      font-style:italic;
+    }
+    .lan-author-footer__actions{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:10px;
+      min-width:180px;
+    }
+    .lan-author-footer__button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
+      padding:0 18px;
+      border:1px solid var(--blue);
+      border-radius:14px;
+      background:var(--blue);
+      color:var(--white);
+      font-weight:800;
+      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow:0 10px 22px rgba(31,94,255,.18);
+    }
+    .lan-author-footer__button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 28px rgba(31,94,255,.24);
+    }
+    .lan-author-footer__copyright{
+      color:var(--muted);
+      font-size:.8rem;
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    @media (max-width:720px){
+      .lan-author-footer__panel{
+        grid-template-columns:1fr;
+        padding:24px 22px;
+      }
+      .lan-author-footer__actions{
+        align-items:flex-start;
+        min-width:0;
+      }
+      .lan-author-footer__copyright{
+        text-align:left;
+        white-space:normal;
+      }
+    }
+
+    @media (max-width:900px){
+      .hero-grid,.tech-grid{grid-template-columns:1fr}
+      .cards-3,.process{grid-template-columns:repeat(2,1fr)}
+      .next-grid{grid-template-columns:repeat(2,1fr)}
+      .nav-links{display:none}
+    }
+
+    @media (max-width:620px){
+      .container{width:min(100% - 22px,1180px)}
+      .hero{padding-top:56px}
+      .cards-3,.process,.next-grid{grid-template-columns:1fr}
+      .section-head{align-items:flex-start;flex-direction:column}
+      .hero-card{padding:22px}
+      .metric-grid{grid-template-columns:1fr 1fr}
+      .revenue-table{font-size:.86rem}
+      .revenue-table th,.revenue-table td{padding:12px 10px}
+      .revenue-table td:first-child{width:34%}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#inicio">
+        <span class="brand-mark">FX</span>
+        <span>Fulfillment México</span>
+      </a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#oportunidad">Oportunidad</a>
+        <a href="#proceso">Cómo funciona</a>
+        <a href="#ingresos">Ingresos</a>
+        <a href="#tecnologia">Tecnología</a>
+        <a href="#lanzamiento">Lanzamiento</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Propuesta conceptual • México 2026</span>
+          <h1>Una plataforma de fulfillment para e-commerce, pensada para México.</h1>
+          <p>
+            La propuesta consiste en construir un operador 3PL nacional que permita a marcas y vendedores almacenar productos, procesar pedidos, empacar, enviar y gestionar devoluciones sin administrar su propia infraestructura logística.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#oportunidad">Ver propuesta</a>
+            <a class="btn btn-secondary" href="#lanzamiento">Ver plan de arranque</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Resumen ejecutivo">
+          <h3>Propuesta de valor</h3>
+          <p>El cliente vende. La operación logística queda centralizada en una sola plataforma y una sola red de fulfillment.</p>
+          <div class="metric-grid">
+            <div class="metric"><strong>CDMX</strong><span>Hub inicial sugerido</span></div>
+            <div class="metric"><strong>Nacional</strong><span>Cobertura de entregas</span></div>
+            <div class="metric"><strong>100–3,000</strong><span>Pedidos/mes por cliente objetivo</span></div>
+            <div class="metric"><strong>3–5</strong><span>Clientes piloto para validar</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="oportunidad">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">01 • Oportunidad</span><h2>Un 3PL especializado en comercio electrónico</h2></div>
+          <p>El negocio no compite únicamente por “hacer envíos”. Su valor está en integrar almacenamiento, operación, tecnología, transporte y visibilidad en una sola experiencia.</p>
+        </div>
+
+        <div class="cards-3">
+          <article class="card"><div class="icon">📦</div><h3>Fulfillment integral</h3><p>Recepción, almacenamiento, picking, packing, generación de guías, seguimiento y devoluciones.</p></article>
+          <article class="card"><div class="icon">⚙️</div><h3>Operación simplificada</h3><p>El cliente evita administrar bodega, personal operativo, procesos manuales y múltiples proveedores.</p></article>
+          <article class="card"><div class="icon">📈</div><h3>Escalabilidad comercial</h3><p>El servicio puede crecer por volumen de pedidos, número de clientes, zonas de entrega y automatización.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="proceso" class="band">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">02 • Operación</span><h2>Cómo funcionaría de principio a fin</h2></div>
+          <p>El flujo debe ser entendible, repetible y medible. Cada etapa puede convertirse en un SLA y en una fuente de ingreso.</p>
+        </div>
+
+        <div class="process">
+          <article class="step"><span class="step-num">01</span><h3>Recepción</h3><p>El cliente envía su inventario al centro de fulfillment y se registra por lote, caja o unidad.</p></article>
+          <article class="step"><span class="step-num">02</span><h3>Integración</h3><p>La tienda online o marketplace sincroniza automáticamente pedidos e inventario.</p></article>
+          <article class="step"><span class="step-num">03</span><h3>Picking</h3><p>El operador localiza y prepara los productos correctos con trazabilidad de cada pedido.</p></article>
+          <article class="step"><span class="step-num">04</span><h3>Packing</h3><p>Se empaca, etiqueta, protege el producto y se genera la guía correspondiente.</p></article>
+          <article class="step"><span class="step-num">05</span><h3>Envío</h3><p>Un transportista aliado recoge los paquetes y realiza la entrega al cliente final.</p></article>
+          <article class="step"><span class="step-num">06</span><h3>Postventa</h3><p>Tracking, incidencias y devoluciones se administran desde un mismo sistema.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">03 • Infraestructura</span><h2>Empezar sin una flotilla propia</h2></div>
+          <p>La prioridad inicial debería ser controlar la operación y la experiencia del cliente, no inmovilizar capital en vehículos desde el día uno.</p>
+        </div>
+        <div class="cards-3">
+          <article class="card"><div class="icon">🏢</div><h3>Bodega compacta</h3><p>Un espacio funcional en CDMX o zona metropolitana permite validar procesos antes de escalar metros cuadrados.</p></article>
+          <article class="card"><div class="icon">🚚</div><h3>Red de transportistas</h3><p>Se pueden negociar convenios por volumen con operadores de paquetería y última milla.</p></article>
+          <article class="card"><div class="icon">🧠</div><h3>Procesos y datos</h3><p>La ventaja competitiva surge de la precisión operativa, los SLAs y la capacidad de decidir con métricas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="ingresos" class="band">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">04 • Monetización</span><h2>Varias fuentes de ingreso por cliente</h2></div>
+          <p>El modelo es atractivo porque una sola cuenta puede generar ingresos recurrentes en distintas etapas de la operación.</p>
+        </div>
+
+        <table class="revenue-table">
+          <thead><tr><th>Servicio</th><th>Forma típica de cobro</th></tr></thead>
+          <tbody>
+            <tr><td>Almacenamiento</td><td>Tarifa mensual por pallet, ubicación, volumen o espacio utilizado.</td></tr>
+            <tr><td>Recepción</td><td>Cobro por pallet, caja, lote o unidad recibida.</td></tr>
+            <tr><td>Picking</td><td>Tarifa por pedido preparado.</td></tr>
+            <tr><td>Packing</td><td>Empaque, materiales y unidades adicionales.</td></tr>
+            <tr><td>Envío</td><td>Tarifa logística negociada y posible margen de intermediación.</td></tr>
+            <tr><td>Devoluciones</td><td>Recepción, revisión y reintegración del producto al inventario.</td></tr>
+            <tr><td>Servicios especiales</td><td>Etiquetado, reempaque, kitting, promociones e inventarios.</td></tr>
+            <tr><td>Software</td><td>Mensualidad, plan o servicio incluido según volumen.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tecnologia">
+      <div class="container tech-grid">
+        <div>
+          <span class="eyebrow">05 • Tecnología</span>
+          <h2 style="margin-top:12px">La bodega opera. El software escala.</h2>
+          <p style="color:var(--muted);max-width:760px">El sistema debería convertirse en el centro de control de inventario, pedidos, picking, packing, guías, tracking, incidencias, devoluciones, facturación y reportes.</p>
+          <div class="stack" aria-label="Integraciones prioritarias">
+            <span class="pill">Shopify</span><span class="pill">WooCommerce</span><span class="pill">Mercado Libre</span><span class="pill">Amazon</span><span class="pill">TikTok Shop</span><span class="pill">API propia</span><span class="pill">Transportistas</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Dashboard recomendado</h3>
+          <div class="timeline" style="margin-top:14px">
+            <div class="timeline-item"><div class="dot">1</div><div><strong>Inventario en tiempo real</strong><span>Existencias, ubicaciones, lotes y alertas.</span></div></div>
+            <div class="timeline-item"><div class="dot">2</div><div><strong>Pedidos y SLA</strong><span>Estado, tiempos y excepciones por orden.</span></div></div>
+            <div class="timeline-item"><div class="dot">3</div><div><strong>Transportistas</strong><span>Guías, costos, tracking y desempeño.</span></div></div>
+            <div class="timeline-item"><div class="dot">4</div><div><strong>Rentabilidad</strong><span>Costos por orden, margen y facturación.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lanzamiento" class="band">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">06 • Lanzamiento</span><h2>Arrancar con un MVP operativo</h2></div>
+          <p>La recomendación es validar los unit economics antes de realizar inversiones grandes en infraestructura.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot">1</div><div><strong>MVP</strong><span>Iniciar con una instalación compacta en CDMX o área metropolitana y procesos muy controlados.</span></div></div>
+          <div class="timeline-item"><div class="dot">2</div><div><strong>Piloto</strong><span>Captar entre 3 y 5 clientes para validar costos, errores, tiempos y experiencia.</span></div></div>
+          <div class="timeline-item"><div class="dot">3</div><div><strong>Conectividad</strong><span>Integrar primero los canales de venta y transportistas que generen mayor demanda.</span></div></div>
+          <div class="timeline-item"><div class="dot">4</div><div><strong>Métricas</strong><span>Medir costo por orden, pedidos por hora, exactitud de inventario, SLA, devoluciones y margen.</span></div></div>
+          <div class="timeline-item"><div class="dot">5</div><div><strong>Escala</strong><span>Aumentar espacio, personal y automatización sólo después de validar los unit economics.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="callout">
+          <span class="eyebrow" style="background:rgba(255,255,255,.12);color:#DDE8FF">Recomendación final</span>
+          <h2 style="margin-top:14px">Primero validar. Después escalar.</h2>
+          <p>
+            Antes de comprometer capital en una bodega grande, conviene construir un modelo financiero realista con inversión inicial, costo por pedido, tarifas, margen bruto, punto de equilibrio y volumen mensual requerido. La ventaja competitiva debe combinar operación confiable, tecnología sencilla y una experiencia diseñada específicamente para el mercado mexicano.
+          </p>
+          <div class="next-grid">
+            <div class="mini"><strong>1. Inversión inicial</strong><span>Bodega, equipo, software y capital de trabajo.</span></div>
+            <div class="mini"><strong>2. Unit economics</strong><span>Costo real por pedido y margen esperado.</span></div>
+            <div class="mini"><strong>3. Punto de equilibrio</strong><span>Clientes y órdenes necesarias por mes.</span></div>
+            <div class="mini"><strong>4. Diferenciador</strong><span>Segmento, tecnología, servicio y precio.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="lan-author-footer" aria-label="Información del autor">
+    <div class="container">
+      <div class="lan-author-footer__panel">
+        <div class="lan-author-footer__content">
+          <span class="lan-author-footer__eyebrow">Autor</span>
+          <p class="lan-author-footer__name">Luis Alberto Antonio Narciso</p>
+          <p class="lan-author-footer__description">
+            Ingeniero en Electrónica y profesional de Quality Assurance, automatización de pruebas y tecnología educativa. Desarrolla experiencias web interactivas orientadas al aprendizaje, combinando educación, tecnología, diseño y herramientas digitales.
+          </p>
+          <p class="lan-author-footer__quote">“Recurso diseñado y desarrollado por Luis Alberto Antonio Narciso”.</p>
+        </div>
+
+        <div class="lan-author-footer__actions">
+          <a
+            class="lan-author-footer__button"
+            href="https://narciso1516.github.io/narcisotesting.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Conocer al autor</a>
+          <span class="lan-author-footer__copyright">© 2026 Luis Alberto Antonio Narciso</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
