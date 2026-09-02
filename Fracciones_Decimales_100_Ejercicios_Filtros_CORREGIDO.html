@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>100 Ejercicios · Fracciones y Decimales · Filtros de Aprendizaje</title>
+<style>
+:root{
+ --bg:#F4F7FB;--card:#fff;--ink:#172033;--muted:#667085;--line:#D7E1EE;
+ --blue:#2563EB;--blue2:#DBEAFE;--red:#DC2626;--red2:#FEE2E2;
+ --green:#16A34A;--green2:#DCFCE7;--yellow:#F59E0B;--yellow2:#FEF3C7;
+ --navy:#14366E;--purple:#7C3AED;--purple2:#EDE9FE;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#EAF2FF 0,#F8FAFD 340px,var(--bg) 100%);color:var(--ink)}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(980px,95%);margin:auto;padding:18px 0 60px}
+.hero{background:linear-gradient(135deg,#14366E,#2762B8);color:#fff;border-radius:25px;padding:24px;box-shadow:0 18px 42px rgba(20,54,110,.18)}
+.hero h1{margin:0 0 7px;font-size:clamp(30px,5vw,48px)}
+.hero p{margin:0;color:#EAF2FF;line-height:1.55}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:10px;text-align:center}
+.stat strong{display:block;font-size:22px}
+.progress{height:12px;background:rgba(255,255,255,.22);border-radius:999px;overflow:hidden;margin-top:12px}
+.progress span{display:block;height:100%;width:1%;background:linear-gradient(90deg,#F9C74F,#FFF5B7,#F9C74F);background-size:200% 100%;animation:shine 1.4s linear infinite;transition:width .3s ease}
+@keyframes shine{to{background-position:-200% 0}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;margin-top:15px;box-shadow:0 9px 28px rgba(16,24,40,.055)}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.badge{border-radius:999px;padding:7px 11px;font-weight:800;font-size:13px;background:#EEF4FF;color:var(--navy)}
+.badge.diff{background:var(--yellow2);color:#8A5A00}
+.badge.lock{background:#FFF1F2;color:#9F1239}
+h2{font-size:clamp(24px,4vw,34px);margin:16px 0 6px}
+h3{margin:16px 0 8px}
+.objective{color:var(--muted);line-height:1.55;margin:0}
+.question{font-size:clamp(20px,3.5vw,28px);font-weight:850;line-height:1.45;margin:22px 0 16px}
+.visual{margin:14px 0}
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.option{position:relative;overflow:hidden;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:15px;padding:14px;min-height:66px;font-weight:750;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.option:disabled{cursor:not-allowed;opacity:.72}
+.option .letter{display:inline-grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#EEF2F7;margin-right:8px;font-size:13px}
+.option.correct{background:var(--green2);border-color:#82CAA0}
+.option.wrong{background:var(--red2);border-color:#E4A6A2}
+.feedback{display:none;margin-top:14px;padding:14px 16px;border-radius:14px;line-height:1.6}
+.feedback.show{display:block}
+.feedback.ok{background:var(--green2);border:1px solid #A6DAB8}
+.feedback.bad{background:var(--red2);border:1px solid #EAB1AE}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.btn{position:relative;overflow:hidden;border:0;border-radius:13px;padding:12px 17px;font-weight:850}
+.btn.primary{background:var(--blue);color:white}
+.btn.soft{background:#EEF2F7;color:var(--ink);border:1px solid var(--line)}
+.btn.green{background:var(--green);color:white}
+.btn.red{background:var(--red);color:white}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;line-height:1;min-width:1.45em;margin:0 .08em}
+.frac .num{display:block;width:100%;text-align:center;border-bottom:2px solid currentColor;padding:0 .18em .10em}
+.frac .den{display:block;width:100%;text-align:center;padding:.10em .18em 0}
+.option .frac,.feedback .frac,.question .frac{font-size:1.08em}
+.barviz{display:grid;gap:4px;max-width:520px;margin:0 auto;height:62px}
+.barviz span{border-radius:7px;background:#E8EDF5;border:1px solid #C9D3E0}
+.barviz span.on{background:var(--blue);border-color:var(--blue)}
+.dotviz{display:flex;flex-wrap:wrap;gap:8px;max-width:460px;margin:auto;justify-content:center}
+.dotviz i{width:31px;height:31px;border-radius:50%;background:#E8EDF5;border:1px solid #C9D3E0}
+.dotviz i.on{background:var(--blue)}
+.lineviz{position:relative;height:90px;margin:8px 10px}
+.lineviz:before{content:"";position:absolute;left:5%;right:5%;top:43px;height:3px;background:#4B5563}
+.lineviz .tick{position:absolute;top:33px;width:2px;height:21px;background:#4B5563}
+.lineviz .lab{position:absolute;top:58px;transform:translateX(-50%);font-weight:800}
+.lineviz .point{position:absolute;top:30px;width:28px;height:28px;border-radius:50%;background:var(--purple);border:4px solid white;box-shadow:0 2px 10px rgba(0,0,0,.2);transform:translateX(-50%)}
+.hundred{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;width:min(330px,100%);aspect-ratio:1;margin:auto}
+.hundred i{background:#E8EDF5;border-radius:2px}
+.hundred i.on{background:var(--blue)}
+.place{width:min(520px,100%);margin:auto;border-collapse:separate;border-spacing:5px;text-align:center}
+.place th,.place td{border:1px solid var(--line);border-radius:9px;padding:10px;background:white}
+.place th{background:#EEF4FF;font-size:12px}
+.place td{font-size:24px;font-weight:900}
+.notice{background:var(--yellow2);border-left:5px solid var(--yellow);padding:13px 15px;border-radius:13px;margin-top:14px;line-height:1.55}
+.guard{background:#EEF4FF;border-left:5px solid var(--blue);padding:13px 15px;border-radius:13px;margin-top:14px;line-height:1.55}
+.warn{background:var(--red2);border-left:5px solid var(--red);padding:13px 15px;border-radius:13px;margin-top:14px;line-height:1.55}
+.okbox{background:var(--green2);border-left:5px solid var(--green);padding:13px 15px;border-radius:13px;margin-top:14px;line-height:1.55}
+.block-head{display:grid;grid-template-columns:1.35fr .65fr;gap:12px;margin-top:14px}
+.block-panel{border:1px solid var(--line);border-radius:16px;padding:15px;background:#FBFDFF}
+.timer{font-weight:900;font-variant-numeric:tabular-nums}
+.reading{background:#FFF7ED;border-color:#FDBA74;color:#9A3412}
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.metric{background:#FBFDFF;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+.metric strong{display:block;font-size:28px}
+.skill{padding:14px 0;border-bottom:1px solid #EDF0F4}
+.skilltop{display:flex;justify-content:space-between;gap:12px}
+.skillbar{height:9px;background:#E8EDF5;border-radius:999px;overflow:hidden;margin-top:7px}
+.skillbar span{display:block;height:100%;background:var(--green)}
+.reflection{margin-top:14px;padding:16px;border:1px solid #C9D8F3;background:#F8FAFF;border-radius:16px}
+.reflection textarea{width:100%;min-height:110px;border:1.5px solid var(--line);border-radius:13px;padding:12px;font-size:16px;resize:vertical}
+.reflection textarea:focus{outline:3px solid #BFDBFE;border-color:var(--blue)}
+.review-list{display:grid;gap:8px;margin-top:12px}
+.review-item{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.ripple{position:absolute;border-radius:50%;background:rgba(37,99,235,.16);pointer-events:none;transform:translate(-50%,-50%) scale(0);animation:ripple .55s ease-out forwards}
+@keyframes ripple{to{transform:translate(-50%,-50%) scale(6);opacity:0}}
+.confetti{position:fixed;top:-18px;width:10px;height:15px;border-radius:2px;z-index:9999;pointer-events:none;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translate(var(--drift),110vh) rotate(760deg);opacity:.1}}
+@media(max-width:700px){.options,.stats,.report-grid,.block-head{grid-template-columns:1fr}.card,.hero{padding:18px;border-radius:18px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <h1>🧠 100 ejercicios: Fracciones y Decimales</h1>
+  <p>1.º de secundaria · 10 bloques de 10 ejercicios · filtros de aprendizaje · avance por dominio.</p>
+  <div class="stats">
+    <div class="stat"><strong id="qNum">1/100</strong>Ejercicio</div>
+    <div class="stat"><strong id="correctTop">0</strong>Correctas</div>
+    <div class="stat"><strong id="wrongTop">0</strong>Incorrectas</div>
+    <div class="stat"><strong id="objTop">1/10</strong>Bloque</div>
+  </div>
+  <div class="progress"><span id="bar"></span></div>
+</header>
+<main id="app"></main>
+<footer style="text-align:center;color:#667085;font-size:13px;margin-top:20px">Material educativo interactivo · Fracciones y decimales · 1.º de secundaria</footer>
+</div>
+
+<script>
+const OBJECTIVES=["Explicar qué representa una fracción, no solamente identificarla.", "Identificar numerador y denominador y explicar la función de cada uno.", "Representar una fracción mediante objetos, áreas, dibujos y recta numérica.", "Reconocer que una fracción representa un número.", "Identificar y producir fracciones equivalentes.", "Simplificar fracciones sencillas comprendiendo que la cantidad no cambia.", "Comparar y ordenar fracciones.", "Comprender unidad, décimo, centésimo y milésimo.", "Leer, escribir, representar, comparar y ordenar números decimales.", "Relacionar visualmente fracciones con denominadores 10, 100 y 1000 con su escritura decimal."];
+const BANK=[{"id": 1, "objective": 1, "prompt": "Una pizza se divide en 4 partes iguales y se come 1. ¿Qué fracción de la pizza se comió?", "options": ["[[1/4]]", "[[1/2]]", "[[3/4]]", "[[4/1]]"], "answer": "[[1/4]]", "explanation": "Se tomó 1 de 4 partes iguales.", "visual": "pizza:4:1", "difficulty": "Básico"}, {"id": 2, "objective": 1, "prompt": "Una barra de chocolate se divide en 8 partes iguales y se comen 3. ¿Qué fracción se comió?", "options": ["[[3/8]]", "[[5/8]]", "[[8/3]]", "[[3/5]]"], "answer": "[[3/8]]", "explanation": "Se tomaron 3 de 8 partes iguales.", "visual": "bar:8:3", "difficulty": "Básico"}, {"id": 3, "objective": 1, "prompt": "¿Qué significa la fracción [[2/5]]?", "options": ["Dos de cinco partes iguales.", "Cinco de dos partes iguales.", "Dos enteros y cinco partes.", "Cinco enteros divididos entre dos."], "answer": "Dos de cinco partes iguales.", "explanation": "Una fracción representa una cantidad formada por partes iguales.", "visual": null, "difficulty": "Básico"}, {"id": 4, "objective": 1, "prompt": "Un pastel está dividido en 6 partes iguales y quedan 4. ¿Qué fracción del pastel queda?", "options": ["[[4/6]]", "[[2/6]]", "[[6/4]]", "[[4/2]]"], "answer": "[[4/6]]", "explanation": "Quedan 4 de las 6 partes iguales.", "visual": "bar:6:4", "difficulty": "Básico"}, {"id": 5, "objective": 1, "prompt": "Para representar correctamente [[3/4]], el entero debe dividirse en:", "options": ["4 partes iguales.", "3 partes iguales.", "7 partes iguales.", "4 partes de cualquier tamaño."], "answer": "4 partes iguales.", "explanation": "El denominador 4 indica cuatro partes iguales.", "visual": null, "difficulty": "Básico"}, {"id": 6, "objective": 1, "prompt": "¿Cuál situación representa [[1/3]]?", "options": ["Tomar 1 de 3 partes iguales.", "Tomar 3 de 3 partes iguales.", "Tomar 3 partes de una sola parte.", "Dividir un entero en 2 partes."], "answer": "Tomar 1 de 3 partes iguales.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 7, "objective": 1, "prompt": "Una botella tiene 10 niveles iguales y está llena hasta 7 niveles. ¿Qué fracción está llena?", "options": ["[[7/10]]", "[[3/10]]", "[[10/7]]", "[[7/3]]"], "answer": "[[7/10]]", "explanation": "Hay 7 de 10 niveles llenos.", "visual": "bar:10:7", "difficulty": "Básico"}, {"id": 8, "objective": 1, "prompt": "¿Por qué las partes deben ser iguales al representar una fracción de un entero?", "options": ["Porque cada parte debe representar la misma cantidad del entero.", "Porque toda fracción debe dibujarse con cuadrados.", "Porque el numerador siempre debe ser menor.", "Porque así todas las fracciones valen 1."], "answer": "Porque cada parte debe representar la misma cantidad del entero.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 9, "objective": 1, "prompt": "Si un entero se divide en 5 partes iguales y tomamos las 5, ¿qué cantidad tenemos?", "options": ["1 entero", "[[1/5]]", "5 enteros", "0"], "answer": "1 entero", "explanation": "[[5/5]] representa un entero completo.", "visual": "bar:5:5", "difficulty": "Intermedio"}, {"id": 10, "objective": 1, "prompt": "¿Cuál afirmación describe mejor a una fracción?", "options": ["Representa una cantidad.", "Son dos números sin relación.", "Solo sirve para repartir comida.", "Toda fracción es menor que 1."], "answer": "Representa una cantidad.", "explanation": "Una fracción es un número que representa una cantidad.", "visual": "", "difficulty": "Intermedio"}, {"id": 11, "objective": 2, "prompt": "En [[3/7]], ¿cuál es el numerador?", "options": ["3", "7", "10", "4"], "answer": "3", "explanation": "El numerador está arriba.", "visual": null, "difficulty": "Básico"}, {"id": 12, "objective": 2, "prompt": "En [[3/7]], ¿cuál es el denominador?", "options": ["7", "3", "10", "4"], "answer": "7", "explanation": "El denominador está abajo.", "visual": null, "difficulty": "Básico"}, {"id": 13, "objective": 2, "prompt": "¿Qué indica el numerador de una fracción?", "options": ["Cuántas partes estamos tomando.", "En cuántas partes iguales se dividió el entero.", "El tamaño físico del dibujo.", "Cuántos enteros hay."], "answer": "Cuántas partes estamos tomando.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 14, "objective": 2, "prompt": "¿Qué indica el denominador?", "options": ["En cuántas partes iguales se dividió el entero.", "Cuántas partes estamos tomando.", "Cuántas partes sobran.", "El resultado de una operación."], "answer": "En cuántas partes iguales se dividió el entero.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 15, "objective": 2, "prompt": "En [[5/8]], el 8 nos dice que:", "options": ["El entero se dividió en ocho partes iguales.", "Tomamos ocho partes.", "Tenemos ocho enteros.", "Sobran ocho partes."], "answer": "El entero se dividió en ocho partes iguales.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 16, "objective": 2, "prompt": "Una figura se divide en 12 partes iguales y se colorean 7. ¿Cuál es el numerador?", "options": ["7", "12", "5", "19"], "answer": "7", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 17, "objective": 2, "prompt": "En la misma situación: 12 partes iguales y 7 coloreadas. ¿Cuál es el denominador?", "options": ["12", "7", "5", "19"], "answer": "12", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 18, "objective": 2, "prompt": "En [[9/10]], ¿qué significa el 9?", "options": ["Se consideran nueve de las partes.", "El entero tiene nueve partes.", "Tenemos nueve enteros.", "Se dividió entre nueve."], "answer": "Se consideran nueve de las partes.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 19, "objective": 2, "prompt": "Si el denominador es 6, ¿qué sabemos con seguridad?", "options": ["El entero se dividió en seis partes iguales.", "Se tomaron seis partes.", "La fracción vale seis.", "El numerador también es seis."], "answer": "El entero se dividió en seis partes iguales.", "explanation": "El denominador describe la partición del entero.", "visual": "", "difficulty": "Intermedio"}, {"id": 20, "objective": 2, "prompt": "Completa correctamente la idea para [[4/9]]:", "options": ["4 es numerador y 9 es denominador.", "4 es denominador y 9 es numerador.", "4 y 9 son dos enteros separados.", "9 indica las partes tomadas."], "answer": "4 es numerador y 9 es denominador.", "explanation": "Arriba: partes tomadas. Abajo: partes iguales del entero.", "visual": "", "difficulty": "Intermedio"}, {"id": 21, "objective": 3, "prompt": "Observa la barra. ¿Qué fracción está coloreada?", "options": ["[[2/6]]", "[[4/6]]", "[[2/4]]", "[[6/2]]"], "answer": "[[2/6]]", "explanation": "Hay 2 de 6 partes coloreadas.", "visual": "bar:6:2", "difficulty": "Básico"}, {"id": 22, "objective": 3, "prompt": "Observa la barra. ¿Qué fracción está coloreada?", "options": ["[[5/8]]", "[[3/8]]", "[[8/5]]", "[[5/3]]"], "answer": "[[5/8]]", "explanation": "Hay 5 de 8 partes coloreadas.", "visual": "bar:8:5", "difficulty": "Básico"}, {"id": 23, "objective": 3, "prompt": "¿Cuál opción representa la barra mostrada?", "options": ["[[3/4]]", "[[1/4]]", "[[4/3]]", "[[3/7]]"], "answer": "[[3/4]]", "explanation": "Tres de cuatro partes están coloreadas.", "visual": "bar:4:3", "difficulty": "Básico"}, {"id": 24, "objective": 3, "prompt": "Una colección tiene 10 estrellas y 4 están marcadas. ¿Qué fracción representa las estrellas marcadas?", "options": ["[[4/10]]", "[[6/10]]", "[[10/4]]", "[[4/6]]"], "answer": "[[4/10]]", "explanation": "Son 4 de 10 objetos.", "visual": "dots:10:4", "difficulty": "Básico"}, {"id": 25, "objective": 3, "prompt": "¿En qué punto de la recta está [[1/2]]?", "options": ["En la mitad entre 0 y 1.", "En 0.", "En 1.", "Después de 1."], "answer": "En la mitad entre 0 y 1.", "explanation": "[[1/2]] está exactamente a la mitad.", "visual": "line:0.5", "difficulty": "Básico"}, {"id": 26, "objective": 3, "prompt": "¿Dónde se ubica [[3/4]] entre 0 y 1?", "options": ["A tres cuartas partes del recorrido.", "Exactamente en la mitad.", "En un cuarto del recorrido.", "Después de 1."], "answer": "A tres cuartas partes del recorrido.", "explanation": "[[3/4]] está más cerca de 1 que de 0.", "visual": "line:0.75", "difficulty": "Básico"}, {"id": 27, "objective": 3, "prompt": "¿Qué fracción está exactamente a la mitad entre 0 y 1?", "options": ["[[1/2]]", "[[1/4]]", "[[3/4]]", "[[2/1]]"], "answer": "[[1/2]]", "explanation": "La mitad del entero es [[1/2]].", "visual": "line:0.5", "difficulty": "Básico"}, {"id": 28, "objective": 3, "prompt": "Una barra tiene 8 partes iguales y 6 están coloreadas. ¿Qué fracción representa?", "options": ["[[6/8]]", "[[2/8]]", "[[8/6]]", "[[6/2]]"], "answer": "[[6/8]]", "explanation": "Numerador 6, denominador 8.", "visual": "bar:8:6", "difficulty": "Intermedio"}, {"id": 29, "objective": 3, "prompt": "¿Qué representación corresponde a [[2/5]]?", "options": ["2 de 5 partes iguales coloreadas.", "5 de 2 partes iguales coloreadas.", "2 enteros completos.", "5 enteros y 2 partes."], "answer": "2 de 5 partes iguales coloreadas.", "explanation": "", "visual": "bar:5:2", "difficulty": "Intermedio"}, {"id": 30, "objective": 3, "prompt": "Observa la representación. ¿Qué fracción corresponde?", "options": ["[[7/10]]", "[[3/10]]", "[[10/7]]", "[[7/3]]"], "answer": "[[7/10]]", "explanation": "Siete de diez partes están coloreadas.", "visual": "bar:10:7", "difficulty": "Intermedio"}, {"id": 31, "objective": 4, "prompt": "¿Entre qué enteros se encuentra [[1/2]]?", "options": ["Entre 0 y 1.", "Entre 1 y 2.", "Entre 2 y 3.", "No se puede ubicar."], "answer": "Entre 0 y 1.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 32, "objective": 4, "prompt": "¿[[3/4]] está entre 0 y 1?", "options": ["Sí.", "No, es mayor que 1.", "No, vale exactamente 1.", "No se puede saber."], "answer": "Sí.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 33, "objective": 4, "prompt": "¿Qué fracción representa exactamente 1?", "options": ["[[4/4]]", "[[3/4]]", "[[1/4]]", "[[5/4]]"], "answer": "[[4/4]]", "explanation": "Cuando numerador y denominador son iguales, la fracción vale 1.", "visual": null, "difficulty": "Básico"}, {"id": 34, "objective": 4, "prompt": "¿Cuánto vale [[8/8]]?", "options": ["1", "8", "0", "[[1/8]]"], "answer": "1", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 35, "objective": 4, "prompt": "¿Cuál fracción es mayor que 1?", "options": ["[[5/4]]", "[[3/4]]", "[[4/4]]", "[[1/4]]"], "answer": "[[5/4]]", "explanation": "El numerador es mayor que el denominador.", "visual": null, "difficulty": "Básico"}, {"id": 36, "objective": 4, "prompt": "¿Cómo clasificas [[2/5]]?", "options": ["Entre 0 y 1.", "Igual a 1.", "Mayor que 1.", "Igual a 0."], "answer": "Entre 0 y 1.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 37, "objective": 4, "prompt": "¿Cómo clasificas [[6/6]]?", "options": ["Igual a 1.", "Entre 0 y 1.", "Mayor que 1.", "Igual a 0."], "answer": "Igual a 1.", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 38, "objective": 4, "prompt": "¿Cómo clasificas [[8/5]]?", "options": ["Mayor que 1.", "Entre 0 y 1.", "Igual a 1.", "Igual a 0."], "answer": "Mayor que 1.", "explanation": "[[8/5]] contiene más de un entero.", "visual": "", "difficulty": "Intermedio"}, {"id": 39, "objective": 4, "prompt": "¿Dónde se ubica [[3/2]] en la recta numérica?", "options": ["En 1.5", "En 0.5", "En 3", "En 2.5"], "answer": "En 1.5", "explanation": "[[3/2]] = 1 entero y medio.", "visual": "line:1.5", "difficulty": "Intermedio"}, {"id": 40, "objective": 4, "prompt": "¿Por qué [[3/4]] es un solo número?", "options": ["Porque representa una cantidad específica y ocupa una posición en la recta.", "Porque 3 y 4 siempre se suman.", "Porque toda fracción vale menos que 1.", "Porque solo se usa en dibujos."], "answer": "Porque representa una cantidad específica y ocupa una posición en la recta.", "explanation": "", "visual": "", "difficulty": "Avanzado"}, {"id": 41, "objective": 5, "prompt": "Completa: [[1/2]] = [[?/4]]", "options": ["2", "1", "3", "4"], "answer": "2", "explanation": "Multiplicamos numerador y denominador por 2.", "visual": null, "difficulty": "Básico"}, {"id": 42, "objective": 5, "prompt": "Completa: [[1/2]] = [[?/6]]", "options": ["3", "2", "4", "6"], "answer": "3", "explanation": "[[1/2]] = [[3/6]].", "visual": null, "difficulty": "Básico"}, {"id": 43, "objective": 5, "prompt": "Completa: [[2/3]] = [[4/?]]", "options": ["6", "5", "4", "8"], "answer": "6", "explanation": "Multiplicamos ambos términos por 2.", "visual": null, "difficulty": "Básico"}, {"id": 44, "objective": 5, "prompt": "¿Cuál es equivalente a [[3/5]]?", "options": ["[[6/10]]", "[[3/10]]", "[[5/6]]", "[[9/10]]"], "answer": "[[6/10]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 45, "objective": 5, "prompt": "¿Cuál es equivalente a [[2/3]]?", "options": ["[[4/6]]", "[[2/6]]", "[[3/4]]", "[[6/4]]"], "answer": "[[4/6]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 46, "objective": 5, "prompt": "¿Son equivalentes [[3/4]] y [[6/8]]?", "options": ["Sí.", "No.", "Solo si se suman.", "Solo si el numerador es par."], "answer": "Sí.", "explanation": "Ambos representan la misma cantidad.", "visual": null, "difficulty": "Básico"}, {"id": 47, "objective": 5, "prompt": "¿Son equivalentes [[2/5]] y [[4/8]]?", "options": ["No.", "Sí.", "Siempre.", "Solo en una recta."], "answer": "No.", "explanation": "[[2/5]]=0.4 y [[4/8]]=0.5.", "visual": null, "difficulty": "Básico"}, {"id": 48, "objective": 5, "prompt": "Completa: [[4/5]] = [[8/?]]", "options": ["10", "9", "8", "12"], "answer": "10", "explanation": "Se multiplicó por 2 arriba y abajo.", "visual": "", "difficulty": "Intermedio"}, {"id": 49, "objective": 5, "prompt": "Observa las barras. ¿Qué afirmación es correcta?", "options": ["[[1/2]], [[2/4]] y [[4/8]] representan la misma cantidad.", "[[1/2]] es mayor que [[2/4]].", "[[4/8]] es mayor que [[1/2]].", "Ninguna representa la misma cantidad."], "answer": "[[1/2]], [[2/4]] y [[4/8]] representan la misma cantidad.", "explanation": "", "visual": "equiv", "difficulty": "Intermedio"}, {"id": 50, "objective": 5, "prompt": "¿Cuál es otra fracción equivalente a [[3/4]]?", "options": ["[[9/12]]", "[[6/10]]", "[[4/3]]", "[[3/8]]"], "answer": "[[9/12]]", "explanation": "Se multiplicó numerador y denominador por 3.", "visual": "", "difficulty": "Avanzado"}, {"id": 51, "objective": 6, "prompt": "Simplifica [[2/4]].", "options": ["[[1/2]]", "[[2/2]]", "[[1/4]]", "[[4/2]]"], "answer": "[[1/2]]", "explanation": "Dividimos arriba y abajo entre 2.", "visual": null, "difficulty": "Básico"}, {"id": 52, "objective": 6, "prompt": "Simplifica [[4/8]].", "options": ["[[1/2]]", "[[2/8]]", "[[4/4]]", "[[2/3]]"], "answer": "[[1/2]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 53, "objective": 6, "prompt": "Simplifica [[6/8]].", "options": ["[[3/4]]", "[[2/4]]", "[[6/4]]", "[[3/8]]"], "answer": "[[3/4]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 54, "objective": 6, "prompt": "Simplifica [[6/9]].", "options": ["[[2/3]]", "[[3/2]]", "[[2/9]]", "[[6/3]]"], "answer": "[[2/3]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 55, "objective": 6, "prompt": "Simplifica [[8/12]].", "options": ["[[2/3]]", "[[4/6]]", "[[3/2]]", "[[8/6]]"], "answer": "[[2/3]]", "explanation": "Dividiendo ambos términos entre 4 obtenemos [[2/3]].", "visual": null, "difficulty": "Básico"}, {"id": 56, "objective": 6, "prompt": "Simplifica [[10/15]].", "options": ["[[2/3]]", "[[5/10]]", "[[3/2]]", "[[10/5]]"], "answer": "[[2/3]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 57, "objective": 6, "prompt": "Simplifica [[12/16]].", "options": ["[[3/4]]", "[[6/8]]", "[[4/3]]", "[[12/8]]"], "answer": "[[3/4]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 58, "objective": 6, "prompt": "Simplifica [[15/20]].", "options": ["[[3/4]]", "[[5/4]]", "[[3/5]]", "[[15/10]]"], "answer": "[[3/4]]", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 59, "objective": 6, "prompt": "Al pasar de [[6/8]] a [[3/4]], ¿cambió la cantidad?", "options": ["No.", "Sí, aumentó.", "Sí, disminuyó.", "Solo cambió el denominador."], "answer": "No.", "explanation": "La escritura cambió, pero el valor es el mismo.", "visual": "equiv", "difficulty": "Intermedio"}, {"id": 60, "objective": 6, "prompt": "¿Por qué podemos dividir numerador y denominador entre el mismo número al simplificar?", "options": ["Porque obtenemos una fracción equivalente.", "Porque el valor siempre se hace menor.", "Porque solo cambia el numerador.", "Porque toda división produce 1."], "answer": "Porque obtenemos una fracción equivalente.", "explanation": "", "visual": "", "difficulty": "Avanzado"}, {"id": 61, "objective": 7, "prompt": "Compara: [[1/4]] ___ [[3/4]]", "options": ["<", ">", "=", "No se puede comparar"], "answer": "<", "explanation": "Mismo denominador: 1 parte es menor que 3 partes.", "visual": null, "difficulty": "Básico"}, {"id": 62, "objective": 7, "prompt": "Compara: [[5/8]] ___ [[3/8]]", "options": [">", "<", "=", "No se puede comparar"], "answer": ">", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 63, "objective": 7, "prompt": "Compara: [[2/7]] ___ [[5/7]]", "options": ["<", ">", "=", "1"], "answer": "<", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 64, "objective": 7, "prompt": "Compara: [[1/2]] ___ [[2/4]]", "options": ["=", ">", "<", "No se puede comparar"], "answer": "=", "explanation": "Son fracciones equivalentes.", "visual": null, "difficulty": "Básico"}, {"id": 65, "objective": 7, "prompt": "¿Cuál es mayor?", "options": ["[[3/4]]", "[[1/2]]", "Son iguales.", "Ninguna."], "answer": "[[3/4]]", "explanation": "[[1/2]] = [[2/4]], por eso [[3/4]] es mayor.", "visual": null, "difficulty": "Básico"}, {"id": 66, "objective": 7, "prompt": "¿Cuál es el orden correcto de menor a mayor?", "options": ["[[1/4]] < [[1/2]] < [[3/4]]", "[[3/4]] < [[1/2]] < [[1/4]]", "[[1/2]] < [[1/4]] < [[3/4]]", "[[1/4]] < [[3/4]] < [[1/2]]"], "answer": "[[1/4]] < [[1/2]] < [[3/4]]", "explanation": "", "visual": "linequarters", "difficulty": "Intermedio"}, {"id": 67, "objective": 7, "prompt": "Ordena de menor a mayor:", "options": ["[[1/8]] < [[5/8]] < [[7/8]]", "[[7/8]] < [[5/8]] < [[1/8]]", "[[5/8]] < [[1/8]] < [[7/8]]", "[[1/8]] < [[7/8]] < [[5/8]]"], "answer": "[[1/8]] < [[5/8]] < [[7/8]]", "explanation": "", "visual": "", "difficulty": "Intermedio"}, {"id": 68, "objective": 7, "prompt": "¿Cuál está más cerca de 1?", "options": ["[[3/4]]", "[[1/4]]", "Ambas igual.", "Ninguna."], "answer": "[[3/4]]", "explanation": "[[3/4]] está a [[1/4]] de distancia de 1.", "visual": "linequarters", "difficulty": "Intermedio"}, {"id": 69, "objective": 7, "prompt": "En la recta, ¿qué orden es correcto?", "options": ["[[1/4]], [[1/2]], [[3/4]]", "[[3/4]], [[1/2]], [[1/4]]", "[[1/2]], [[1/4]], [[3/4]]", "[[1/4]], [[3/4]], [[1/2]]"], "answer": "[[1/4]], [[1/2]], [[3/4]]", "explanation": "", "visual": "linequarters", "difficulty": "Intermedio"}, {"id": 70, "objective": 7, "prompt": "Lucero tomó [[2/5]] de una botella y Amaya tomó [[4/5]]. ¿Quién tomó más?", "options": ["Amaya.", "Lucero.", "Tomaron lo mismo.", "No se puede saber."], "answer": "Amaya.", "explanation": "Con el mismo denominador, 4 partes son más que 2.", "visual": "", "difficulty": "Avanzado"}, {"id": 71, "objective": 8, "prompt": "[[1/10]] se escribe como:", "options": ["0.1", "0.01", "0.001", "1.0"], "answer": "0.1", "explanation": "Un décimo es 0.1.", "visual": null, "difficulty": "Básico"}, {"id": 72, "objective": 8, "prompt": "[[1/100]] se escribe como:", "options": ["0.01", "0.1", "0.001", "1.00"], "answer": "0.01", "explanation": "Un centésimo es 0.01.", "visual": null, "difficulty": "Básico"}, {"id": 73, "objective": 8, "prompt": "[[1/1000]] se escribe como:", "options": ["0.001", "0.01", "0.1", "1.000"], "answer": "0.001", "explanation": "Un milésimo es 0.001.", "visual": null, "difficulty": "Básico"}, {"id": 74, "objective": 8, "prompt": "En 0.7, el 7 representa:", "options": ["7 décimos", "7 centésimos", "7 milésimos", "7 unidades"], "answer": "7 décimos", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 75, "objective": 8, "prompt": "En 0.35, el 3 representa:", "options": ["3 décimos", "3 centésimos", "3 milésimos", "3 unidades"], "answer": "3 décimos", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 76, "objective": 8, "prompt": "En 0.35, el 5 representa:", "options": ["5 centésimos", "5 décimos", "5 milésimos", "5 unidades"], "answer": "5 centésimos", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 77, "objective": 8, "prompt": "En 0.428, el 8 representa:", "options": ["8 milésimos", "8 centésimos", "8 décimos", "8 unidades"], "answer": "8 milésimos", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 78, "objective": 8, "prompt": "¿Cuál número representa seis centésimos?", "options": ["0.06", "0.6", "0.006", "6.0"], "answer": "0.06", "explanation": "Seis centésimos ocupan dos cifras después del punto.", "visual": "", "difficulty": "Intermedio"}, {"id": 79, "objective": 8, "prompt": "¿Cuál número representa nueve milésimos?", "options": ["0.009", "0.09", "0.9", "9.0"], "answer": "0.009", "explanation": "Nueve milésimos ocupan la tercera posición decimal.", "visual": "", "difficulty": "Intermedio"}, {"id": 80, "objective": 8, "prompt": "¿Qué descomposición corresponde a 0.325?", "options": ["3 décimos + 2 centésimos + 5 milésimos", "3 centésimos + 2 décimos + 5 unidades", "3 unidades + 2 décimos + 5 centésimos", "32 décimos + 5 unidades"], "answer": "3 décimos + 2 centésimos + 5 milésimos", "explanation": "", "visual": "place0325", "difficulty": "Avanzado"}, {"id": 81, "objective": 9, "prompt": "¿Cómo se lee 0.5?", "options": ["Cinco décimos", "Cinco centésimos", "Cinco milésimos", "Cinco unidades"], "answer": "Cinco décimos", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 82, "objective": 9, "prompt": "¿Cómo se lee 0.25?", "options": ["Veinticinco centésimos", "Veinticinco décimos", "Dos mil cinco décimos", "Veinticinco unidades"], "answer": "Veinticinco centésimos", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 83, "objective": 9, "prompt": "¿Qué representación corresponde a 0.4?", "options": ["4 de 10 partes", "4 de 100 partes", "40 de 1000 partes", "1 de 4 partes"], "answer": "4 de 10 partes", "explanation": "", "visual": "bar:10:4", "difficulty": "Básico"}, {"id": 84, "objective": 9, "prompt": "¿Qué representación corresponde a 0.35?", "options": ["35 de 100 partes", "35 de 10 partes", "3 de 5 partes", "5 de 35 partes"], "answer": "35 de 100 partes", "explanation": "", "visual": "hundred:35", "difficulty": "Básico"}, {"id": 85, "objective": 9, "prompt": "Compara: 0.4 ___ 0.35", "options": [">", "<", "=", "No se puede comparar"], "answer": ">", "explanation": "0.4 = 0.40, y 0.40 es mayor que 0.35.", "visual": null, "difficulty": "Básico"}, {"id": 86, "objective": 9, "prompt": "Compara: 0.50 ___ 0.5", "options": ["=", "<", ">", "No se puede comparar"], "answer": "=", "explanation": "Agregar ceros a la derecha no cambia el valor.", "visual": null, "difficulty": "Básico"}, {"id": 87, "objective": 9, "prompt": "Compara: 0.08 ___ 0.8", "options": ["<", ">", "=", "No se puede comparar"], "answer": "<", "explanation": "0.08 son 8 centésimos; 0.8 son 8 décimos.", "visual": null, "difficulty": "Básico"}, {"id": 88, "objective": 9, "prompt": "Ordena de menor a mayor:", "options": ["0.2 < 0.5 < 0.7", "0.7 < 0.5 < 0.2", "0.5 < 0.2 < 0.7", "0.2 < 0.7 < 0.5"], "answer": "0.2 < 0.5 < 0.7", "explanation": "", "visual": "", "difficulty": "Intermedio"}, {"id": 89, "objective": 9, "prompt": "Ordena de menor a mayor:", "options": ["0.09 < 0.19 < 0.9", "0.9 < 0.19 < 0.09", "0.19 < 0.09 < 0.9", "0.09 < 0.9 < 0.19"], "answer": "0.09 < 0.19 < 0.9", "explanation": "", "visual": "", "difficulty": "Intermedio"}, {"id": 90, "objective": 9, "prompt": "¿Por qué 0.4 es mayor que 0.35?", "options": ["Porque 0.4 = 0.40 y 40 centésimos son mayores que 35 centésimos.", "Porque 4 siempre es mayor que 35.", "Porque tiene menos cifras.", "Porque todo número con una cifra decimal es mayor."], "answer": "Porque 0.4 = 0.40 y 40 centésimos son mayores que 35 centésimos.", "explanation": "", "visual": "", "difficulty": "Avanzado"}, {"id": 91, "objective": 10, "prompt": "[[3/10]] se escribe como:", "options": ["0.3", "0.03", "3.0", "0.003"], "answer": "0.3", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 92, "objective": 10, "prompt": "[[7/10]] se escribe como:", "options": ["0.7", "0.07", "7.0", "0.007"], "answer": "0.7", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 93, "objective": 10, "prompt": "[[25/100]] se escribe como:", "options": ["0.25", "2.5", "0.025", "25.0"], "answer": "0.25", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 94, "objective": 10, "prompt": "[[68/100]] se escribe como:", "options": ["0.68", "6.8", "0.068", "68.0"], "answer": "0.68", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 95, "objective": 10, "prompt": "[[125/1000]] se escribe como:", "options": ["0.125", "1.25", "0.0125", "125.0"], "answer": "0.125", "explanation": "", "visual": null, "difficulty": "Básico"}, {"id": 96, "objective": 10, "prompt": "0.6 corresponde a:", "options": ["[[6/10]]", "[[6/100]]", "[[60/1000]] solamente", "[[1/6]]"], "answer": "[[6/10]]", "explanation": "0.6 son seis décimos.", "visual": null, "difficulty": "Básico"}, {"id": 97, "objective": 10, "prompt": "0.42 corresponde a:", "options": ["[[42/100]]", "[[42/10]]", "[[4/2]]", "[[420/10]]"], "answer": "[[42/100]]", "explanation": "0.42 son cuarenta y dos centésimos.", "visual": null, "difficulty": "Básico"}, {"id": 98, "objective": 10, "prompt": "0.008 corresponde a:", "options": ["[[8/1000]]", "[[8/100]]", "[[8/10]]", "[[80/100]]"], "answer": "[[8/1000]]", "explanation": "0.008 son ocho milésimos.", "visual": null, "difficulty": "Básico"}, {"id": 99, "objective": 10, "prompt": "¿Qué relación es correcta?", "options": ["[[35/100]] = 0.35", "[[35/100]] = 3.5", "[[7/10]] = 0.07", "[[125/1000]] = 1.25"], "answer": "[[35/100]] = 0.35", "explanation": "", "visual": "hundred:35", "difficulty": "Intermedio"}, {"id": 100, "objective": 10, "prompt": "Una botella contiene [[75/100]] de su capacidad. ¿Cuál afirmación integra correctamente esa información?", "options": ["[[75/100]] = 0.75 y es mayor que [[1/2]].", "[[75/100]] = 7.5 y es menor que [[1/2]].", "[[75/100]] = 0.075 y es igual a [[1/2]].", "[[75/100]] = 75 y es menor que 1."], "answer": "[[75/100]] = 0.75 y es mayor que [[1/2]].", "explanation": "[[75/100]] son 75 centésimos, es decir 0.75; además 0.75 > 0.50.", "visual": "hundred:75", "difficulty": "Avanzado"}];
+
+const PASS_SCORE=80;
+const READ_LOCK_MS=2000;
+const RAPID_SECONDS=4;
+const MIN_REFLECTION_CHARS=25;
+const MIN_REFLECTION_WORDS=5;
+
+let block=0;
+let indexInBlock=0;
+let currentRound=1;
+let roundAnswers={};
+let finalAnswers={};
+let blockHistory=Array.from({length:10},()=>[]);
+let reflections=Array(10).fill("");
+let questionOpenedAt=0;
+let enableTimer=null;
+
+function fracMarkup(n,d){
+  return `<span class="frac" aria-label="${n} sobre ${d}"><span class="num">${n}</span><span class="den">${d}</span></span>`;
+}
+function fmt(s){
+  if(s==null)return "";
+  return String(s).replace(/\[\[([^/\]]+)\/([^\]]+)\]\]/g,(_,n,d)=>fracMarkup(n,d));
+}
+function escapeAttr(s){
+  return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function shuffle(a){
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}
+  return b;
+}
+function blockQuestions(b){ return BANK.filter(q=>q.objective===b+1); }
+function qGlobalNumber(){ return block*10+indexInBlock+1; }
+function currentQuestion(){ return blockQuestions(block)[indexInBlock]; }
+
+function visual(spec){
+  if(!spec)return "";
+  if(spec.startsWith("bar:")){
+    const [_,n,f]=spec.split(":").map((x,i)=>i?Number(x):x);
+    return `<div class="barviz" style="grid-template-columns:repeat(${n},1fr)">${Array.from({length:n},(_,i)=>`<span class="${i<f?'on':''}"></span>`).join('')}</div>`;
+  }
+  if(spec.startsWith("pizza:")){
+    const [_,n,f]=spec.split(":").map((x,i)=>i?Number(x):x);
+    return `<div class="barviz" style="grid-template-columns:repeat(${n},1fr);height:80px">${Array.from({length:n},(_,i)=>`<span class="${i<f?'on':''}" style="border-radius:14px"></span>`).join('')}</div>`;
+  }
+  if(spec.startsWith("dots:")){
+    const [_,n,f]=spec.split(":").map((x,i)=>i?Number(x):x);
+    return `<div class="dotviz">${Array.from({length:n},(_,i)=>`<i class="${i<f?'on':''}"></i>`).join('')}</div>`;
+  }
+  if(spec.startsWith("hundred:")){
+    const f=Number(spec.split(":")[1]);
+    return `<div class="hundred">${Array.from({length:100},(_,i)=>`<i class="${i<f?'on':''}"></i>`).join('')}</div>`;
+  }
+  if(spec==="equiv"){
+    return `<div class="barviz" style="grid-template-columns:repeat(8,1fr)">${Array.from({length:8},(_,i)=>`<span class="${i<4?'on':''}"></span>`).join('')}</div>
+    <div style="text-align:center;margin-top:8px">${fracMarkup(1,2)} = ${fracMarkup(2,4)} = ${fracMarkup(4,8)}</div>`;
+  }
+  if(spec==="linequarters") return lineVisual(0.75,true);
+  if(spec.startsWith("line:")) return lineVisual(Number(spec.split(":")[1]),false);
+  if(spec==="place0325") return `<table class="place"><tr><th>Unidades</th><th>Décimos</th><th>Centésimos</th><th>Milésimos</th></tr><tr><td>0</td><td>3</td><td>2</td><td>5</td></tr></table>`;
+  return "";
+}
+function lineVisual(v,quarters){
+  const max=v>1?2:1,left=5+(v/max)*90;
+  let ticks="";
+  const vals=quarters?[0,.25,.5,.75,1]:[0,max/2,max];
+  for(const x of vals){
+    const pos=5+(x/max)*90;
+    let lab=String(x);
+    if(quarters)lab=x===.25?fmt("[[1/4]]"):x===.5?fmt("[[1/2]]"):x===.75?fmt("[[3/4]]"):String(x);
+    ticks+=`<i class="tick" style="left:${pos}%"></i><span class="lab" style="left:${pos}%">${lab}</span>`;
+  }
+  return `<div class="lineviz">${ticks}<i class="point" style="left:${left}%"></i></div>`;
+}
+function shortTitle(n){
+ return ["¿Qué representa una fracción?","Numerador y denominador","Representación de fracciones","La fracción como número","Fracciones equivalentes","Simplificación","Comparación y orden","Valor posicional decimal","Números decimales","Fracción decimal ↔ decimal"][n-1];
+}
+function topCounts(){
+  const vals=Object.values(finalAnswers);
+  return {c:vals.filter(x=>x.correct).length,w:vals.filter(x=>!x.correct).length};
+}
+function updateHeader(){
+  const c=topCounts();
+  document.getElementById("qNum").textContent=`${Math.min(qGlobalNumber(),100)}/100`;
+  document.getElementById("correctTop").textContent=c.c;
+  document.getElementById("wrongTop").textContent=c.w;
+  document.getElementById("objTop").textContent=`${block+1}/10`;
+  const completed=Object.keys(finalAnswers).length;
+  document.getElementById("bar").style.width=`${Math.max(1,completed)}%`;
+}
+function renderQuestion(){
+  clearTimeout(enableTimer);
+  const q=currentQuestion();
+  updateHeader();
+  const key=q.id;
+  const old=roundAnswers[key];
+  const opts=old?.order || shuffle(q.options);
+  const letters=["A","B","C","D"];
+  const app=document.getElementById("app");
+  app.innerHTML=`<section class="card">
+    <div class="meta">
+      <span class="badge">Bloque ${block+1} de 10</span>
+      <span class="badge">Pregunta ${indexInBlock+1} de 10</span>
+      <span class="badge diff">${q.difficulty}</span>
+      <span class="badge">Intento ${currentRound}</span>
+      <span class="badge reading" id="readBadge">🔒 Lee 2 segundos</span>
+    </div>
+
+    <div class="block-head">
+      <div class="block-panel">
+        <strong>🎯 ${shortTitle(q.objective)}</strong>
+        <p class="objective">${OBJECTIVES[q.objective-1]}</p>
+      </div>
+      <div class="block-panel">
+        <strong>🛡️ Filtros activos</strong>
+        <p class="objective">Lectura obligatoria · una sola elección · opciones aleatorias · avance con 80%.</p>
+      </div>
+    </div>
+
+    <div class="question">${fmt(q.prompt)}</div>
+    <div class="visual">${visual(q.visual)}</div>
+    <div class="options">
+      ${opts.map((o,i)=>`<button class="option" data-value="${escapeAttr(o)}" disabled><span class="letter">${letters[i]}</span>${fmt(o)}</button>`).join("")}
+    </div>
+    <div class="feedback" id="fb"></div>
+    <div class="controls">
+      <button class="btn primary" id="next" disabled>${indexInBlock===9?'Revisar bloque →':'Siguiente →'}</button>
+    </div>
+    <div class="notice">💡 No se puede cambiar una respuesta después de seleccionarla. La posición de la respuesta correcta cambia en cada ejercicio.</div>
+  </section>`;
+
+  const buttons=[...document.querySelectorAll(".option")];
+  if(old){
+    buttons.forEach(b=>{
+      b.disabled=true;
+      if(old.correct && b.dataset.value===q.answer)b.classList.add("correct");
+      if(!old.correct && b.dataset.value===old.selected)b.classList.add("wrong");
+    });
+    showFeedback(q,old.correct,old.seconds);
+    document.getElementById("readBadge").textContent=`⏱️ ${old.seconds.toFixed(1)} s`;
+    document.getElementById("next").disabled=false;
+  }else{
+    questionOpenedAt=Date.now();
+    enableTimer=setTimeout(()=>{
+      buttons.forEach(b=>b.disabled=false);
+      const rb=document.getElementById("readBadge");
+      if(rb){rb.textContent="✅ Ya puedes responder";rb.classList.remove("reading");}
+    },READ_LOCK_MS);
+    buttons.forEach(b=>b.addEventListener("click",()=>answer(q,b,opts)));
+  }
+  document.getElementById("next").addEventListener("click",()=>{
+    indexInBlock++;
+    window.scrollTo({top:0,behavior:"smooth"});
+    if(indexInBlock>=10)renderCheckpoint(); else renderQuestion();
+  });
+}
+function answer(q,btn,opts){
+  const seconds=Math.max(.1,(Date.now()-questionOpenedAt)/1000);
+  const selected=btn.dataset.value;
+  const correct=selected===q.answer;
+  roundAnswers[q.id]={selected,correct,seconds,order:[...opts]};
+  document.querySelectorAll(".option").forEach(b=>b.disabled=true);
+  if(correct)btn.classList.add("correct"); else btn.classList.add("wrong");
+  showFeedback(q,correct,seconds);
+  document.getElementById("readBadge").textContent=`⏱️ ${seconds.toFixed(1)} s`;
+  document.getElementById("next").disabled=false;
+}
+function showFeedback(q,correct,seconds){
+  const fb=document.getElementById("fb");
+  fb.className="feedback show "+(correct?"ok":"bad");
+  if(correct){
+    fb.innerHTML=`✅ <strong>Correcto.</strong> ${fmt(q.explanation||"Continúa con atención.")}`;
+  }else{
+    fb.innerHTML=`❌ <strong>Respuesta registrada como incorrecta.</strong> No se muestra la solución todavía para evitar responder por memoria. Revísala al terminar el bloque.`;
+  }
+}
+function blockRoundStats(){
+  const qs=blockQuestions(block);
+  const vals=qs.map(q=>roundAnswers[q.id]).filter(Boolean);
+  const correct=vals.filter(x=>x.correct).length;
+  const rapid=vals.filter(x=>x.seconds<RAPID_SECONDS).length;
+  const avg=vals.length?vals.reduce((s,x)=>s+x.seconds,0)/vals.length:0;
+  return {correct,wrong:10-correct,pct:Math.round(correct*10),rapid,avg};
+}
+function renderCheckpoint(){
+  const stats=blockRoundStats();
+  const qs=blockQuestions(block);
+  const wrong=qs.filter(q=>roundAnswers[q.id] && !roundAnswers[q.id].correct);
+  blockHistory[block].push({round:currentRound,...stats});
+  const passed=stats.pct>=PASS_SCORE;
+  const rapidWarning=stats.rapid>=4;
+  document.getElementById("app").innerHTML=`<section class="card">
+    <div class="meta">
+      <span class="badge">🔐 Control del bloque ${block+1}</span>
+      <span class="badge diff">Intento ${currentRound}</span>
+    </div>
+    <h2>${passed?'✅ Bloque aprobado':'🔒 Bloque todavía no aprobado'}</h2>
+    <p class="objective">Para avanzar se requiere al menos ${PASS_SCORE}% y una breve explicación escrita del aprendizaje.</p>
+
+    <div class="report-grid" style="margin-top:16px">
+      <div class="metric"><strong>${stats.correct}/10</strong>correctas</div>
+      <div class="metric"><strong>${stats.wrong}</strong>incorrectas</div>
+      <div class="metric"><strong>${stats.pct}%</strong>dominio</div>
+      <div class="metric"><strong>${stats.avg.toFixed(1)} s</strong>promedio</div>
+    </div>
+
+    ${rapidWarning?`<div class="warn">⚠️ <strong>Ritmo sospechosamente rápido:</strong> ${stats.rapid} respuestas se registraron en menos de ${RAPID_SECONDS} segundos. Esto queda marcado para el profesor; no prueba por sí solo que el alumno esté adivinando.</div>`:`<div class="okbox">✅ El ritmo de respuesta no muestra una cantidad alta de selecciones extremadamente rápidas.</div>`}
+
+    <div class="reflection">
+      <h3>✍️ Comprobación de aprendizaje</h3>
+      <p>Escribe con tus propias palabras qué aprendiste en este bloque y da un ejemplo.</p>
+      <textarea id="reflection" maxlength="500" placeholder="Aprendí que... Un ejemplo es...">${escapeHtml(reflections[block]||"")}</textarea>
+      <p class="objective" id="reflectionMsg">Mínimo ${MIN_REFLECTION_WORDS} palabras y ${MIN_REFLECTION_CHARS} caracteres.</p>
+    </div>
+
+    <h3>Revisión de las preguntas incorrectas</h3>
+    <div class="review-list">
+      ${wrong.length?wrong.map(q=>`<div class="review-item"><strong>${fmt(q.prompt)}</strong><br><span>Respuesta correcta: ${fmt(q.answer)}</span>${q.explanation?`<br><span class="objective">${fmt(q.explanation)}</span>`:""}</div>`).join(""):`<div class="review-item">🎉 No hubo errores en este bloque.</div>`}
+    </div>
+
+    ${passed?`<div class="guard">🔓 Alcanzaste el dominio mínimo. Completa la explicación para desbloquear el siguiente bloque.</div>`:
+               `<div class="warn">📘 Debes estudiar la revisión anterior y repetir las 10 preguntas del bloque. No puedes pasar al siguiente bloque todavía.</div>`}
+
+    <div class="controls">
+      ${passed?`<button class="btn green" id="continueBtn" disabled>${block===9?'Ver reporte final':'Desbloquear bloque '+(block+2)+' →'}</button>`:
+                 `<button class="btn primary" id="retryBtn">🔄 Repetir este bloque</button>`}
+    </div>
+  </section>`;
+
+  const ta=document.getElementById("reflection");
+  const cont=document.getElementById("continueBtn");
+  function reflectionValid(){
+    const v=ta.value.trim();
+    const words=v.split(/\s+/).filter(Boolean).length;
+    const ok=v.length>=MIN_REFLECTION_CHARS && words>=MIN_REFLECTION_WORDS;
+    document.getElementById("reflectionMsg").textContent=ok?"✅ Evidencia escrita suficiente.":`Mínimo ${MIN_REFLECTION_WORDS} palabras y ${MIN_REFLECTION_CHARS} caracteres. Llevas ${words} palabras y ${v.length} caracteres.`;
+    if(cont)cont.disabled=!ok;
+    return ok;
+  }
+  ta.addEventListener("input",reflectionValid);
+  reflectionValid();
+
+  if(cont)cont.addEventListener("click",()=>{
+    if(!reflectionValid())return;
+    reflections[block]=ta.value.trim();
+    for(const q of qs) finalAnswers[q.id]=roundAnswers[q.id];
+    if(block===9){renderFinalReport();return;}
+    block++;
+    indexInBlock=0;
+    currentRound=1;
+    roundAnswers={};
+    window.scrollTo({top:0,behavior:"smooth"});
+    renderQuestion();
+  });
+  const retry=document.getElementById("retryBtn");
+  if(retry)retry.addEventListener("click",()=>{
+    reflections[block]=ta.value.trim();
+    currentRound++;
+    indexInBlock=0;
+    roundAnswers={};
+    window.scrollTo({top:0,behavior:"smooth"});
+    renderQuestion();
+  });
+}
+function renderFinalReport(){
+  const vals=Object.values(finalAnswers);
+  const correct=vals.filter(x=>x.correct).length;
+  const wrong=vals.length-correct;
+  const pct=Math.round(correct/100*100);
+  const rapid=vals.filter(x=>x.seconds<RAPID_SECONDS).length;
+  const avg=vals.length?vals.reduce((s,x)=>s+x.seconds,0)/vals.length:0;
+  const skills=OBJECTIVES.map((obj,i)=>{
+    const qs=blockQuestions(i);
+    const a=qs.map(q=>finalAnswers[q.id]).filter(Boolean);
+    const c=a.filter(x=>x.correct).length;
+    const p=Math.round(c/10*100);
+    const attempts=blockHistory[i].length;
+    const r=a.filter(x=>x.seconds<RAPID_SECONDS).length;
+    return `<div class="skill">
+      <div class="skilltop"><span><strong>${i+1}.</strong> ${obj}</span><strong>${p}%</strong></div>
+      <div class="skillbar"><span style="width:${p}%"></span></div>
+      <p class="objective">Intentos del bloque: ${attempts} · respuestas rápidas: ${r} · explicación: ${escapeHtml(reflections[i]||"Sin registro")}</p>
+    </div>`;
+  }).join("");
+
+  document.getElementById("qNum").textContent="100/100";
+  document.getElementById("correctTop").textContent=correct;
+  document.getElementById("wrongTop").textContent=wrong;
+  document.getElementById("objTop").textContent="10/10";
+  document.getElementById("bar").style.width="100%";
+
+  document.getElementById("app").innerHTML=`<section class="card">
+    <h2>📊 Reporte final de aprendizaje</h2>
+    <p class="objective">El alumno solo pudo avanzar después de aprobar cada bloque con al menos ${PASS_SCORE}% y escribir una explicación de lo aprendido.</p>
+    <div class="report-grid" style="margin-top:16px">
+      <div class="metric"><strong>${correct}</strong>correctas finales</div>
+      <div class="metric"><strong>${wrong}</strong>incorrectas finales</div>
+      <div class="metric"><strong>${pct}%</strong>dominio global</div>
+      <div class="metric"><strong>${avg.toFixed(1)} s</strong>promedio</div>
+    </div>
+    <div class="${rapid>=15?'warn':'guard'}">${rapid>=15?'⚠️':'✅'} <strong>Filtro de ritmo:</strong> ${rapid} respuestas finales fueron menores a ${RAPID_SECONDS} segundos. ${rapid>=15?'Se recomienda al profesor hacer una comprobación oral breve.':'No hay una cantidad alta de respuestas extremadamente rápidas.'}</div>
+    <h3>Resultados por objetivo</h3>
+    ${skills}
+    <div class="notice">🎓 Este reporte conserva el desempeño final de cada bloque y el número de intentos necesarios para aprobarlo.</div>
+    <div class="controls"><button class="btn soft" id="restart">↩️ Reiniciar los 100 ejercicios</button></div>
+  </section>`;
+  document.getElementById("restart").addEventListener("click",()=>location.reload());
+  if(pct>=80)confetti(pct===100?60:30);
+}
+function confetti(n){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  const colors=["#2563EB","#DC2626","#16A34A","#F59E0B","#7C3AED"];
+  for(let i=0;i<n;i++){const c=document.createElement("i");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=colors[i%colors.length];c.style.setProperty("--drift",((Math.random()-.5)*180)+"px");c.style.animationDelay=Math.random()*.3+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),2200)}
+}
+document.addEventListener("pointerdown",e=>{
+  const el=e.target.closest(".option,.btn");if(!el)return;
+  const r=el.getBoundingClientRect(),s=document.createElement("span");s.className="ripple";
+  const z=Math.max(r.width,r.height)*.35;s.style.width=s.style.height=z+"px";s.style.left=(e.clientX-r.left)+"px";s.style.top=(e.clientY-r.top)+"px";el.appendChild(s);setTimeout(()=>s.remove(),600);
+});
+renderQuestion();
+</script>
+</body>
+</html>
