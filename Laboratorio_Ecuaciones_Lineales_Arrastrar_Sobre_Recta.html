@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratorio guiado de ecuaciones lineales</title>
+<style>
+:root{
+  --bg:#f5f7fb; --panel:#fff; --ink:#172033; --muted:#667085; --line:#d0d5dd;
+  --blue:#2563eb; --purple:#7c3aed; --green:#15803d; --amber:#b45309; --red:#b42318;
+  --soft:#eef4ff; --shadow:0 16px 42px rgba(16,24,40,.08); --radius:22px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 8%, rgba(37,99,235,.09), transparent 26%),
+    radial-gradient(circle at 88% 0%, rgba(124,58,237,.08), transparent 25%),
+    var(--bg);
+  color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input{font:inherit}
+.app{width:min(1500px,96vw);margin:0 auto;padding:22px 0 42px}
+header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:18px}
+h1{margin:0;font-size:clamp(1.7rem,3vw,2.55rem);letter-spacing:-.04em}
+.subtitle{margin:8px 0 0;color:var(--muted);line-height:1.55;max-width:850px}
+.progress-card{
+  min-width:240px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);
+  border:1px solid rgba(208,213,221,.8);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)
+}
+.progress-top{display:flex;justify-content:space-between;gap:12px;font-weight:800;margin-bottom:9px}
+.progress-track{height:10px;border-radius:999px;background:#e9edf5;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));transition:.25s}
+.workspace{display:grid;grid-template-columns:minmax(320px,.72fr) minmax(680px,1.75fr);gap:20px}
+.panel{background:var(--panel);border:1px solid #e4e7ec;border-radius:var(--radius);box-shadow:var(--shadow)}
+.left{padding:22px;display:flex;flex-direction:column;min-height:760px}
+.right{padding:16px;min-height:800px;display:flex;flex-direction:column}
+.topline{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-weight:800;font-size:.9rem}
+.badge{padding:7px 10px;border-radius:999px;background:var(--soft);color:#1d4ed8;font-size:.78rem}
+.eqbox{
+  margin:22px 0 14px;padding:22px 16px;border:1px solid #dfe6f3;border-radius:20px;
+  background:linear-gradient(145deg,#f8fbff,#f5f3ff);text-align:center
+}
+.equation{font-family:Cambria,"Times New Roman",serif;font-size:clamp(2.4rem,4.6vw,4.4rem);font-weight:700;line-height:1.1}
+.intro{margin:0 0 16px;color:var(--muted);line-height:1.5}
+.stage{
+  border:1px solid #e4e7ec;border-radius:18px;padding:16px;margin-top:14px;background:#fcfcfd;
+  opacity:0;transform:translateY(10px);pointer-events:none;max-height:0;overflow:hidden;
+  transition:opacity .28s ease,transform .28s ease,max-height .35s ease,padding .35s ease,margin .35s ease
+}
+.stage.show{opacity:1;transform:none;pointer-events:auto;max-height:600px}
+.stage h3{margin:0 0 10px;font-size:1rem}
+.stage p{margin:0;color:var(--muted);line-height:1.5}
+.choice-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+button{
+  border:0;border-radius:13px;padding:10px 14px;font-weight:800;cursor:pointer;
+  transition:transform .15s ease,opacity .15s ease,box-shadow .15s ease
+}
+button:hover{transform:translateY(-1px)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.primary{background:var(--blue);color:#fff;box-shadow:0 8px 18px rgba(37,99,235,.2)}
+.secondary{background:#f2f4f7;color:#344054}
+.success{background:var(--green);color:#fff}
+.choice.active{outline:3px solid rgba(37,99,235,.18);background:#dbeafe;color:#1d4ed8}
+.slider-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.xpill{background:#101828;color:#fff;padding:8px 12px;border-radius:999px;font-weight:800;min-width:82px;text-align:center}
+input[type="range"]{width:100%;accent-color:var(--blue);cursor:ew-resize}
+.range-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:.78rem;margin-top:5px}
+.metric{
+  margin-top:12px;padding:11px 13px;border-radius:13px;background:#f9fafb;border:1px solid #eaecf0;color:#344054
+}
+.feedback{margin-top:10px;padding:12px 14px;border-radius:14px;font-weight:750;line-height:1.45;background:#f8fafc;border:1px solid #e4e7ec}
+.feedback.good{background:#ecfdf3;border-color:#abefc6;color:var(--green)}
+.feedback.near{background:#fffaeb;border-color:#fedf89;color:var(--amber)}
+.feedback.far{background:#fff6f6;border-color:#fecdca;color:var(--red)}
+.values{display:grid;grid-template-columns:1fr 64px 1fr;gap:9px;margin-top:12px}
+.vcard{border:1px solid #e4e7ec;border-radius:14px;padding:12px;background:#fff}
+.vcard small{display:block;color:var(--muted);margin-bottom:5px}
+.vcard strong{font-family:Cambria,"Times New Roman",serif;font-size:1.35rem}
+.vcard .num{display:block;margin-top:5px;font-size:1.2rem;font-weight:850}
+.sign{display:grid;place-items:center;border-radius:14px;background:#f2f4f7;font-size:1.7rem;font-weight:900}
+.answer-row{display:flex;gap:8px;margin-top:12px}
+.answer-row input{
+  flex:1;border:1px solid #d0d5dd;border-radius:12px;padding:11px 12px;outline:none
+}
+.answer-row input:focus{border-color:#84adff;box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.steps{
+  margin-top:10px;display:grid;gap:6px;font-family:Cambria,"Times New Roman",serif;font-size:1.15rem
+}
+.stage-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.nav{margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;gap:12px}
+.graph-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:6px 6px 14px}
+.graph-head h2{margin:0;font-size:1.28rem}
+.graph-head p{margin:5px 0 0;color:var(--muted);font-size:.9rem}
+.legend{display:flex;flex-wrap:wrap;gap:8px 12px;color:#475467;font-size:.82rem}
+.legend span{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}.a{background:#2563eb}.b{background:#7c3aed}.g{background:#111827}
+.canvas-wrap{position:relative;flex:1;min-height:640px;border:1px solid #d0d5dd;border-radius:20px;overflow:hidden;background:#fff}
+canvas{display:block;width:100%;height:100%}
+.lock{
+  position:absolute;inset:0;display:grid;place-items:center;background:rgba(255,255,255,.88);
+  backdrop-filter:blur(4px);z-index:3;text-align:center;padding:30px;transition:.25s
+}
+.lock.hide{opacity:0;pointer-events:none}
+.lock-card{max-width:430px}
+.lock-icon{font-size:2.2rem;margin-bottom:8px}
+.lock h3{margin:0 0 8px}
+.lock p{margin:0;color:var(--muted);line-height:1.5}
+.graph-note{margin:12px 3px 0;color:#475467;font-size:.95rem;line-height:1.5;font-weight:600}
+.complete{
+  display:none;margin-top:14px;padding:14px;border-radius:16px;background:#ecfdf3;border:1px solid #abefc6;color:var(--green);font-weight:800
+}
+.complete.show{display:block}
+@media(max-width:980px){
+  header{flex-direction:column}.progress-card{width:100%}.workspace{grid-template-columns:1fr}.left,.right{min-height:auto}.canvas-wrap{min-height:560px}
+}
+@media(max-width:620px){
+  .app{width:96vw;padding-top:10px}.left,.right{padding:15px;border-radius:18px}.values{grid-template-columns:1fr}.sign{min-height:48px}
+  .canvas-wrap{min-height:500px}.graph-head{flex-direction:column}.equation{font-size:2.6rem}.answer-row{flex-direction:column}.stage-actions button{flex:1 1 auto}
+}
+
+/* Plano cartesiano inspirado en el laboratorio de Pendiente y Recta:
+   cuadrado, ejes centrados, numeración sobre los ejes y controles debajo. */
+.canvas-wrap{
+  flex:none !important;
+  width:min(100%,720px);
+  aspect-ratio:1 / 1;
+  min-height:0 !important;
+  height:auto !important;
+  align-self:center;
+  border:2px solid #C8D7E6 !important;
+  border-radius:18px !important;
+  box-shadow:inset 0 0 0 1px rgba(30,58,138,.035),0 8px 22px rgba(30,58,138,.06);
+}
+.right{align-items:stretch}
+.plane-controls{
+  width:min(100%,720px);
+  align-self:center;
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  background:#f8fafc;
+}
+.readouts{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+}
+.readout-chip{
+  min-width:0;
+  padding:10px 8px;
+  text-align:center;
+  border:1px solid #dce5ef;
+  border-radius:12px;
+  background:#fff;
+}
+.readout-chip span{display:block;color:#64748b;font-size:.72rem}
+.readout-chip b{
+  display:block;
+  margin-top:3px;
+  color:#1e3a8a;
+  font-family:Cambria,"Times New Roman",serif;
+  font-size:1.08rem;
+}
+.readout-chip strong{display:block;margin-top:2px;font-size:1.18rem;color:#334155}
+.readout-equality b{font-family:inherit;font-size:1.45rem}
+.plane-metric{margin-top:8px;text-align:center}
+@media(max-width:620px){
+  .readouts{grid-template-columns:1fr 1fr 1fr}
+  .readout-chip{padding:8px 4px}
+  .readout-chip b{font-size:.92rem}
+  .readout-chip strong{font-size:1rem}
+  .plane-controls{padding:12px}
+}
+
+
+/* Corrección de renderizado del canvas */
+.canvas-wrap canvas{
+  position:absolute;
+  inset:0;
+  width:100% !important;
+  height:100% !important;
+  display:block;
+}
+.canvas-wrap{
+  position:relative !important;
+}
+
+
+.drag-instruction{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:10px;
+}
+.drag-instruction div{min-width:0}
+.drag-instruction strong{display:block;color:#1E3A8A;font-size:1rem}
+.drag-instruction span:not(.xpill){
+  display:block;
+  margin-top:3px;
+  color:#64748B;
+  font-size:.82rem;
+  line-height:1.35;
+}
+.canvas-wrap canvas{
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+}
+.canvas-wrap canvas.dragging{cursor:grabbing}
+@media(max-width:620px){
+  .drag-instruction{align-items:flex-start}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <h1>Laboratorio guiado de ecuaciones lineales</h1>
+    <p class="subtitle">Predice, explora, encuentra, explica y comprueba. Cada etapa aparece cuando completas la anterior.</p>
+  </div>
+  <div class="progress-card">
+    <div class="progress-top"><span>Progreso</span><span id="progressText">0 / 10</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+</header>
+
+<main class="workspace">
+<section class="panel left">
+  <div class="topline">
+    <span id="exerciseLabel">EJERCICIO 1 DE 10</span>
+    <span class="badge" id="levelLabel">Descubrimiento</span>
+  </div>
+
+  <div class="eqbox"><div class="equation" id="equation">x + 3 = 8</div></div>
+  <p class="intro">Tu misión es descubrir qué valor de <strong>x</strong> hace que ambos lados sean exactamente iguales.</p>
+
+  <div class="stage show" id="stage1">
+    <h3>1. Predice</h3>
+    <p id="predictionQuestion">Antes de mover nada: ¿crees que la solución es positiva, negativa o cero?</p>
+    <div class="choice-row">
+      <button class="secondary choice" data-pred="negative">Negativa</button>
+      <button class="secondary choice" data-pred="zero">Cero</button>
+      <button class="secondary choice" data-pred="positive">Positiva</button>
+    </div>
+    <div class="stage-actions">
+      <button class="primary" id="confirmPrediction" disabled>Confirmar predicción</button>
+    </div>
+  </div>
+
+  <div class="stage" id="stage2">
+    <h3>2. Explora en el plano</h3>
+    <p>Arrastra el <strong>punto azul directamente sobre la recta</strong>. Observa cómo cambia el valor de <strong>x</strong> y busca el punto donde ambas rectas se encuentran.</p>
+    <div class="feedback" id="feedback">Empieza a explorar en el plano.</div>
+    <div class="stage-actions">
+      <button class="secondary" id="hintBtn">Pista</button>
+      <button class="secondary" id="resetBtn">Reiniciar exploración</button>
+    </div>
+  </div>
+
+  <div class="stage" id="stage3">
+    <h3>3. Escribe la solución</h3>
+    <p>Ya encontraste el punto de igualdad. Escribe ahora el valor de <strong>x</strong> sin copiarlo del procedimiento.</p>
+    <div class="answer-row">
+      <input id="answerInput" type="number" step="any" placeholder="Escribe x = ...">
+      <button class="primary" id="checkAnswer">Comprobar</button>
+    </div>
+    <div class="feedback" id="answerFeedback">Escribe tu respuesta.</div>
+  </div>
+
+  <div class="stage" id="stage4">
+    <h3>4. Explica</h3>
+    <p>¿Por qué ese valor sí es solución?</p>
+    <div class="choice-row">
+      <button class="secondary explain" data-exp="same">Porque ambos lados valen lo mismo</button>
+      <button class="secondary explain" data-exp="zero">Porque x siempre debe valer cero</button>
+      <button class="secondary explain" data-exp="bigger">Porque el lado izquierdo debe ser mayor</button>
+    </div>
+    <div class="feedback" id="explainFeedback">Selecciona una explicación.</div>
+  </div>
+
+  <div class="stage" id="stage5">
+    <h3>5. Comprueba algebraicamente</h3>
+    <p>Ahora sí: observa cómo el procedimiento algebraico confirma lo que descubriste gráficamente.</p>
+    <div class="steps" id="steps"></div>
+    <div class="complete" id="completeBox">✓ Ejercicio completado. Ya conectaste la gráfica con el procedimiento algebraico.</div>
+  </div>
+
+  <div class="nav">
+    <button class="secondary" id="prevBtn">← Anterior</button>
+    <button class="primary" id="nextBtn" disabled>Siguiente →</button>
+  </div>
+</section>
+
+<section class="panel right">
+  <div class="graph-head">
+    <div>
+      <h2>Plano cartesiano interactivo</h2>
+      <p>El gráfico se desbloquea después de tu predicción.</p>
+    </div>
+    <div class="legend">
+      <span><i class="dot a"></i> lado izquierdo</span>
+      <span><i class="dot b"></i> lado derecho</span>
+      <span><i class="dot g"></i> x seleccionado</span>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="graph"></canvas>
+    <div class="lock" id="graphLock">
+      <div class="lock-card">
+        <div class="lock-icon">🔒</div>
+        <h3>Primero haz una predicción</h3>
+        <p>Antes de experimentar, piensa dónde podría estar la solución. Después se desbloqueará el plano.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="plane-controls" id="planeControls">
+    <div class="drag-instruction">
+      <div>
+        <strong>Arrastra el punto azul sobre la recta</strong>
+        <span>Mueve el punto hasta encontrar dónde ambas rectas tienen el mismo valor.</span>
+      </div>
+      <span class="xpill" id="xValue">x = 0</span>
+    </div>
+
+    <input id="xSlider" type="range" min="-18" max="18" step="0.1" value="0"
+           aria-label="Valor de x" style="display:none">
+
+    <div class="readouts">
+      <div class="readout-chip">
+        <span>Lado izquierdo</span>
+        <b id="leftExpr">x + 3</b>
+        <strong id="leftValue">3</strong>
+      </div>
+
+      <div class="readout-chip readout-equality">
+        <span>Comparación</span>
+        <b id="compareSign">≠</b>
+        <strong>igualdad</strong>
+      </div>
+
+      <div class="readout-chip">
+        <span>Lado derecho</span>
+        <b id="rightExpr">8</b>
+        <strong id="rightValue">8</strong>
+      </div>
+    </div>
+
+    <div class="metric plane-metric">
+      Movimientos: <strong id="moveCount">0</strong>
+      · Distancia entre ambos lados:
+      <strong id="distanceValue">5</strong>
+    </div>
+  </div>
+
+  <p class="graph-note">Cuando ambos puntos se superponen sobre la misma vertical, los dos miembros de la ecuación tienen el mismo valor.</p>
+</section>
+</main>
+</div>
+
+<script>
+const exercises = [
+ {eq:"x + 3 = 8", left:"x + 3", right:"8", L:x=>x+3, R:x=>8, solution:5, sign:"positive",
+  hint:"Piensa cuánto le falta a 3 para llegar a 8.", steps:["x + 3 = 8","x + 3 - 3 = 8 - 3","x = 5"]},
+ {eq:"x - 5 = 7", left:"x - 5", right:"7", L:x=>x-5, R:x=>7, solution:12, sign:"positive",
+  hint:"¿Qué número queda en 7 después de restarle 5?", steps:["x - 5 = 7","x - 5 + 5 = 7 + 5","x = 12"]},
+ {eq:"x + 9 = 15", left:"x + 9", right:"15", L:x=>x+9, R:x=>15, solution:6, sign:"positive",
+  hint:"Piensa cuánto le falta a 9 para llegar a 15.", steps:["x + 9 = 15","x + 9 - 9 = 15 - 9","x = 6"]},
+ {eq:"x - 12 = 4", left:"x - 12", right:"4", L:x=>x-12, R:x=>4, solution:16, sign:"positive",
+  hint:"Suma 12 mentalmente al lado derecho.", steps:["x - 12 = 4","x - 12 + 12 = 4 + 12","x = 16"]},
+ {eq:"2x = 18", left:"2x", right:"18", L:x=>2*x, R:x=>18, solution:9, sign:"positive",
+  hint:"Busca la mitad de 18.", steps:["2x = 18","2x / 2 = 18 / 2","x = 9"]},
+ {eq:"5x = 35", left:"5x", right:"35", L:x=>5*x, R:x=>35, solution:7, sign:"positive",
+  hint:"¿Qué número multiplicado por 5 produce 35?", steps:["5x = 35","5x / 5 = 35 / 5","x = 7"]},
+ {eq:"-3x = 21", left:"-3x", right:"21", L:x=>-3*x, R:x=>21, solution:-7, sign:"negative",
+  hint:"La solución está del lado negativo del eje x.", steps:["-3x = 21","-3x / (-3) = 21 / (-3)","x = -7"]},
+ {eq:"-4x = -28", left:"-4x", right:"-28", L:x=>-4*x, R:x=>-28, solution:7, sign:"positive",
+  hint:"Negativo entre negativo da un valor positivo.", steps:["-4x = -28","-4x / (-4) = -28 / (-4)","x = 7"]},
+ {eq:"3x + 2 = 17", left:"3x + 2", right:"17", L:x=>3*x+2, R:x=>17, solution:5, sign:"positive",
+  hint:"Primero piensa qué valor debe tener 3x.", steps:["3x + 2 = 17","3x + 2 - 2 = 17 - 2","3x = 15","3x / 3 = 15 / 3","x = 5"]},
+ {eq:"4x - 7 = 13", left:"4x - 7", right:"13", L:x=>4*x-7, R:x=>13, solution:5, sign:"positive",
+  hint:"Haz desaparecer primero el -7.", steps:["4x - 7 = 13","4x - 7 + 7 = 13 + 7","4x = 20","4x / 4 = 20 / 4","x = 5"]}
+];
+
+let index = Number(localStorage.getItem("guidedEqIndex") || 0);
+if(index<0 || index>=exercises.length) index=0;
+let completed = new Set(JSON.parse(localStorage.getItem("guidedEqCompleted") || "[]"));
+let prediction = null;
+let moveCount = 0;
+let lastSliderValue = null;
+let found = false;
+
+const $ = id => document.getElementById(id);
+const els = {
+ equation:$("equation"), exerciseLabel:$("exerciseLabel"), levelLabel:$("levelLabel"),
+ leftExpr:$("leftExpr"), rightExpr:$("rightExpr"), leftValue:$("leftValue"), rightValue:$("rightValue"),
+ compareSign:$("compareSign"), slider:$("xSlider"), xValue:$("xValue"), moveCount:$("moveCount"),
+ distanceValue:$("distanceValue"), feedback:$("feedback"), hintBtn:$("hintBtn"), resetBtn:$("resetBtn"),
+ confirmPrediction:$("confirmPrediction"), graphLock:$("graphLock"), answerInput:$("answerInput"),
+ checkAnswer:$("checkAnswer"), answerFeedback:$("answerFeedback"), explainFeedback:$("explainFeedback"),
+ steps:$("steps"), completeBox:$("completeBox"), nextBtn:$("nextBtn"), prevBtn:$("prevBtn"),
+ progressText:$("progressText"), progressFill:$("progressFill"), canvas:$("graph")
+};
+const stages=[null,$("stage1"),$("stage2"),$("stage3"),$("stage4"),$("stage5")];
+const ctx=els.canvas.getContext("2d");
+
+function round(n){return Math.abs(n)<1e-10?0:(Number.isInteger(n)?n:Number(n.toFixed(2)))}
+function showStage(n){stages[n].classList.add("show")}
+function hideStagesFrom(n){for(let i=n;i<=5;i++)stages[i].classList.remove("show")}
+
+function loadExercise(){
+ const ex=exercises[index];
+ prediction=null; moveCount=0; lastSliderValue=null; found=false;
+ document.querySelectorAll(".choice,.explain").forEach(b=>b.classList.remove("active"));
+ els.confirmPrediction.disabled=true;
+ els.graphLock.classList.remove("hide");
+ els.answerInput.value="";
+ els.answerFeedback.className="feedback";
+ els.answerFeedback.textContent="Escribe tu respuesta.";
+ els.explainFeedback.className="feedback";
+ els.explainFeedback.textContent="Selecciona una explicación.";
+ els.completeBox.classList.remove("show");
+ els.nextBtn.disabled=true;
+ els.equation.textContent=ex.eq;
+ els.leftExpr.textContent=ex.left;
+ els.rightExpr.textContent=ex.right;
+ els.exerciseLabel.textContent=`EJERCICIO ${index+1} DE ${exercises.length}`;
+ els.levelLabel.textContent=index<4?"Suma y resta":index<8?"Multiplicación y signo":"Dos operaciones";
+ els.slider.value=0;
+ hideStagesFrom(2); showStage(1);
+ els.prevBtn.disabled=index===0;
+ els.nextBtn.textContent=index===exercises.length-1?"Volver al inicio":"Siguiente →";
+ localStorage.setItem("guidedEqIndex",index);
+ updateValues(false); updateProgress(); drawGraph();
+}
+
+function updateProgress(){
+ els.progressText.textContent=`${completed.size} / ${exercises.length}`;
+ els.progressFill.style.width=`${completed.size/exercises.length*100}%`;
+}
+
+document.querySelectorAll(".choice").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+   prediction=btn.dataset.pred;
+   document.querySelectorAll(".choice").forEach(b=>b.classList.remove("active"));
+   btn.classList.add("active");
+   els.confirmPrediction.disabled=false;
+ });
+});
+
+els.confirmPrediction.addEventListener("click",()=>{
+ showStage(2);
+ els.graphLock.classList.add("hide");
+ els.feedback.className="feedback";
+ const ex=exercises[index];
+ els.feedback.textContent = prediction===ex.sign
+   ? "Buena predicción. Ahora compruébala explorando."
+   : "Tu predicción queda registrada. Ahora usa la gráfica para comprobar qué ocurre.";
+ drawGraph();
+ stages[2].scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+
+if(!els.slider){ throw new Error("No se encontró el control xSlider."); }
+els.slider.addEventListener("input",()=>{
+ const v=Number(els.slider.value);
+ if(lastSliderValue===null || v!==lastSliderValue){moveCount++;lastSliderValue=v}
+ updateValues(true);
+});
+
+function updateValues(counting){
+ const ex=exercises[index], x=Number(els.slider.value), l=round(ex.L(x)), r=round(ex.R(x)), d=Math.abs(l-r);
+ els.xValue.textContent=`x = ${x}`;
+ els.leftValue.textContent=l; els.rightValue.textContent=r;
+ els.compareSign.textContent=d<1e-9?"=":(l<r?"<":">");
+ els.distanceValue.textContent=round(d); els.moveCount.textContent=moveCount;
+ if(found) return drawGraph();
+
+ els.feedback.className="feedback";
+ if(d<0.06){
+   found=true;
+   els.feedback.classList.add("good");
+   els.slider.value=ex.solution; const exact=round(ex.L(ex.solution)); els.xValue.textContent=`x = ${ex.solution}`; els.leftValue.textContent=exact; els.rightValue.textContent=exact; els.compareSign.textContent="="; els.distanceValue.textContent="0"; els.feedback.innerHTML=`✓ ¡Encontraste la igualdad! Ambos lados valen <strong>${exact}</strong>.`; drawGraph();
+   showStage(3);
+   stages[3].scrollIntoView({behavior:"smooth",block:"nearest"});
+ } else if(d<=3){
+   els.feedback.classList.add("near");
+   els.feedback.textContent=`Te estás acercando. La diferencia es ${round(d)}.`;
+ } else {
+   els.feedback.classList.add("far");
+   els.feedback.textContent=counting?"Sigue explorando: intenta reducir la distancia entre ambos lados.":"Empieza a explorar.";
+ }
+ drawGraph();
+}
+
+els.hintBtn.addEventListener("click",()=>{
+ els.feedback.className="feedback near";
+ els.feedback.textContent=exercises[index].hint;
+});
+
+els.resetBtn.addEventListener("click",()=>{
+ moveCount=0;lastSliderValue=null;found=false;els.slider.value=0;hideStagesFrom(3);els.nextBtn.disabled=true;updateValues(false);
+});
+
+els.checkAnswer.addEventListener("click",()=>{
+ const val=Number(els.answerInput.value), sol=exercises[index].solution;
+ if(els.answerInput.value!=="" && Math.abs(val-sol)<1e-9){
+   els.answerFeedback.className="feedback good";
+   els.answerFeedback.textContent="✓ Correcto. Ese valor hace verdadera la igualdad.";
+   showStage(4); stages[4].scrollIntoView({behavior:"smooth",block:"nearest"});
+ } else {
+   els.answerFeedback.className="feedback far";
+   els.answerFeedback.textContent="Todavía no. Observa el valor de x donde los dos puntos se superpusieron.";
+ }
+});
+
+document.querySelectorAll(".explain").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+   document.querySelectorAll(".explain").forEach(b=>b.classList.remove("active"));
+   btn.classList.add("active");
+   if(btn.dataset.exp==="same"){
+     els.explainFeedback.className="feedback good";
+     els.explainFeedback.textContent="✓ Exacto. Una solución hace que ambos miembros de la ecuación tengan el mismo valor.";
+     finishExercise();
+   }else{
+     els.explainFeedback.className="feedback far";
+     els.explainFeedback.textContent="Piensa otra vez: ¿qué significa que una igualdad sea verdadera?";
+   }
+ });
+});
+
+function finishExercise(){
+ const ex=exercises[index];
+ els.steps.innerHTML=ex.steps.map((s,i)=>`<div>${i+1}. ${s}</div>`).join("");
+ showStage(5);
+ els.completeBox.classList.add("show");
+ completed.add(index);
+ localStorage.setItem("guidedEqCompleted",JSON.stringify([...completed]));
+ updateProgress();
+ els.nextBtn.disabled=false;
+ stages[5].scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+els.prevBtn.addEventListener("click",()=>{if(index>0){index--;loadExercise()}});
+els.nextBtn.addEventListener("click",()=>{index=(index+1)%exercises.length;loadExercise()});
+
+function resizeCanvas(){
+ const wrap=els.canvas.parentElement;
+ const rect=wrap.getBoundingClientRect();
+ const dpr=window.devicePixelRatio||1;
+ const size=Math.max(420,Math.floor(Math.min(rect.width,rect.height || rect.width)*dpr));
+ if(els.canvas.width!==size || els.canvas.height!==size){
+   els.canvas.width=size;
+   els.canvas.height=size;
+ }
+}
+let graphGeom=null;
+let draggingPoint=false;
+
+function getGraphRanges(ex){
+  const xAbs=Math.max(6,Math.ceil(Math.abs(ex.solution)+2));
+  const xmin=-xAbs, xmax=xAbs;
+
+  let ys=[];
+  for(let x=xmin;x<=xmax;x+=0.25){
+    ys.push(ex.L(x),ex.R(x));
+  }
+  const solY=ex.L(ex.solution);
+  ys.push(solY);
+  let yAbs=Math.max(6,Math.ceil(Math.max(...ys.map(v=>Math.abs(v)))+2));
+  return {xmin,xmax,ymin:-yAbs,ymax:yAbs};
+}
+
+function drawGraph(){
+ resizeCanvas();
+ const ex=exercises[index], xSel=Number(els.slider.value), W=els.canvas.width,H=els.canvas.height;
+ const dpr=window.devicePixelRatio||1;
+ const margin=Math.round(58*dpr);
+ const {xmin,xmax,ymin,ymax}=getGraphRanges(ex);
+
+ const X=x=>margin+(x-xmin)*(W-2*margin)/(xmax-xmin);
+ const Y=y=>H-margin-(y-ymin)*(H-2*margin)/(ymax-ymin);
+ const invX=px=>xmin+(px-margin)*(xmax-xmin)/(W-2*margin);
+ graphGeom={X,Y,invX,xmin,xmax,ymin,ymax,margin,W,H};
+
+ ctx.clearRect(0,0,W,H);
+ ctx.fillStyle="#FFFFFF";
+ ctx.fillRect(0,0,W,H);
+
+ // Elegir pasos legibles.
+ const xSpan=xmax-xmin, ySpan=ymax-ymin;
+ const xStep=xSpan>30?5:xSpan>16?2:1;
+ const yStep=ySpan>80?10:ySpan>40?5:ySpan>20?2:1;
+
+ // Cuadrícula.
+ ctx.strokeStyle="#E2E8F0";
+ ctx.lineWidth=1*dpr;
+ for(let x=Math.ceil(xmin/xStep)*xStep;x<=xmax;x+=xStep){
+   ctx.beginPath();ctx.moveTo(X(x),Y(ymin));ctx.lineTo(X(x),Y(ymax));ctx.stroke();
+ }
+ for(let y=Math.ceil(ymin/yStep)*yStep;y<=ymax;y+=yStep){
+   ctx.beginPath();ctx.moveTo(X(xmin),Y(y));ctx.lineTo(X(xmax),Y(y));ctx.stroke();
+ }
+
+ // Ejes principales.
+ ctx.strokeStyle="#1E3A8A";
+ ctx.lineWidth=2.6*dpr;
+ ctx.beginPath();ctx.moveTo(X(xmin),Y(0));ctx.lineTo(X(xmax),Y(0));ctx.stroke();
+ ctx.beginPath();ctx.moveTo(X(0),Y(ymin));ctx.lineTo(X(0),Y(ymax));ctx.stroke();
+
+ // Números sobre los ejes.
+ ctx.fillStyle="#475569";
+ ctx.font=`${13*dpr}px system-ui`;
+ for(let x=Math.ceil(xmin/xStep)*xStep;x<=xmax;x+=xStep){
+   if(Math.abs(x)>1e-9){
+     ctx.fillText(String(round(x)),X(x)-5*dpr,Y(0)+18*dpr);
+   }
+ }
+ for(let y=Math.ceil(ymin/yStep)*yStep;y<=ymax;y+=yStep){
+   if(Math.abs(y)>1e-9){
+     ctx.fillText(String(round(y)),X(0)+8*dpr,Y(y)+4*dpr);
+   }
+ }
+ ctx.fillStyle="#1E3A8A";
+ ctx.font=`bold ${15*dpr}px system-ui`;
+ ctx.fillText("X",X(xmax)-12*dpr,Y(0)-10*dpr);
+ ctx.fillText("Y",X(0)+10*dpr,Y(ymax)+18*dpr);
+ ctx.font=`${12*dpr}px system-ui`;
+ ctx.fillText("0",X(0)+7*dpr,Y(0)+17*dpr);
+
+ function plot(fn,color){
+   ctx.save();
+   ctx.beginPath();
+   ctx.rect(X(xmin),Y(ymax),X(xmax)-X(xmin),Y(ymin)-Y(ymax));
+   ctx.clip();
+   ctx.strokeStyle=color;
+   ctx.lineWidth=4*dpr;
+   ctx.beginPath();
+   let first=true;
+   for(let x=xmin;x<=xmax;x+=(xmax-xmin)/500){
+     const px=X(x),py=Y(fn(x));
+     if(first){ctx.moveTo(px,py);first=false}else ctx.lineTo(px,py);
+   }
+   ctx.stroke();
+   ctx.restore();
+ }
+ plot(ex.L,"#2563EB");
+ plot(ex.R,"#7C3AED");
+
+ // Línea vertical de comparación.
+ const sx=X(xSel), l=ex.L(xSel), r=ex.R(xSel);
+ ctx.save();
+ ctx.setLineDash([7*dpr,6*dpr]);
+ ctx.strokeStyle="#EAB308";
+ ctx.lineWidth=2.3*dpr;
+ ctx.beginPath();
+ ctx.moveTo(sx,Y(Math.max(ymin,Math.min(ymax,l))));
+ ctx.lineTo(sx,Y(Math.max(ymin,Math.min(ymax,r))));
+ ctx.stroke();
+ ctx.restore();
+
+ function point(y,color,radius){
+   if(y<ymin || y>ymax) return;
+   ctx.fillStyle="#FFFFFF";
+   ctx.beginPath();ctx.arc(sx,Y(y),(radius+4)*dpr,0,Math.PI*2);ctx.fill();
+   ctx.strokeStyle=color;ctx.lineWidth=3*dpr;ctx.stroke();
+   ctx.fillStyle=color;
+   ctx.beginPath();ctx.arc(sx,Y(y),radius*dpr,0,Math.PI*2);ctx.fill();
+ }
+
+ // Punto morado de referencia y punto azul arrastrable.
+ point(r,"#7C3AED",7);
+ point(l,"#2563EB",9);
+
+ // Etiquetas de coordenadas.
+ ctx.font=`bold ${12*dpr}px system-ui`;
+ if(l>=ymin && l<=ymax){
+   ctx.fillStyle="#2563EB";
+   ctx.fillText(`(${round(xSel)}, ${round(l)})`,sx+14*dpr,Y(l)-10*dpr);
+ }
+ if(r>=ymin && r<=ymax && Math.abs(l-r)>1e-9){
+   ctx.fillStyle="#7C3AED";
+   ctx.fillText(`(${round(xSel)}, ${round(r)})`,sx+14*dpr,Y(r)+18*dpr);
+ }
+
+ // Solución.
+ if(Math.abs(l-r)<0.06){
+   ctx.fillStyle="#0F9F8F";
+   ctx.beginPath();ctx.arc(sx,Y(l),15*dpr,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle="#0F9F8F";
+   ctx.font=`bold ${14*dpr}px system-ui`;
+   ctx.fillText("SOLUCIÓN",sx+20*dpr,Y(l)-18*dpr);
+ }
+}
+
+function setXFromPointer(evt){
+  if(!graphGeom) return;
+  const rect=els.canvas.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  const px=(evt.clientX-rect.left)*dpr;
+  let x=graphGeom.invX(px);
+  x=Math.max(graphGeom.xmin,Math.min(graphGeom.xmax,x));
+  x=Math.round(x*10)/10;
+
+  const prev=Number(els.slider.value);
+  els.slider.value=x;
+  if(Math.abs(prev-x)>1e-9){
+    moveCount++;
+    lastSliderValue=x;
+  }
+  updateValues(true);
+}
+
+els.canvas.addEventListener("pointerdown",(evt)=>{
+  if(!els.graphLock.classList.contains("hide")) return;
+  if(!graphGeom) return;
+
+  const ex=exercises[index];
+  const rect=els.canvas.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  const px=(evt.clientX-rect.left)*dpr;
+  const py=(evt.clientY-rect.top)*dpr;
+  const x=graphGeom.invX(px);
+  const y=ex.L(x);
+  const lineY=graphGeom.Y(y);
+
+  // Permitir iniciar el arrastre tocando cerca de la recta azul.
+  if(Math.abs(py-lineY)<=32*dpr){
+    draggingPoint=true;
+    els.canvas.classList.add("dragging");
+    els.canvas.setPointerCapture(evt.pointerId);
+    setXFromPointer(evt);
+  }
+});
+
+els.canvas.addEventListener("pointermove",(evt)=>{
+  if(!draggingPoint) return;
+  setXFromPointer(evt);
+});
+
+function stopDrag(evt){
+  if(!draggingPoint) return;
+  draggingPoint=false;
+  els.canvas.classList.remove("dragging");
+  try{els.canvas.releasePointerCapture(evt.pointerId)}catch(e){}
+}
+els.canvas.addEventListener("pointerup",stopDrag);
+els.canvas.addEventListener("pointercancel",stopDrag);
+window.addEventListener("resize",drawGraph);
+loadExercise();
+</script>
+</body>
+</html>
