@@ -324,6 +324,70 @@ button{cursor:pointer}
   color:var(--muted);
   font-size:13px;
 }
+.author-footer{
+  margin-top:18px;
+  background:linear-gradient(135deg,var(--navy),#315D83 58%,var(--blue));
+  color:var(--white);
+  border-radius:24px;
+  padding:30px 18px;
+}
+.author-footer__inner{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:24px;
+  align-items:center;
+}
+.author-footer__eyebrow{
+  display:inline-block;
+  margin-bottom:7px;
+  font-size:.78rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--aqua);
+}
+.author-footer__name{
+  margin:0 0 9px;
+  font-size:clamp(1.2rem,2.4vw,1.55rem);
+  color:var(--white);
+}
+.author-footer__description{
+  margin:0;
+  max-width:760px;
+  color:rgba(255,255,255,.9);
+  line-height:1.58;
+  font-size:.94rem;
+}
+.author-footer__credit{
+  margin:13px 0 0;
+  color:rgba(255,255,255,.72);
+  font-size:.84rem;
+  font-style:italic;
+}
+.author-footer__actions{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:11px;
+}
+.author-footer__button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:11px 17px;
+  border-radius:14px;
+  background:var(--white);
+  color:var(--navy);
+  text-decoration:none;
+  font-weight:900;
+  border:1px solid rgba(255,255,255,.3);
+}
+.author-footer__copyright{
+  color:rgba(255,255,255,.7);
+  font-size:.8rem;
+  text-align:right;
+}
 .final{
   text-align:center;
   padding:22px;
@@ -356,6 +420,9 @@ button{cursor:pointer}
   .finalGrid{grid-template-columns:1fr}
   .stats{display:grid;grid-template-columns:1fr 1fr;width:100%}
   .stat{min-width:0}
+  .author-footer__inner{grid-template-columns:1fr}
+  .author-footer__actions{align-items:flex-start}
+  .author-footer__copyright{text-align:left}
 }
 @media(prefers-reduced-motion:reduce){
   *{scroll-behavior:auto!important;transition:none!important}
@@ -428,6 +495,21 @@ button{cursor:pointer}
   </section>
 
   <div class="footer">⭐ Pequeños pasos hacen grandes matemáticos ⭐ · Multiplica Lab · 100 misiones</div>
+
+  <footer class="author-footer" aria-label="Información del autor">
+    <div class="author-footer__inner">
+      <div class="author-footer__content">
+        <span class="author-footer__eyebrow">AUTOR</span>
+        <h2 class="author-footer__name">Luis Alberto Antonio Narciso</h2>
+        <p class="author-footer__description">Ingeniero en Electrónica y profesional de Quality Assurance, automatización de pruebas y tecnología educativa. Desarrolla experiencias web interactivas orientadas al aprendizaje, combinando educación, tecnología, diseño y herramientas digitales.</p>
+        <p class="author-footer__credit">“Recurso diseñado y desarrollado por Luis Alberto Antonio Narciso”.</p>
+      </div>
+      <div class="author-footer__actions">
+        <a class="author-footer__button" href="https://narciso1516.github.io/narcisotesting.com/" target="_blank" rel="noopener noreferrer">Conocer al autor</a>
+        <div class="author-footer__copyright">© 2026 Luis Alberto Antonio Narciso</div>
+      </div>
+    </div>
+  </footer>
 </main>
 
 <script>
