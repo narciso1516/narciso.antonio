@@ -152,7 +152,78 @@ input{
 .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
 .summary-box{background:#EEF7FA;border:1px solid #CFE4EA;border-radius:15px;padding:15px;text-align:center}
 .summary-box strong{display:block;font-size:1.7rem;color:var(--navy)}
-footer{text-align:center;color:var(--muted);padding:22px 16px 40px}
+.author-footer{
+  margin-top:0;
+  background:linear-gradient(135deg,var(--navy),#315D83 58%,var(--teal));
+  color:var(--white);
+  padding:32px 16px;
+}
+.author-footer__inner{
+  max-width:1100px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:24px;
+  align-items:center;
+}
+.author-footer__eyebrow{
+  display:inline-block;
+  margin-bottom:7px;
+  font-size:.78rem;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--sky);
+}
+.author-footer__name{
+  margin:0 0 9px;
+  font-size:clamp(1.2rem,2.4vw,1.55rem);
+  line-height:1.2;
+  color:var(--white);
+}
+.author-footer__description{
+  margin:0;
+  max-width:760px;
+  color:rgba(255,255,255,.88);
+  line-height:1.58;
+  font-size:.94rem;
+}
+.author-footer__credit{
+  margin:13px 0 0;
+  color:rgba(255,255,255,.72);
+  font-size:.84rem;
+  font-style:italic;
+}
+.author-footer__actions{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:11px;
+}
+.author-footer__button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:11px 17px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.28);
+  background:var(--white);
+  color:var(--navy);
+  font-weight:950;
+  text-decoration:none;
+  box-shadow:0 8px 20px rgba(0,0,0,.10);
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.author-footer__button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 24px rgba(0,0,0,.15);
+}
+.author-footer__copyright{
+  color:rgba(255,255,255,.68);
+  font-size:.8rem;
+  text-align:right;
+}
 @media(max-width:900px){
   .section-menu{grid-template-columns:1fr 1fr}
   .section-head,.student-grid{grid-template-columns:1fr}
@@ -160,6 +231,9 @@ footer{text-align:center;color:var(--muted);padding:22px 16px 40px}
   .report-grid{grid-template-columns:1fr 1fr}
   .summary-grid{grid-template-columns:1fr}
   .theory{position:static}
+  .author-footer__inner{grid-template-columns:1fr}
+  .author-footer__actions{align-items:flex-start}
+  .author-footer__copyright{text-align:left}
 }
 @media print{
   header,.section-menu,.actions,.hint-btn,.listen-btn{display:none!important}
@@ -226,7 +300,20 @@ footer{text-align:center;color:var(--muted);padding:22px 16px 40px}
   </section>
 </main>
 
-<footer>Material educativo interactivo · Inglés básico para Primaria</footer>
+<footer class="author-footer" aria-label="Información del autor">
+  <div class="author-footer__inner">
+    <div class="author-footer__content">
+      <span class="author-footer__eyebrow">AUTOR</span>
+      <h2 class="author-footer__name">Luis Alberto Antonio Narciso</h2>
+      <p class="author-footer__description">Ingeniero en Electrónica y profesional de Quality Assurance, automatización de pruebas y tecnología educativa. Desarrolla experiencias web interactivas orientadas al aprendizaje, combinando educación, tecnología, diseño y herramientas digitales.</p>
+      <p class="author-footer__credit">“Recurso diseñado y desarrollado por Luis Alberto Antonio Narciso”.</p>
+    </div>
+    <div class="author-footer__actions">
+      <a class="author-footer__button" href="https://narciso1516.github.io/narcisotesting.com/" target="_blank" rel="noopener noreferrer">Conocer al autor</a>
+      <div class="author-footer__copyright">© 2026 Luis Alberto Antonio Narciso</div>
+    </div>
+  </div>
+</footer>
 
 <script>
 function shuffle(arr){
