@@ -17,47 +17,48 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Aplicar confeti y avance automático
-        shell: python
         run: |
+          python - <<'PY'
           from pathlib import Path
 
           target = Path('Multiplica_Lab_100_Misiones_Primaria_Patrones.html')
           text = target.read_text(encoding='utf-8')
 
           marker = 'function normalize(v){ return String(v).replace(/\\s+/g,"").toLowerCase(); }'
-          confetti = r'''
-function launchConfetti(){
-  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const colors=["#FF5C77","#FFC83D","#36A9E1","#45C979","#8657E5","#FF75B5","#FF9F43"];
-  const total=70;
-  for(let i=0;i<total;i++){
-    const piece=document.createElement("span");
-    const size=6+Math.random()*8;
-    piece.setAttribute("aria-hidden","true");
-    piece.style.position="fixed";
-    piece.style.zIndex="9999";
-    piece.style.pointerEvents="none";
-    piece.style.left=`${Math.random()*100}vw`;
-    piece.style.top="-24px";
-    piece.style.width=`${size}px`;
-    piece.style.height=`${size*(0.65+Math.random()*0.7)}px`;
-    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
-    piece.style.borderRadius=Math.random()>.65?"50%":"2px";
-    document.body.appendChild(piece);
+          confetti = '''\
+          function launchConfetti(){
+            if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+            const colors=["#FF5C77","#FFC83D","#36A9E1","#45C979","#8657E5","#FF75B5","#FF9F43"];
+            const total=70;
+            for(let i=0;i<total;i++){
+              const piece=document.createElement("span");
+              const size=6+Math.random()*8;
+              piece.setAttribute("aria-hidden","true");
+              piece.style.position="fixed";
+              piece.style.zIndex="9999";
+              piece.style.pointerEvents="none";
+              piece.style.left=`${Math.random()*100}vw`;
+              piece.style.top="-24px";
+              piece.style.width=`${size}px`;
+              piece.style.height=`${size*(0.65+Math.random()*0.7)}px`;
+              piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+              piece.style.borderRadius=Math.random()>.65?"50%":"2px";
+              document.body.appendChild(piece);
 
-    const drift=(Math.random()-.5)*240;
-    const spin=(Math.random()>.5?1:-1)*(360+Math.random()*720);
-    const duration=900+Math.random()*700;
-    const delay=Math.random()*180;
-    const animation=piece.animate([
-      {transform:"translate3d(0,0,0) rotate(0deg)",opacity:1},
-      {transform:`translate3d(${drift}px,${window.innerHeight+80}px,0) rotate(${spin}deg)`,opacity:.9}
-    ],{duration,delay,easing:"cubic-bezier(.2,.7,.2,1)",fill:"forwards"});
-    animation.onfinish=()=>piece.remove();
-  }
-}
+              const drift=(Math.random()-.5)*240;
+              const spin=(Math.random()>.5?1:-1)*(360+Math.random()*720);
+              const duration=900+Math.random()*700;
+              const delay=Math.random()*180;
+              const animation=piece.animate([
+                {transform:"translate3d(0,0,0) rotate(0deg)",opacity:1},
+                {transform:`translate3d(${drift}px,${window.innerHeight+80}px,0) rotate(${spin}deg)`,opacity:.9}
+              ],{duration,delay,easing:"cubic-bezier(.2,.7,.2,1)",fill:"forwards"});
+              animation.onfinish=()=>piece.remove();
+            }
+          }
 
-'''
+          '''
+          confetti = '\n'.join(line[10:] if line.startswith('          ') else line for line in confetti.splitlines()) + '\n\n'
 
           if 'function launchConfetti()' not in text:
               if marker not in text:
@@ -65,15 +66,17 @@ function launchConfetti(){
               text = text.replace(marker, confetti + marker, 1)
 
           old = '''    const next=document.createElement("button");
-    next.type="button";next.className="primary";next.style.marginTop="12px";
-    next.textContent=state.index===99?"Ver resultado final":"Siguiente misión →";
-    next.addEventListener("click",()=>{state.index++;render();});
-    feedback.appendChild(document.createElement("br"));
-    feedback.appendChild(next);'''
+              next.type="button";next.className="primary";next.style.marginTop="12px";
+              next.textContent=state.index===99?"Ver resultado final":"Siguiente misión →";
+              next.addEventListener("click",()=>{state.index++;render();});
+              feedback.appendChild(document.createElement("br"));
+              feedback.appendChild(next);'''
+          old = '\n'.join(line[10:] if line.startswith('          ') else line for line in old.splitlines())
 
           new = '''    launchConfetti();
-    feedback.insertAdjacentHTML("beforeend", `<br><span style="display:inline-block;margin-top:8px;font-weight:800">✨ ¡Muy bien! Avanzando a la siguiente misión…</span>`);
-    window.setTimeout(()=>{state.index++;render();},1200);'''
+              feedback.insertAdjacentHTML("beforeend", `<br><span style="display:inline-block;margin-top:8px;font-weight:800">✨ ¡Muy bien! Avanzando a la siguiente misión…</span>`);
+              window.setTimeout(()=>{state.index++;render();},1200);'''
+          new = '\n'.join(line[10:] if line.startswith('          ') else line for line in new.splitlines())
 
           if old not in text:
               if new not in text:
@@ -82,6 +85,7 @@ function launchConfetti(){
               text = text.replace(old, new, 1)
 
           target.write_text(text, encoding='utf-8')
+          PY
 
       - name: Verificar JavaScript modificado
         run: |
