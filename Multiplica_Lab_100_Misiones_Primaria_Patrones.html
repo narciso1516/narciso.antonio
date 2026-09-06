@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Multiplica Lab · 100 Misiones</title>
+<style>
+:root{
+  --navy:#243B6B;
+  --blue:#36A9E1;
+  --aqua:#9BE8F0;
+  --cream:#FFF8DE;
+  --red:#FF5C77;
+  --ink:#20305A;
+  --muted:#62708A;
+  --white:#ffffff;
+  --border:#CFE4F2;
+  --green:#45C979;
+  --yellow:#FFC83D;
+  --violet:#8657E5;
+  --pink:#FF75B5;
+  --orange:#FF9F43;
+  --mint:#BDF4D2;
+  --sky:#DFF5FF;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,ui-rounded,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#EAF9FF 0%,#FFF9E8 52%,#F4EDFF 100%);
+  color:var(--ink);
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{
+  max-width:1180px;
+  margin:auto;
+  padding:18px;
+}
+.topbar{
+  background:linear-gradient(135deg,#FFFFFF 0%,#F1FBFF 48%,#FFF3C7 100%);
+  border:2px solid #B9E4F5;
+  border-radius:24px;
+  padding:18px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:center;
+}
+.brand h1{margin:0;font-size:clamp(28px,4vw,44px);color:var(--navy);text-shadow:0 2px 0 #fff}
+.brand p{margin:6px 0 0;color:var(--muted)}
+.stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:flex-end;
+}
+.stat{
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:10px 14px;
+  min-width:105px;
+  background:#fff;
+}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:12px;color:var(--muted)}
+.progressWrap{
+  margin-top:14px;
+  background:#e9eef4;
+  height:12px;
+  border-radius:999px;
+  overflow:hidden;
+}
+.progressBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#40C980,#35B7E8,#8E62E8,#FF77AF,#FFC83D);
+  transition:width .35s ease;
+}
+.levelStrip{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+}
+.levelChip{
+  border:2px solid var(--border);
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  text-align:center;
+  color:var(--muted);
+  font-weight:700;
+  font-size:13px;
+}
+.levelChip:nth-child(1){background:#E6FFF0;border-color:#8BE0AC}.levelChip:nth-child(2){background:#E8F7FF;border-color:#8CD7F6}.levelChip:nth-child(3){background:#F1EBFF;border-color:#BDA7F7}.levelChip:nth-child(4){background:#FFF0F6;border-color:#FFA8CF}.levelChip:nth-child(5){background:#FFF5D7;border-color:#FFD66D}.levelChip.active{outline:4px solid rgba(54,169,225,.18);color:var(--navy);transform:translateY(-2px)}
+.levelChip.done{box-shadow:inset 0 0 0 2px rgba(69,201,121,.18);color:#16724f}
+.workspace{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:minmax(0,1.7fr) minmax(280px,.7fr);
+  gap:16px;
+}
+.card{
+  background:rgba(255,255,255,.96);
+  border:2px solid var(--border);
+  border-radius:24px;
+  padding:18px;
+}
+.missionHead{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.eyebrow{
+  color:var(--violet);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:800;
+  font-size:12px;
+}
+.missionHead h2{
+  margin:4px 0 0;
+  font-size:clamp(24px,3vw,34px);
+}
+.badge{
+  padding:9px 12px;
+  border-radius:999px;
+  background:var(--cream);
+  color:var(--navy);
+  font-weight:800;
+  white-space:nowrap;
+}
+.visual{
+  min-height:270px;
+  margin-top:18px;
+  border-radius:20px;
+  background:linear-gradient(180deg,#FFFFFF 0%,#F3FBFF 100%);
+  border:3px dashed #9DD9F0;
+  padding:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:auto;
+}
+.groupGrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  justify-content:center;
+}
+.groupBox{
+  min-width:92px;
+  padding:12px;
+  border:2px solid #c5d8e8;
+  border-radius:18px;
+  background:linear-gradient(180deg,#FFFFFF,#FFF8D9);
+}
+.dots{
+  display:grid;
+  grid-template-columns:repeat(4,22px);
+  gap:7px;
+  justify-content:center;
+}
+.dot{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(145deg,#55C7F1,#208CC9);
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.08);
+}
+.array{
+  display:grid;
+  gap:8px;
+  justify-content:center;
+}
+.array .dot{background:linear-gradient(145deg,#A987F0,#7450CC)}
+.numberLine{
+  width:min(760px,95%);
+}
+.numberLineRow{
+  position:relative;
+  height:86px;
+  border-bottom:4px solid var(--navy);
+  margin:20px 8px 0;
+}
+.tick{
+  position:absolute;bottom:-10px;
+  width:2px;height:16px;background:linear-gradient(135deg,#2D77C7,#7657D8);
+}
+.tick span{
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  font-size:12px;color:var(--muted)
+}
+.jump{
+  position:absolute;
+  height:30px;
+  border:3px solid var(--red);
+  border-bottom:none;
+  border-radius:50% 50% 0 0;
+  top:10px;
+}
+.mathBig{
+  font-size:clamp(34px,6vw,66px);
+  font-weight:900;
+  text-align:center;
+  line-height:1.15;
+}
+.mathSub{
+  margin-top:10px;
+  font-size:18px;color:var(--muted);text-align:center
+}
+.story{
+  max-width:720px;
+  font-size:clamp(20px,3vw,28px);
+  line-height:1.45;
+  text-align:center;
+}
+.answers{
+  margin-top:18px;
+}
+.choiceGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.choice{
+  min-height:68px;
+  border:3px solid var(--border);
+  border-radius:18px;
+  color:var(--navy);
+  font-weight:900;
+  font-size:20px;
+  display:grid;
+  grid-template-columns:46px 1fr;
+  align-items:center;
+  gap:12px;
+  padding:8px 16px 8px 10px;
+  text-align:left;
+  box-shadow:0 5px 0 rgba(36,59,107,.08);
+}
+.choice:nth-child(1){background:#FFF0F6;border-color:#FF9AC5}
+.choice:nth-child(2){background:#EAF7FF;border-color:#83CEF2}
+.choice:nth-child(3){background:#ECFFF2;border-color:#83DFA4}
+.choice:nth-child(4){background:#FFF7D9;border-color:#FFD66B}
+.choiceLetter{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:21px;font-weight:950}
+.choice:nth-child(1) .choiceLetter{background:#ED4C91}
+.choice:nth-child(2) .choiceLetter{background:#258FDA}
+.choice:nth-child(3) .choiceLetter{background:#28A85E}
+.choice:nth-child(4) .choiceLetter{background:#E89400}
+.choiceValue{text-align:center;font-size:22px}
+.choice:hover{transform:translateY(-2px);filter:saturate(1.08)}
+.choice.correct{border-color:#2AB96A;background:#DFF8E9;color:#126B49;box-shadow:0 5px 0 rgba(42,185,106,.18)}
+.choice.wrong{border-color:#EE8290;background:#FFF0F1;color:#A21D2A;opacity:.82}
+.inputRow{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.answerInput{
+  flex:1;
+  min-width:160px;
+  min-height:56px;
+  border:2px solid var(--border);
+  border-radius:16px;
+  padding:0 16px;
+  font-size:22px;
+  font-weight:800;
+}
+.primary{
+  min-height:56px;
+  border:none;
+  border-radius:16px;
+  padding:0 20px;
+  background:var(--navy);
+  color:white;
+  font-weight:800;
+}
+.secondary{
+  min-height:48px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:0 15px;
+  background:linear-gradient(180deg,#FFFFFF,#F2FAFF);
+  color:var(--navy);
+  font-weight:700;
+}
+.feedback{
+  margin-top:14px;
+  border-radius:16px;
+  padding:14px;
+  min-height:52px;
+  border:1px solid var(--border);
+  color:var(--muted);
+}
+.feedback.ok{background:#eaf8f1;border-color:#9bd9bb;color:#126b49}
+.feedback.no{background:#fff7e6;border-color:#f4cd76;color:#775500}
+.side h3{margin-top:0}
+.steps{display:grid;gap:10px}
+.step{
+  display:grid;
+  grid-template-columns:36px 1fr;
+  gap:10px;
+  align-items:start;
+}
+.stepIcon{
+  width:36px;height:36px;border-radius:12px;
+  background:var(--cream);
+  display:grid;place-items:center;
+}
+.step b{display:block}
+.step span{font-size:13px;color:var(--muted)}
+.sideActions{display:grid;gap:8px;margin-top:16px}
+.tip{
+  margin-top:16px;
+  border-radius:16px;
+  padding:14px;
+  background:linear-gradient(135deg,#F4EDFF,#FFF0F7);
+  border:1px solid #ded3ff;
+  color:#56359a;
+}
+.footer{
+  margin:18px 0 4px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+.final{
+  text-align:center;
+  padding:22px;
+}
+.final h2{font-size:36px;margin-bottom:6px}
+.finalGrid{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.finalBox{
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+}
+.finalBox b{font-size:28px;display:block}
+.hidden{display:none!important}
+@media(max-width:850px){
+  .topbar{grid-template-columns:1fr}
+  .stats{justify-content:flex-start}
+  .workspace{grid-template-columns:1fr}
+  .levelStrip{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .app{padding:10px}
+  .topbar,.card{border-radius:18px;padding:14px}
+  .missionHead{flex-direction:column}
+  .choiceGrid{grid-template-columns:1fr}
+  .finalGrid{grid-template-columns:1fr}
+  .stats{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  .stat{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="topbar">
+    <div class="brand">
+      <h1>✖️ Multiplica Lab</h1>
+      <p>100 misiones para comprender, representar y dominar la multiplicación.</p>
+      <div class="progressWrap" aria-label="Progreso"><div id="progressBar" class="progressBar"></div></div>
+      <div class="levelStrip" id="levelStrip"></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="missionStat">1/100</b><span>Misión</span></div>
+      <div class="stat"><b id="streakStat">0 🔥</b><span>Racha</span></div>
+      <div class="stat"><b id="scoreStat">0%</b><span>Precisión</span></div>
+      <div class="stat"><b id="xpStat">0 ⭐</b><span>Puntos</span></div>
+    </div>
+  </section>
+
+  <section id="mainWorkspace" class="workspace">
+    <article class="card">
+      <div class="missionHead">
+        <div>
+          <div id="eyebrow" class="eyebrow">Nivel 1 · Grupos iguales</div>
+          <h2 id="prompt">Cargando misión…</h2>
+        </div>
+        <div id="missionBadge" class="badge">Misión 1</div>
+      </div>
+
+      <div id="visual" class="visual" aria-live="polite"></div>
+      <div id="answers" class="answers"></div>
+      <div id="feedback" class="feedback" aria-live="assertive">Observa, piensa y responde.</div>
+    </article>
+
+    <aside class="card side">
+      <h3 style="font-size:24px;color:#5B3EB3">🧠 Pasos de un gran matemático</h3>
+      <div class="steps">
+        <div class="step"><div class="stepIcon">👀</div><div><b>Observa</b><span>Identifica cuántos grupos hay y cuántos objetos tiene cada grupo.</span></div></div>
+        <div class="step"><div class="stepIcon">🔗</div><div><b>Conecta</b><span>Relaciona grupos, suma repetida, arreglo y multiplicación.</span></div></div>
+        <div class="step"><div class="stepIcon">✍️</div><div><b>Resuelve</b><span>Calcula sin adivinar. Puedes usar la pista si lo necesitas.</span></div></div>
+        <div class="step"><div class="stepIcon">💡</div><div><b>Explica</b><span>Lee la retroalimentación: ahí aparece la razón matemática.</span></div></div>
+      </div>
+
+      <div class="sideActions">
+        <button id="hintBtn" class="secondary" type="button">💡 Mostrar pista</button>
+        <button id="listenBtn" class="secondary" type="button">🔊 Escuchar ejercicio</button>
+        <button id="restartBtn" class="secondary" type="button">↻ Reiniciar progreso</button>
+      </div>
+
+      <div class="tip" id="tipBox"><b>Meta:</b> entender la estructura antes de memorizar.</div>
+    </aside>
+  </section>
+
+  <section id="finalScreen" class="card final hidden">
+    <div style="font-size:54px">🏆</div>
+    <h2>¡Completaste las 100 misiones!</h2>
+    <p id="finalMessage">Terminaste Multiplica Lab.</p>
+    <div class="finalGrid">
+      <div class="finalBox"><b id="finalAccuracy">0%</b><span>Precisión</span></div>
+      <div class="finalBox"><b id="finalBestStreak">0</b><span>Mejor racha</span></div>
+      <div class="finalBox"><b id="finalXP">0</b><span>Puntos</span></div>
+    </div>
+    <div style="margin-top:18px">
+      <button id="playAgainBtn" class="primary" type="button">Volver a empezar</button>
+    </div>
+  </section>
+
+  <div class="footer">⭐ Pequeños pasos hacen grandes matemáticos ⭐ · Multiplica Lab · 100 misiones</div>
+</main>
+
+<script>
+(() => {
+"use strict";
+
+const LEVELS = [
+  {name:"Grupos iguales", icon:"🟢", range:[1,20]},
+  {name:"Suma repetida", icon:"🔵", range:[21,40]},
+  {name:"Arreglos", icon:"🟣", range:[41,60]},
+  {name:"Descubre patrones", icon:"🟠", range:[61,80]},
+  {name:"Problemas", icon:"🔴", range:[81,100]}
+];
+
+const state = {
+  index:0, correct:0, attempts:0, streak:0, bestStreak:0, xp:0,
+  locked:false, firstTry:true
+};
+
+const $ = id => document.getElementById(id);
+const progressBar=$("progressBar"), missionStat=$("missionStat"), streakStat=$("streakStat"),
+scoreStat=$("scoreStat"), xpStat=$("xpStat"), levelStrip=$("levelStrip"), eyebrow=$("eyebrow"),
+promptEl=$("prompt"), missionBadge=$("missionBadge"), visual=$("visual"), answers=$("answers"),
+feedback=$("feedback"), hintBtn=$("hintBtn"), listenBtn=$("listenBtn"), restartBtn=$("restartBtn"),
+mainWorkspace=$("mainWorkspace"), finalScreen=$("finalScreen");
+
+function seededPair(i, minA=2, maxA=10, minB=2, maxB=10){
+  const a=minA + ((i*7+3) % (maxA-minA+1));
+  const b=minB + ((i*5+1) % (maxB-minB+1));
+  return [a,b];
+}
+function rotateCorrect(correct, distractors, correctIndex){
+  const ds=[...distractors].slice(0,3);
+  const out=[]; let d=0;
+  for(let i=0;i<4;i++) out.push(i===correctIndex ? correct : ds[d++]);
+  return out;
+}
+function optionsFor(answer, seed, correctIndex){
+  const set=new Set();
+  const candidates=[answer+1,answer-1,answer+2,answer-2,answer+5,answer-5,answer+10,Math.max(0,answer-10),answer+3];
+  for(const c of candidates){ if(c>=0 && c!==answer) set.add(c); if(set.size===3) break; }
+  return rotateCorrect(answer,[...set],correctIndex);
+}
+
+const exercises=[];
+
+// 1–20: grupos iguales
+for(let i=0;i<20;i++){
+  const [g,e]=seededPair(i,2,6,2,7), ans=g*e;
+  exercises.push({
+    level:0,type:"groups",g,e,answer:ans,
+    prompt:`Hay ${g} grupos con ${e} objetos en cada grupo. ¿Cuántos objetos hay en total?`,
+    hint:`Piensa en ${g} veces ${e}: ${Array(g).fill(e).join(" + ")}.`,
+    explanation:`${g} grupos de ${e} significan ${g} × ${e}. Entonces ${g} × ${e} = ${ans}.`,
+    choices:optionsFor(ans,i+1,i%4)
+  });
+}
+
+// 21–40: suma repetida -> multiplicación
+for(let i=0;i<20;i++){
+  const [g,e]=seededPair(i+20,2,8,2,8), ans=g*e;
+  const correct=`${g} × ${e}`;
+  const distract=[`${e} + ${g}`,`${g} + ${e}`,`${e} × ${g+1}`];
+  exercises.push({
+    level:1,type:"repeat",g,e,answer:correct,
+    prompt:`¿Qué multiplicación representa esta suma?`,
+    sum:Array(g).fill(e).join(" + "),
+    hint:`Cuenta cuántas veces aparece ${e}.`,
+    explanation:`${e} aparece ${g} veces. Por eso la multiplicación es ${g} × ${e} = ${ans}.`,
+    choices:rotateCorrect(correct,distract,i%4)
+  });
+}
+
+// 41–60: arreglos
+for(let i=0;i<20;i++){
+  const [r,c]=seededPair(i+40,2,7,2,8), ans=r*c;
+  exercises.push({
+    level:2,type:"array",r,c,answer:ans,
+    prompt:`Observa el arreglo: ${r} filas de ${c}. ¿Cuántos puntos hay?`,
+    hint:`Puedes contar ${r} filas de ${c}: ${r} × ${c}.`,
+    explanation:`Un arreglo de ${r} filas y ${c} columnas representa ${r} × ${c} = ${ans}.`,
+    input:true
+  });
+}
+
+// 61–70: descubre que cambiar el orden no cambia el total
+for(let i=0;i<10;i++){
+  const [a,b]=seededPair(i+60,2,7,2,7), ans=a*b;
+  exercises.push({
+    level:3,type:"commuteVisual",a,b,answer:ans,
+    prompt:`Mira ${a} filas de ${b}. Si giramos el arreglo y hacemos ${b} filas de ${a}, ¿cuántos puntos habrá?`,
+    hint:`Girar el arreglo cambia su forma, pero no quita ni agrega puntos.`,
+    explanation:`Hay ${ans} puntos en ambos arreglos. Por eso ${a} × ${b} y ${b} × ${a} dan el mismo total.`,
+    choices:optionsFor(ans,i+61,i%4)
+  });
+}
+
+// 71–80: patrones y relaciones multiplicativas apropiadas para primaria baja
+const patternMissions=[
+  {type:"addGroup",g:3,e:2,answer:8,prompt:"Hay 3 grupos de 2. Si agregamos otro grupo de 2, ¿cuántos objetos habrá?",hint:"Primero cuenta 3 grupos de 2 y después agrega 2 más.",explanation:"3 grupos de 2 son 6. Al agregar otro grupo de 2 tenemos 8: ahora son 4 × 2 = 8."},
+  {type:"addGroup",g:4,e:3,answer:15,prompt:"Hay 4 grupos de 3. Si agregamos otro grupo de 3, ¿cuántos objetos habrá?",hint:"4 × 3 da 12. Agrega un grupo más de 3.",explanation:"4 grupos de 3 son 12. Con otro grupo de 3 llegamos a 15: 5 × 3 = 15."},
+  {type:"addGroup",g:2,e:6,answer:18,prompt:"Hay 2 grupos de 6. Si agregamos otro grupo de 6, ¿cuántos objetos habrá?",hint:"Cuenta 6 + 6 y luego agrega otros 6.",explanation:"2 grupos de 6 son 12. Otro grupo de 6 hace 18: 3 × 6 = 18."},
+  {type:"sequence",seq:[3,6,9,12],step:3,answer:15,prompt:"Completa el patrón: 3, 6, 9, 12, __",hint:"Cada número aumenta de 3 en 3.",explanation:"La secuencia avanza sumando 3: después de 12 viene 15."},
+  {type:"sequence",seq:[5,10,15,20],step:5,answer:25,prompt:"Completa el patrón: 5, 10, 15, 20, __",hint:"Cuenta de 5 en 5.",explanation:"La secuencia aumenta 5 cada vez. Después de 20 viene 25."},
+  {type:"sequence",seq:[2,4,6,8],step:2,answer:10,prompt:"Completa el patrón: 2, 4, 6, 8, __",hint:"Cuenta de 2 en 2.",explanation:"La secuencia aumenta 2 cada vez. Después de 8 viene 10."},
+  {type:"double",n:7,answer:14,prompt:"¿Cuál es el doble de 7?",hint:"El doble significa tener 2 grupos de 7: 7 + 7.",explanation:"7 + 7 = 14. Por eso 2 × 7 = 14."},
+  {type:"double",n:9,answer:18,prompt:"¿Cuál es el doble de 9?",hint:"Suma 9 + 9.",explanation:"9 + 9 = 18. Entonces el doble de 9 es 18."},
+  {type:"fiveTen",n:4,answer:40,prompt:"Si 5 grupos de 4 son 20, ¿cuánto serán 10 grupos de 4?",hint:"10 grupos son el doble de 5 grupos. Duplica 20.",explanation:"5 × 4 = 20. Diez grupos son el doble, así que 10 × 4 = 40."},
+  {type:"fiveTen",n:3,answer:30,prompt:"Si 5 grupos de 3 son 15, ¿cuánto serán 10 grupos de 3?",hint:"Duplica 15 porque 10 grupos son dos veces 5 grupos.",explanation:"5 × 3 = 15 y el doble de 15 es 30. Entonces 10 × 3 = 30."}
+];
+patternMissions.forEach((m,i)=>{
+  exercises.push({...m,level:3,choices:optionsFor(m.answer,71+i,i%4)});
+});
+
+// 81–100 problemas
+const contexts=[
+  ["cajas","lápices"],["bolsas","naranjas"],["mesas","cuadernos"],["filas","sillas"],
+  ["equipos","jugadores"],["paquetes","galletas"],["macetas","flores"],["estantes","libros"],
+  ["camiones","cajas"],["canastas","pelotas"]
+];
+for(let i=0;i<20;i++){
+  const [g,e]=seededPair(i+80,3,10,2,9), ans=g*e;
+  const ctx=contexts[i%contexts.length];
+  exercises.push({
+    level:4,type:"story",g,e,answer:ans,
+    prompt:`Hay ${g} ${ctx[0]} y en cada una hay ${e} ${ctx[1]}. ¿Cuántos ${ctx[1]} hay en total?`,
+    hint:`Busca grupos iguales: ${g} grupos de ${e}.`,
+    explanation:`La situación se representa con ${g} × ${e} = ${ans}. Hay ${ans} ${ctx[1]} en total.`,
+    input:true
+  });
+}
+
+function levelIndex(){
+  return Math.floor(state.index/20);
+}
+function renderLevelStrip(){
+  levelStrip.innerHTML="";
+  LEVELS.forEach((lv,i)=>{
+    const div=document.createElement("div");
+    div.className="levelChip"+(i===levelIndex()?" active":"")+(i<levelIndex()?" done":"");
+    div.textContent=`${lv.icon} ${lv.name}`;
+    levelStrip.appendChild(div);
+  });
+}
+function renderStats(){
+  const done=state.index;
+  progressBar.style.width=`${done}%`;
+  missionStat.textContent=`${Math.min(state.index+1,100)}/100`;
+  streakStat.textContent=`${state.streak} 🔥`;
+  const acc=state.attempts?Math.round(state.correct/state.attempts*100):0;
+  scoreStat.textContent=`${acc}%`;
+  xpStat.textContent=`${state.xp} ⭐`;
+  renderLevelStrip();
+}
+function renderGroups(ex){
+  const wrap=document.createElement("div"); wrap.className="groupGrid";
+  for(let g=0;g<ex.g;g++){
+    const box=document.createElement("div"); box.className="groupBox";
+    const d=document.createElement("div"); d.className="dots";
+    d.style.gridTemplateColumns=`repeat(${Math.min(ex.e,4)},22px)`;
+    for(let j=0;j<ex.e;j++){const dot=document.createElement("span");dot.className="dot";d.appendChild(dot);}
+    box.appendChild(d); wrap.appendChild(box);
+  }
+  visual.appendChild(wrap);
+}
+function renderRepeat(ex){
+  visual.innerHTML=`<div><div class="mathBig">${ex.sum}</div><div class="mathSub">¿Qué multiplicación representa?</div></div>`;
+}
+function renderArray(ex){
+  const a=document.createElement("div");a.className="array";a.style.gridTemplateColumns=`repeat(${ex.c},22px)`;
+  for(let i=0;i<ex.r*ex.c;i++){const d=document.createElement("span");d.className="dot";a.appendChild(d);}
+  visual.appendChild(a);
+}
+function makeArray(rows,cols,colorClass=""){
+  const a=document.createElement("div");a.className="array "+colorClass;a.style.gridTemplateColumns=`repeat(${cols},22px)`;
+  for(let i=0;i<rows*cols;i++){const d=document.createElement("span");d.className="dot";a.appendChild(d);}
+  return a;
+}
+function renderCommuteVisual(ex){
+  const wrap=document.createElement("div");
+  wrap.style.display="flex";wrap.style.flexWrap="wrap";wrap.style.alignItems="center";wrap.style.justifyContent="center";wrap.style.gap="24px";
+  const left=document.createElement("div"),right=document.createElement("div");
+  left.style.textAlign=right.style.textAlign="center";
+  left.appendChild(makeArray(ex.a,ex.b));
+  left.insertAdjacentHTML("beforeend",`<div class="mathSub">${ex.a} filas de ${ex.b}</div>`);
+  right.appendChild(makeArray(ex.b,ex.a));
+  right.insertAdjacentHTML("beforeend",`<div class="mathSub">${ex.b} filas de ${ex.a}</div>`);
+  const arrow=document.createElement("div");arrow.className="mathBig";arrow.style.fontSize="38px";arrow.textContent="↔";
+  wrap.append(left,arrow,right);visual.appendChild(wrap);
+}
+function renderPattern(ex){
+  if(ex.type==="addGroup"){
+    const wrap=document.createElement("div");wrap.className="groupGrid";
+    for(let g=0;g<ex.g+1;g++){
+      const box=document.createElement("div");box.className="groupBox";
+      if(g===ex.g){box.style.borderStyle="dashed";box.style.background="#fff8cf";}
+      const d=document.createElement("div");d.className="dots";d.style.gridTemplateColumns=`repeat(${Math.min(ex.e,4)},22px)`;
+      for(let j=0;j<ex.e;j++){const dot=document.createElement("span");dot.className="dot";d.appendChild(dot);}
+      box.appendChild(d);wrap.appendChild(box);
+    }
+    visual.appendChild(wrap);
+  }else if(ex.type==="sequence"){
+    visual.innerHTML=`<div><div class="mathBig">${ex.seq.join("  ·  ")}  ·  ?</div><div class="mathSub">Busca cuánto aumenta cada vez</div></div>`;
+  }else if(ex.type==="double"){
+    visual.innerHTML=`<div><div class="mathBig">${ex.n} + ${ex.n} = ?</div><div class="mathSub">El doble significa 2 grupos iguales</div></div>`;
+  }else if(ex.type==="fiveTen"){
+    visual.innerHTML=`<div><div class="mathBig">5 × ${ex.n} → 10 × ${ex.n}</div><div class="mathSub">10 grupos son el doble de 5 grupos</div></div>`;
+  }
+}
+function renderStory(ex){
+  visual.innerHTML=`<div class="story">📚 ${ex.prompt}</div>`;
+}
+function renderChoices(ex){
+  const grid=document.createElement("div"); grid.className="choiceGrid";
+  const letters=["A","B","C","D"];
+  ex.choices.forEach((ch,idx)=>{
+    const b=document.createElement("button");
+    b.type="button"; b.className="choice";
+    const letter=document.createElement("span"); letter.className="choiceLetter"; letter.textContent=letters[idx];
+    const value=document.createElement("span"); value.className="choiceValue"; value.textContent=ch;
+    b.append(letter,value);
+    b.setAttribute("aria-label",`Inciso ${letters[idx]}: ${ch}`);
+    b.addEventListener("click",()=>checkAnswer(ch,b));
+    grid.appendChild(b);
+  });
+  answers.appendChild(grid);
+}
+function renderInput(){
+  const row=document.createElement("form"); row.className="inputRow";
+  const input=document.createElement("input");
+  input.className="answerInput"; input.type="number"; input.inputMode="numeric"; input.placeholder="Escribe tu respuesta";
+  input.setAttribute("aria-label","Respuesta");
+  const b=document.createElement("button"); b.className="primary"; b.type="submit"; b.textContent="Comprobar";
+  row.append(input,b);
+  row.addEventListener("submit",ev=>{ev.preventDefault(); if(input.value==="")return; checkAnswer(Number(input.value),b,input);});
+  answers.appendChild(row);
+}
+function render(){
+  if(state.index>=100){showFinal();return;}
+  state.locked=false;state.firstTry=true;
+  const ex=exercises[state.index], li=levelIndex(), lv=LEVELS[li];
+  renderStats();
+  eyebrow.textContent=`Nivel ${li+1} · ${lv.name}`;
+  missionBadge.textContent=`Misión ${state.index+1}`;
+  promptEl.textContent=ex.prompt;
+  visual.innerHTML="";answers.innerHTML="";
+  feedback.className="feedback";feedback.textContent="Observa, piensa y responde.";
+  hintBtn.disabled=false;
+
+  if(ex.type==="groups") renderGroups(ex);
+  else if(ex.type==="repeat") renderRepeat(ex);
+  else if(ex.type==="array") renderArray(ex);
+  else if(ex.type==="commuteVisual") renderCommuteVisual(ex);
+  else if(["addGroup","sequence","double","fiveTen"].includes(ex.type)) renderPattern(ex);
+  else renderStory(ex);
+
+  if(ex.input) renderInput(); else renderChoices(ex);
+}
+
+function normalize(v){ return String(v).replace(/\s+/g,"").toLowerCase(); }
+function checkAnswer(value, button, input){
+  if(state.locked)return;
+  const ex=exercises[state.index];
+  state.attempts++;
+  const ok=normalize(value)===normalize(ex.answer);
+  if(ok){
+    state.locked=true;
+    state.correct++;
+    state.streak++;
+    state.bestStreak=Math.max(state.bestStreak,state.streak);
+    const earned=state.firstTry?10:6;
+    state.xp+=earned;
+    feedback.className="feedback ok";
+    feedback.innerHTML=`✅ <b>Correcto.</b> ${ex.explanation} <b>+${earned} puntos</b>`;
+    if(button && button.classList.contains("choice")) button.classList.add("correct");
+    if(input) input.disabled=true;
+    [...answers.querySelectorAll("button")].forEach(b=>b.disabled=true);
+    const next=document.createElement("button");
+    next.type="button";next.className="primary";next.style.marginTop="12px";
+    next.textContent=state.index===99?"Ver resultado final":"Siguiente misión →";
+    next.addEventListener("click",()=>{state.index++;render();});
+    feedback.appendChild(document.createElement("br"));
+    feedback.appendChild(next);
+  }else{
+    state.firstTry=false;
+    state.streak=0;
+    feedback.className="feedback no";
+    feedback.innerHTML=`🟡 Todavía no. <b>No adivines:</b> vuelve a observar la representación y prueba otra estrategia.`;
+    if(button && button.classList.contains("choice")){
+      button.classList.add("wrong");button.disabled=true;
+    }
+    if(input){input.value="";input.focus();}
+  }
+  renderStats();
+}
+
+hintBtn.addEventListener("click",()=>{
+  const ex=exercises[state.index];
+  feedback.className="feedback";
+  feedback.innerHTML=`💡 <b>Pista:</b> ${ex.hint}`;
+});
+listenBtn.addEventListener("click",()=>{
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const ex=exercises[state.index];
+  const u=new SpeechSynthesisUtterance(ex.prompt);
+  u.lang="es-MX";speechSynthesis.speak(u);
+});
+restartBtn.addEventListener("click",()=>{
+  if(!confirm("¿Quieres reiniciar las 100 misiones desde el inicio?"))return;
+  Object.assign(state,{index:0,correct:0,attempts:0,streak:0,bestStreak:0,xp:0,locked:false,firstTry:true});
+  finalScreen.classList.add("hidden");mainWorkspace.classList.remove("hidden");render();
+});
+$("playAgainBtn").addEventListener("click",()=>restartBtn.click());
+
+function showFinal(){
+  mainWorkspace.classList.add("hidden");
+  finalScreen.classList.remove("hidden");
+  progressBar.style.width="100%";
+  const acc=state.attempts?Math.round(state.correct/state.attempts*100):0;
+  $("finalAccuracy").textContent=`${acc}%`;
+  $("finalBestStreak").textContent=state.bestStreak;
+  $("finalXP").textContent=state.xp;
+  $("finalMessage").textContent=acc>=90
+    ?"Excelente dominio: comprendiste las representaciones y resolviste con mucha precisión."
+    : acc>=75
+    ?"Buen trabajo: tienes una base sólida. Repite las misiones donde necesitaste más intentos."
+    :"Terminaste el recorrido. Conviene repetirlo enfocándote en grupos, arreglos y propiedades.";
+  renderStats();
+}
+
+render();
+})();
+</script>
+</body>
+</html>
