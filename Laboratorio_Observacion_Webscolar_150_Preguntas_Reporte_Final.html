@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratorio de Observación · 150 preguntas</title>
+<style>
+:root{
+  --bg:#f6f7fb; --panel:#ffffff; --text:#172033; --muted:#667085;
+  --primary:#4f46e5; --primary2:#7c3aed; --ok:#087a55; --bad:#b42318;
+  --line:#e4e7ec; --soft:#eef2ff; --warn:#b54708;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#f8f9ff 0,#f6f7fb 100%);color:var(--text)}
+button,input,textarea{font:inherit}
+.app{max-width:1180px;margin:auto;padding:22px}
+.hero{background:linear-gradient(135deg,#312e81,#6d28d9);color:white;border-radius:24px;padding:28px;box-shadow:0 16px 45px rgba(49,46,129,.18)}
+.hero h1{margin:0 0 8px;font-size:clamp(28px,4vw,46px)}
+.hero p{margin:0;max-width:850px;opacity:.92;line-height:1.6}
+.source{margin-top:14px;font-size:14px;opacity:.82}
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+.stat b{display:block;font-size:22px}.stat span{font-size:12px;color:var(--muted)}
+.progressWrap{background:#e9ecf3;border-radius:999px;height:12px;overflow:hidden;margin-top:16px}
+.progressBar{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));width:0;transition:.3s}
+.levels{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.levelBtn{border:1px solid var(--line);background:white;padding:10px 14px;border-radius:999px;cursor:pointer}
+.levelBtn.active{background:var(--soft);border-color:#a5b4fc;color:#3730a3;font-weight:700}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:18px}
+.sidebar{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;height:max-content;position:sticky;top:14px}
+.sidebar h3{margin:4px 0 10px}
+.qgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.qdot{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 0;font-size:12px;cursor:pointer}
+.qdot.done{background:#ecfdf3;border-color:#a6f4c5;color:#067647}
+.qdot.current{outline:2px solid var(--primary)}
+.card{background:white;border:1px solid var(--line);border-radius:22px;padding:24px;min-height:540px;box-shadow:0 8px 30px rgba(16,24,40,.06)}
+.eyebrow{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.badge{background:var(--soft);color:#4338ca;border-radius:999px;padding:5px 9px}
+.question{font-size:clamp(22px,2.8vw,32px);line-height:1.28;margin:18px 0 20px}
+.options{display:grid;gap:10px}
+.option{border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;transition:.15s}
+.option:hover{border-color:#a5b4fc;background:#fafaff}
+.option input{margin-top:4px}
+textarea,.textInput{width:100%;border:1px solid var(--line);border-radius:14px;padding:14px;outline:none;background:#fff}
+textarea{min-height:170px;resize:vertical;line-height:1.55}
+textarea:focus,.textInput:focus{border-color:#818cf8;box-shadow:0 0 0 3px #eef2ff}
+.counter{font-size:12px;color:var(--muted);margin-top:6px;text-align:right}
+.actions{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap}
+.actions .group{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:11px 16px;cursor:pointer;font-weight:700}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.secondary{background:#f2f4f7;color:#344054}
+.btn.ghost{background:white;border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.feedback{margin-top:18px;padding:15px;border-radius:14px;display:none;line-height:1.55}
+.feedback.show{display:block}.feedback.ok{background:#ecfdf3;color:#065f46;border:1px solid #a7f3d0}.feedback.bad{background:#fef3f2;color:#912018;border:1px solid #fecdca}.feedback.info{background:#eff8ff;color:#175cd3;border:1px solid #b2ddff}
+.model{margin-top:12px;padding:14px;border-radius:12px;background:#f8fafc;border:1px dashed #cbd5e1;display:none;line-height:1.55}
+.model.show{display:block}
+.orderList{display:grid;gap:8px}
+.orderRow{display:grid;grid-template-columns:48px 1fr 46px 46px;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px}
+.orderRow button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px;cursor:pointer}
+.note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:8px}
+.footer{padding:28px 8px 12px;color:var(--muted);font-size:13px;text-align:center}
+
+.reportPanel{display:none;margin-top:18px;background:white;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 8px 30px rgba(16,24,40,.06)}
+.reportPanel.show{display:block}
+.reportHeader{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}
+.reportHeader h2{margin:0 0 5px;font-size:28px}
+.reportMeta{color:var(--muted);font-size:13px;line-height:1.6}
+.reportSummary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0 22px}
+.reportSummary .box{border:1px solid var(--line);border-radius:14px;padding:13px}
+.reportSummary .box b{display:block;font-size:20px}
+.reportSummary .box span{font-size:12px;color:var(--muted)}
+.reportTableWrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+.reportTable{width:100%;border-collapse:collapse;min-width:900px}
+.reportTable th,.reportTable td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:13px;line-height:1.45}
+.reportTable th{background:#f8fafc;position:sticky;top:0;z-index:1}
+.reportTable tr:last-child td{border-bottom:0}
+.statusOk{color:var(--ok);font-weight:700}.statusBad{color:var(--bad);font-weight:700}.statusManual{color:#175cd3;font-weight:700}.statusEmpty{color:var(--muted)}
+.reportActions{display:flex;gap:8px;flex-wrap:wrap}
+.studentField{width:280px;max-width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+@media print{
+  body{background:white}
+  .hero,.dashboard,.levels,.sidebar,.card,.footer{display:none!important}
+  .app{max-width:none;padding:0}
+  .layout{display:block}
+  .reportPanel{display:block!important;border:0;box-shadow:none;padding:0}
+  .reportActions{display:none}
+  .reportTableWrap{overflow:visible;border:0}
+  .reportTable{min-width:0}
+  .reportTable th{position:static}
+}
+
+@media(max-width:850px){.dashboard{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.sidebar{position:static}.qgrid{grid-template-columns:repeat(10,1fr)}}
+@media(max-width:850px){.reportSummary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.app{padding:12px}.hero,.card{border-radius:18px;padding:18px}.qgrid{grid-template-columns:repeat(6,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <h1>Laboratorio de Observación</h1>
+    <p>150 preguntas progresivas para comprender, analizar y aplicar la técnica de observación en la práctica educativa. Las opciones de respuesta se barajan automáticamente para evitar patrones de letras.</p>
+    <div class="source">Fuente de estudio: Webscolar, “La Técnica de Observación: Una técnica para Evaluar”, pp. 1–10.</div>
+    <div class="progressWrap"><div id="progressBar" class="progressBar"></div></div>
+  </section>
+
+  <section class="dashboard">
+    <div class="stat"><b id="doneStat">0/150</b><span>Respondidas</span></div>
+    <div class="stat"><b id="scoreStat">0</b><span>Aciertos autocorregibles</span></div>
+    <div class="stat"><b id="openStat">0</b><span>Respuestas abiertas guardadas</span></div>
+    <div class="stat"><b id="levelStat">Nivel 1</b><span>Etapa actual</span></div>
+  </section>
+
+  <div id="levelButtons" class="levels"></div>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <h3>Mapa de progreso</h3>
+      <div id="qgrid" class="qgrid"></div>
+      <p class="note">Verde = respondida. El progreso se guarda en este navegador.</p>
+      <button class="btn ghost" style="width:100%;margin-top:8px" onclick="resetProgress()">Reiniciar progreso</button>
+    </aside>
+
+    <section class="card">
+      <div class="eyebrow"><span id="levelBadge" class="badge">Nivel 1</span><span id="typeLabel"></span><span id="positionLabel"></span></div>
+      <div id="questionText" class="question"></div>
+      <div id="answerArea"></div>
+      <div id="feedback" class="feedback"></div>
+      <div id="modelAnswer" class="model"></div>
+
+      <div class="actions">
+        <div class="group">
+          <button id="prevBtn" class="btn secondary">← Anterior</button>
+          <button id="submitBtn" class="btn primary">Revisar / Guardar</button>
+          <button id="modelBtn" class="btn ghost">Ver respuesta orientativa</button>
+        </div>
+        <div class="group">
+          <button id="nextBtn" class="btn secondary">Siguiente →</button>
+          <button id="finishBtn" class="btn primary" style="display:none">Finalizar y ver reporte</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <section id="reportPanel" class="reportPanel">
+    <div class="reportHeader">
+      <div>
+        <h2>Reporte final de respuestas</h2>
+        <div class="reportMeta">
+          Estudiante: <input id="studentName" class="studentField" value="Jennifer" aria-label="Nombre de la estudiante"><br>
+          Fuente: Webscolar · “La Técnica de Observación: Una técnica para Evaluar”, pp. 1–10.<br>
+          <span id="reportDate"></span>
+        </div>
+      </div>
+      <div class="reportActions">
+        <button class="btn ghost" onclick="window.print()">Imprimir / Guardar como PDF</button>
+        <button class="btn secondary" onclick="downloadReportTxt()">Descargar reporte .txt</button>
+        <button class="btn primary" onclick="hideReport()">Volver a la actividad</button>
+      </div>
+    </div>
+    <div id="reportSummary" class="reportSummary"></div>
+    <div class="reportTableWrap">
+      <table class="reportTable">
+        <thead><tr><th>#</th><th>Nivel</th><th>Pregunta</th><th>Respuesta capturada</th><th>Estado</th><th>Intentos</th></tr></thead>
+        <tbody id="reportBody"></tbody>
+      </table>
+    </div>
+    <p class="note">Las respuestas abiertas y de ensayo se registran como “Revisión manual”; no se califican por coincidencia literal. El reporte muestra exactamente lo que Jennifer escribió o seleccionó.</p>
+  </section>
+
+  <div class="footer">Actividad de estudio basada exclusivamente en el artículo de Webscolar proporcionado para la lectura.</div>
+</div>
+
+<script>
+const QUESTIONS = [{"id": 1, "level": 1, "type": "mcq", "prompt": "Según el artículo, observar significa:", "options": ["Memorizar información.", "Considerar con atención algo que necesitamos analizar.", "Formular una hipótesis.", "Calificar a un estudiante."], "answer": "Considerar con atención algo que necesitamos analizar.", "feedback": "El texto define observar como considerar con atención algo que necesitamos analizar."}, {"id": 2, "level": 1, "type": "open", "prompt": "Escribe con tus propias palabras qué significa observar.", "model": "Observar significa considerar con atención un fenómeno, conducta o situación que necesitamos analizar.", "keywords": ["atención", "analizar"]}, {"id": 3, "level": 1, "type": "mcq", "prompt": "La observación es uno de los recursos más ricos con que cuenta:", "options": ["El estudiante.", "El director.", "El maestro.", "La familia."], "answer": "El maestro."}, {"id": 4, "level": 1, "type": "short", "prompt": "¿Qué área señala inicialmente el artículo como especialmente susceptible de evaluarse mediante la observación?", "model": "El área afectiva.", "keywords": ["afectiva"]}, {"id": 5, "level": 1, "type": "fill", "prompt": "Completa: “La observación es una percepción ________, racional, planificada y sistemática.”", "model": "atenta", "keywords": ["atenta"]}, {"id": 6, "level": 1, "type": "multi", "prompt": "Selecciona las cuatro características de la observación mencionadas en su definición:", "options": ["Atenta", "Racional", "Improvisada", "Planificada", "Sistemática", "Casual"], "answers": ["Atenta", "Racional", "Planificada", "Sistemática"]}, {"id": 7, "level": 1, "type": "open", "prompt": "¿Cuál es la finalidad de registrar sistemáticamente las manifestaciones de la conducta del educando?", "model": "Describir y registrar sistemáticamente la conducta del educando para obtener información útil sobre su aprendizaje, actitudes y comportamiento.", "keywords": ["describir", "registrar", "conducta"]}, {"id": 8, "level": 1, "type": "tf", "prompt": "La observación educativa únicamente puede realizarse dentro del aula.", "answer": false, "feedback": "El texto indica que puede realizarse dentro y fuera del aula, con familias, otros adultos significativos y la comunidad."}, {"id": 9, "level": 1, "type": "short", "prompt": "Menciona dos ambientes diferentes al aula donde puede efectuarse una observación.", "model": "Por ejemplo: hogar/familia, comunidad, recreo, excursión u otros espacios escolares.", "keywords": ["familia", "comunidad"]}, {"id": 10, "level": 1, "type": "mcq", "prompt": "La observación puede producirse:", "options": ["Solamente de manera intencional.", "Solamente espontáneamente.", "De manera intencional o espontánea.", "Únicamente durante una evaluación."], "answer": "De manera intencional o espontánea."}, {"id": 11, "level": 1, "type": "multi", "prompt": "¿Qué información puede obtenerse sobre los niños mediante la observación?", "options": ["Sentimientos", "Opiniones", "Aptitudes", "Problemas", "Intereses", "Actuaciones"], "answers": ["Sentimientos", "Opiniones", "Aptitudes", "Problemas", "Intereses", "Actuaciones"]}, {"id": 12, "level": 1, "type": "open", "prompt": "¿Por qué debe concretarse con claridad qué aspectos serán objeto de estudio?", "model": "Porque una observación científica necesita un objetivo claro y criterios definidos para saber qué registrar y cómo interpretar la información.", "keywords": ["claridad", "objetivo", "registrar"]}, {"id": 13, "level": 1, "type": "fill", "prompt": "La observación debe caracterizarse por su __________.", "model": "objetividad", "keywords": ["objetividad"]}, {"id": 14, "level": 1, "type": "mcq", "prompt": "¿Qué dos acciones deben distinguirse durante una observación?", "options": ["Observar y enseñar.", "Describir e interpretar.", "Preguntar y contestar.", "Enseñar y evaluar."], "answer": "Describir e interpretar."}, {"id": 15, "level": 1, "type": "tf", "prompt": "Una buena observación puede realizarse apresuradamente en un tiempo muy breve.", "answer": false, "feedback": "El documento advierte que su duración no debe reducirse a un tiempo breve."}, {"id": 16, "level": 1, "type": "short", "prompt": "¿Qué es la observación externa?", "model": "Es la que realizan observadores adiestrados sobre las manifestaciones externas del objeto de estudio para interpretarlas o explicarlas.", "keywords": ["observadores", "adiestrados", "manifestaciones"]}, {"id": 17, "level": 1, "type": "mcq", "prompt": "¿En qué observación entra el observador en contacto inmediato con el objeto?", "options": ["Indirecta.", "Directa.", "Mediatizada.", "Accidental."], "answer": "Directa."}, {"id": 18, "level": 1, "type": "open", "prompt": "Define observación directa.", "model": "Es aquella en la que el observador entra en contacto inmediato con el objeto o sujeto de observación.", "keywords": ["contacto", "inmediato"]}, {"id": 19, "level": 1, "type": "mcq", "prompt": "Una observación directa puede ser:", "options": ["Abierta o encubierta.", "Individual o escrita.", "Científica o escolar.", "Interna o accidental."], "answer": "Abierta o encubierta."}, {"id": 20, "level": 1, "type": "open", "prompt": "Explica qué es una observación abierta.", "model": "Es una observación directa en la que el observador no participa en las actividades; permanece como espectador de lo que sucede.", "keywords": ["no participa", "espectador"]}, {"id": 21, "level": 1, "type": "short", "prompt": "¿Qué inconveniente puede presentarse cuando el sujeto sabe que está siendo observado?", "model": "Puede alterar su conducta habitual por sentirse observado.", "keywords": ["altera", "conducta"]}, {"id": 22, "level": 1, "type": "mcq", "prompt": "En una observación encubierta pueden utilizarse:", "options": ["Exámenes escritos.", "Grabadora y cámara de Gessell.", "Libros de texto.", "Cuestionarios para alumnos."], "answer": "Grabadora y cámara de Gessell."}, {"id": 23, "level": 1, "type": "open", "prompt": "¿Qué es la observación indirecta o mediatizada?", "model": "Es aquella en la que no existe relación inmediata entre investigador y sujeto observado; se trabaja con observaciones aportadas por otras personas.", "keywords": ["no", "inmediata", "otras personas"]}, {"id": 24, "level": 1, "type": "multi", "prompt": "¿Quiénes pueden proporcionar información en una observación indirecta?", "options": ["Maestros", "Especialistas", "Padres", "Únicamente el director"], "answers": ["Maestros", "Especialistas", "Padres"]}, {"id": 25, "level": 1, "type": "short", "prompt": "¿Qué caracteriza a la observación participante?", "model": "El observador se integra en el grupo donde se encuentra el sujeto de estudio y participa en mayor o menor grado.", "keywords": ["integra", "grupo"]}, {"id": 26, "level": 1, "type": "tf", "prompt": "En la observación participante, el observador puede integrarse al grupo.", "answer": true}, {"id": 27, "level": 1, "type": "open", "prompt": "Menciona una ventaja de la observación en el medio escolar.", "model": "Permite examinar el fenómeno en condiciones naturales sin provocarlo artificialmente.", "keywords": ["condiciones", "naturales"]}, {"id": 28, "level": 1, "type": "open", "prompt": "Menciona otra ventaja de la observación escolar.", "model": "Permite estudiar al niño dentro de las relaciones sociales del grupo y puede servir de punto de partida para usar otros métodos.", "keywords": ["relaciones", "sociales"]}, {"id": 29, "level": 1, "type": "short", "prompt": "Menciona una limitación de la observación señalada en el documento.", "model": "Requiere tiempo; la percepción tiene confiabilidad limitada; exige habilidades del observador.", "keywords": ["tiempo"]}, {"id": 30, "level": 1, "type": "open", "prompt": "¿Por qué el artículo considera la observación una habilidad profesional para docentes y especialistas?", "model": "Porque requiere preparación para registrar, interpretar y usar información de manera sistemática en la evaluación y mejora educativa.", "keywords": ["habilidad", "información", "evaluación"]}, {"id": 31, "level": 2, "type": "mcq", "prompt": "En la concepción constructivista presentada en el artículo, adquiere especial importancia:", "options": ["La memorización.", "La forma de pensar de los alumnos.", "La disciplina escolar.", "La cantidad de tareas."], "answer": "La forma de pensar de los alumnos."}, {"id": 32, "level": 2, "type": "open", "prompt": "¿Qué puede descubrir un profesor observando cómo un alumno resuelve un problema?", "model": "Puede conocer las estrategias que utiliza, cómo relaciona conocimientos y cómo integra lo aprendido.", "keywords": ["estrategias", "aprendizaje"]}, {"id": 33, "level": 2, "type": "open", "prompt": "Explica la relación entre conocimientos nuevos y conocimientos previos mencionada en el artículo.", "model": "El aprendizaje cobra sentido cuando el alumno asimila y relaciona los conceptos nuevos con los conocimientos que ya posee.", "keywords": ["relaciona", "previos", "nuevos"]}, {"id": 34, "level": 2, "type": "mcq", "prompt": "El valor de las actividades de enseñanza-aprendizaje se relaciona con:", "options": ["Su duración.", "Su dificultad.", "Su capacidad para lograr aprendizajes con sentido y significado.", "El número de alumnos."], "answer": "Su capacidad para lograr aprendizajes con sentido y significado."}, {"id": 35, "level": 2, "type": "open", "prompt": "¿Por qué una situación natural resulta especialmente útil para observar?", "model": "Porque permite que las conductas y estrategias aparezcan de manera más espontánea y contextualizada.", "keywords": ["natural", "espontánea", "contexto"]}, {"id": 36, "level": 2, "type": "tf", "prompt": "Para observar correctamente siempre es necesario sacar al alumno de su ambiente cotidiano.", "answer": false}, {"id": 37, "level": 2, "type": "open", "prompt": "Explica tu respuesta anterior usando las ideas del artículo.", "model": "El artículo recomienda observar, siempre que sea posible, en el ambiente cotidiano de enseñanza-aprendizaje, donde el alumno actúa naturalmente.", "keywords": ["cotidiano", "natural"]}, {"id": 38, "level": 2, "type": "mcq", "prompt": "Las actividades de enseñanza-aprendizaje crean:", "options": ["Obstáculos para observar.", "Situaciones idóneas de observación contextualizada.", "Únicamente evaluaciones cuantitativas.", "Situaciones artificiales."], "answer": "Situaciones idóneas de observación contextualizada."}, {"id": 39, "level": 2, "type": "open", "prompt": "¿Qué aspectos pueden conocerse observando la conducta de un alumno al resolver problemas?", "model": "Sus estrategias, razonamientos, forma de enfrentar dificultades y modos de integrar aprendizajes.", "keywords": ["estrategias", "resolver"]}, {"id": 40, "level": 2, "type": "open", "prompt": "¿Por qué un examen escrito podría no mostrar toda la información que obtiene un profesor mediante la observación?", "model": "Porque la observación permite ver procesos, estrategias, actitudes y conductas en acción que no siempre aparecen en una respuesta escrita.", "keywords": ["procesos", "estrategias", "actitudes"]}, {"id": 41, "level": 2, "type": "open", "prompt": "¿Cómo ayuda la observación al diseño de nuevas situaciones didácticas?", "model": "La información observada permite identificar necesidades y estrategias de los alumnos y ajustar nuevas actividades de enseñanza.", "keywords": ["ajustar", "actividades", "necesidades"]}, {"id": 42, "level": 2, "type": "mcq", "prompt": "Mediante la observación el profesor puede descubrir que:", "options": ["Todos aprenden de la misma manera.", "Los alumnos emplean estrategias diferentes.", "Sólo existe una estrategia correcta.", "El aprendizaje depende únicamente del profesor."], "answer": "Los alumnos emplean estrategias diferentes."}, {"id": 43, "level": 2, "type": "open", "prompt": "Explica qué significa que los aprendizajes se integran de formas diferentes.", "model": "Significa que cada alumno relaciona, interpreta y utiliza lo aprendido de manera particular, recurriendo a estrategias distintas.", "keywords": ["cada alumno", "diferentes", "estrategias"]}, {"id": 44, "level": 2, "type": "open", "prompt": "Ana resuelve una operación mentalmente y Pedro utiliza dibujos. Ambos obtienen la respuesta correcta. ¿Qué idea del artículo ejemplifica esta situación?", "model": "Que los alumnos pueden usar estrategias diferentes e integrar un mismo aprendizaje de maneras distintas.", "keywords": ["estrategias", "diferentes"]}, {"id": 45, "level": 2, "type": "mcq", "prompt": "Para conocer ciertas capacidades de un estudiante puede utilizarse:", "options": ["Observación individual.", "Únicamente observación grupal.", "Solamente un examen.", "Ninguna observación."], "answer": "Observación individual."}, {"id": 46, "level": 2, "type": "open", "prompt": "¿Cuándo sería apropiada una observación grupal?", "model": "Cuando interesa conocer características, competencias o comportamientos del grupo para ajustar la enseñanza al conjunto de la clase.", "keywords": ["grupo", "ajustar"]}, {"id": 47, "level": 2, "type": "open", "prompt": "¿Cómo puede una observación grupal ayudar a ajustar la enseñanza?", "model": "Permite identificar características y necesidades compartidas del grupo y adaptar inicialmente la enseñanza a ellas.", "keywords": ["necesidades", "grupo", "adaptar"]}, {"id": 48, "level": 2, "type": "open", "prompt": "¿Qué diferencia existe entre un ajuste dirigido al grupo y uno individualizado?", "model": "El ajuste grupal responde a necesidades generales de la clase; el individualizado atiende características particulares de un alumno.", "keywords": ["grupo", "individual"]}, {"id": 49, "level": 2, "type": "mcq", "prompt": "La elección entre observación grupal e individual depende principalmente:", "options": ["De la edad del profesor.", "De la finalidad de la observación.", "Del número de materias.", "Del horario escolar."], "answer": "De la finalidad de la observación."}, {"id": 50, "level": 2, "type": "fill", "prompt": "La observación puede ser __________ o sistemática.", "model": "accidental", "keywords": ["accidental"]}, {"id": 51, "level": 2, "type": "open", "prompt": "Define observación accidental.", "model": "Es la recogida de información anecdótica en el momento en que ocurre un hecho, sin una planificación sistemática previa.", "keywords": ["anecdótica", "momento"]}, {"id": 52, "level": 2, "type": "mcq", "prompt": "Una característica problemática de la información accidental es que puede ser:", "options": ["Siempre objetiva.", "Fragmentaria y puntual.", "Demasiado científica.", "Siempre completa."], "answer": "Fragmentaria y puntual."}, {"id": 53, "level": 2, "type": "open", "prompt": "¿Por qué los acontecimientos más llamativos pueden recibir demasiada importancia?", "model": "Porque la observación accidental tiende a registrar lo excepcional, lo que puede deformar la importancia real de lo observado.", "keywords": ["llamativos", "excepcional", "deformar"]}, {"id": 54, "level": 2, "type": "open", "prompt": "¿Qué riesgo representan los prejuicios del observador?", "model": "Pueden influir en qué se registra y cómo se interpreta, reduciendo la objetividad de la observación.", "keywords": ["prejuicios", "objetividad"]}, {"id": 55, "level": 2, "type": "mcq", "prompt": "La observación sistemática pretende superar las limitaciones de:", "options": ["La observación participante.", "La accidental.", "La indirecta.", "La grupal."], "answer": "La accidental."}, {"id": 56, "level": 2, "type": "open", "prompt": "¿Cuál es la principal diferencia entre observación accidental y sistemática?", "model": "La sistemática se planifica previamente con objetivos, sujetos, contexto e instrumentos; la accidental surge en el momento sin esa planificación.", "keywords": ["planificación", "sistemática", "accidental"]}, {"id": 57, "level": 2, "type": "open", "prompt": "Un profesor ve una pelea aislada y concluye inmediatamente que un estudiante es agresivo. ¿Qué problema metodológico encuentras?", "model": "Generaliza a partir de un hecho aislado y convierte una observación puntual en una interpretación sin suficiente evidencia.", "keywords": ["aislado", "generaliza", "interpretación"]}, {"id": 58, "level": 2, "type": "open", "prompt": "¿Qué tendría que hacer el profesor antes de llegar a esa conclusión?", "model": "Observar de manera sistemática en distintos momentos y contextos, registrar hechos objetivos y considerar otras fuentes.", "keywords": ["sistemática", "contextos", "registrar"]}, {"id": 59, "level": 2, "type": "open", "prompt": "¿Por qué observar repetidamente puede proporcionar información más útil que observar un solo acontecimiento?", "model": "Porque permite identificar patrones habituales y reducir el peso de hechos excepcionales.", "keywords": ["patrones", "habituales"]}, {"id": 60, "level": 2, "type": "open", "prompt": "En máximo 80 palabras, explica por qué la observación puede contribuir a comprender cómo aprende un estudiante.", "model": "La observación permite ver cómo el alumno interpreta, relaciona y utiliza lo aprendido, qué estrategias emplea y cómo responde ante problemas reales del aula. Esa información complementa las pruebas y ayuda al docente a ajustar la enseñanza.", "keywords": ["estrategias", "aprendizaje", "ajustar"]}, {"id": 61, "level": 3, "type": "order", "prompt": "Ordena los elementos básicos de una planificación de la observación.", "items": ["Qué se va a observar", "A quién se va a observar", "Dónde y cuándo se va a observar", "Cómo se va a observar", "Quién va a observar", "Para qué se va a observar"], "answer": ["Qué se va a observar", "A quién se va a observar", "Dónde y cuándo se va a observar", "Cómo se va a observar", "Quién va a observar", "Para qué se va a observar"]}, {"id": 62, "level": 3, "type": "open", "prompt": "¿Qué significa decidir “qué se va a observar”?", "model": "Definir con claridad las capacidades, conductas o aspectos concretos que serán objeto de observación.", "keywords": ["definir", "aspectos"]}, {"id": 63, "level": 3, "type": "mcq", "prompt": "Mientras más claro tenga el profesor lo que desea observar:", "options": ["Menos necesitará observar.", "Mejor podrá realizar la actividad.", "Más subjetivo será.", "Menos información obtendrá."], "answer": "Mejor podrá realizar la actividad."}, {"id": 64, "level": 3, "type": "multi", "prompt": "¿Cuáles aparecen como capacidades motrices susceptibles de observación?", "options": ["Esquema corporal", "Orientación espacio-temporal", "Psicomotricidad gruesa", "Psicomotricidad fina", "Lateralidad"], "answers": ["Esquema corporal", "Orientación espacio-temporal", "Psicomotricidad gruesa", "Psicomotricidad fina", "Lateralidad"]}, {"id": 65, "level": 3, "type": "open", "prompt": "Menciona tres aspectos relacionados con el equilibrio personal que puedan observarse.", "model": "Autoestima, confianza, equilibrio emocional, actitudes básicas ante la vida o capacidad de resistir frustraciones.", "keywords": ["autoestima", "confianza", "emocional"]}, {"id": 66, "level": 3, "type": "mcq", "prompt": "¿Cuál aparece expresamente en el documento como aspecto de equilibrio personal?", "options": ["Autoestima.", "Nivel económico.", "Preferencia musical.", "Profesión de los padres."], "answer": "Autoestima."}, {"id": 67, "level": 3, "type": "short", "prompt": "¿Qué significa decidir “a quién se va a observar”?", "model": "Determinar si se observará a un alumno, varios, un grupo de trabajo o toda la clase.", "keywords": ["alumno", "grupo"]}, {"id": 68, "level": 3, "type": "multi", "prompt": "El docente podría observar:", "options": ["Un alumno", "Varios alumnos", "Un grupo de trabajo", "Toda la clase"], "answers": ["Un alumno", "Varios alumnos", "Un grupo de trabajo", "Toda la clase"]}, {"id": 69, "level": 3, "type": "open", "prompt": "Una maestra quiere estudiar cómo colaboran cuatro estudiantes durante un proyecto. ¿A quién debería definir como objeto de observación?", "model": "Al grupo de trabajo formado por esos cuatro estudiantes.", "keywords": ["grupo", "cuatro"]}, {"id": 70, "level": 3, "type": "open", "prompt": "¿Por qué debe calcularse el tiempo disponible?", "model": "Porque una observación sistemática requiere prever cuánto tiempo necesita cada situación y organizar adecuadamente el registro.", "keywords": ["tiempo", "planificar"]}, {"id": 71, "level": 3, "type": "short", "prompt": "¿Qué significa decidir “dónde y cuándo observar”?", "model": "Elegir el lugar y el momento de la actividad en que se realizará la observación.", "keywords": ["lugar", "momento"]}, {"id": 72, "level": 3, "type": "multi", "prompt": "¿Qué contextos menciona el documento?", "options": ["Aula", "Recreo", "Excursión", "Entrada al patio"], "answers": ["Aula", "Recreo", "Excursión", "Entrada al patio"]}, {"id": 73, "level": 3, "type": "open", "prompt": "Si queremos observar cómo interactúan espontáneamente los estudiantes, ¿qué contexto escolar elegirías y por qué?", "model": "Por ejemplo, el recreo o una actividad grupal natural, porque permite observar interacciones espontáneas sin crear una situación artificial.", "keywords": ["recreo", "espontánea"]}, {"id": 74, "level": 3, "type": "open", "prompt": "¿Por qué no todos los momentos son igualmente adecuados para observar?", "model": "Porque la conducta que interesa puede manifestarse mejor en ciertos contextos y actividades que en otros.", "keywords": ["contexto", "conducta"]}, {"id": 75, "level": 3, "type": "mcq", "prompt": "Los datos obtenidos mediante observación deben interpretarse teniendo en cuenta:", "options": ["El contexto.", "Sólo la edad.", "La calificación.", "Únicamente la asignatura."], "answer": "El contexto."}, {"id": 76, "level": 3, "type": "open", "prompt": "Un niño permanece callado durante una actividad individual. ¿Podemos concluir únicamente con ese dato que tiene dificultades para relacionarse? Justifica.", "model": "No. Esa conducta ocurre en un contexto individual y no es suficiente para inferir cómo se relaciona socialmente; habría que observarlo en situaciones de interacción.", "keywords": ["no", "contexto", "interacción"]}, {"id": 77, "level": 3, "type": "open", "prompt": "¿Por qué debe registrarse el contexto junto con la conducta?", "model": "Porque la información sólo puede valorarse adecuadamente conociendo las circunstancias en las que fue obtenida.", "keywords": ["contexto", "valorar"]}, {"id": 78, "level": 3, "type": "short", "prompt": "¿Qué significa decidir “cómo observar”?", "model": "Seleccionar la forma y los instrumentos con los que se registrará la información.", "keywords": ["instrumentos", "registrar"]}, {"id": 79, "level": 3, "type": "multi", "prompt": "Identifica instrumentos mencionados por el documento:", "options": ["Grabaciones", "Diarios de clase", "Listas de control", "Fichas de seguimiento", "Anecdotarios", "Escalas de observación"], "answers": ["Grabaciones", "Diarios de clase", "Listas de control", "Fichas de seguimiento", "Anecdotarios", "Escalas de observación"]}, {"id": 80, "level": 3, "type": "open", "prompt": "¿Por qué el instrumento debe corresponder con aquello que se pretende evaluar?", "model": "Porque cada instrumento recoge información distinta y debe responder al objetivo y a los aspectos definidos en la guía de observación.", "keywords": ["objetivo", "instrumento"]}, {"id": 81, "level": 3, "type": "mcq", "prompt": "Generalmente, ¿quién realiza la observación?", "options": ["El propio profesor.", "El estudiante.", "El director exclusivamente.", "Una persona externa obligatoriamente."], "answer": "El propio profesor."}, {"id": 82, "level": 3, "type": "open", "prompt": "¿Puede observar un profesor tutor mientras otro docente coordina una actividad? Explica.", "model": "Sí. El documento contempla que un profesor tutor observe mientras un profesor especialista coordina la actividad docente.", "keywords": ["sí", "tutor", "especialista"]}, {"id": 83, "level": 3, "type": "short", "prompt": "¿Qué otros profesionales menciona el artículo como posibles observadores?", "model": "El orientador, el profesor de Pedagogía Terapéutica o de apoyo, además de otros profesores.", "keywords": ["orientador", "apoyo"]}, {"id": 84, "level": 3, "type": "tf", "prompt": "El profesor puede pedir a los padres que realicen una observación en el hogar.", "answer": true}, {"id": 85, "level": 3, "type": "open", "prompt": "Explica por qué la participación de los padres puede aportar información útil.", "model": "Porque permite observar conductas del alumno en otro contexto natural y complementar la información obtenida en la escuela.", "keywords": ["hogar", "contexto", "complementar"]}, {"id": 86, "level": 3, "type": "short", "prompt": "¿Qué significa decidir “para qué se va a observar”?", "model": "Definir la finalidad u objetivo que guiará y orientará todo el proceso de observación.", "keywords": ["finalidad", "objetivo"]}, {"id": 87, "level": 3, "type": "mcq", "prompt": "¿Qué elemento guía y orienta la observación?", "options": ["La finalidad.", "La duración de la clase.", "El número de alumnos.", "La asignatura."], "answer": "La finalidad."}, {"id": 88, "level": 3, "type": "open", "prompt": "¿Por qué observar sin un “para qué” puede convertirse en una pérdida de tiempo?", "model": "Porque sin una finalidad clara no se sabe qué información es relevante ni cómo utilizarla posteriormente.", "keywords": ["finalidad", "información"]}, {"id": 89, "level": 3, "type": "open", "prompt": "¿Por qué el aula es considerada un contexto privilegiado de observación?", "model": "Porque es el contexto didáctico habitual y permite acceder fácilmente a los procesos de enseñanza y aprendizaje.", "keywords": ["aula", "enseñanza", "aprendizaje"]}, {"id": 90, "level": 3, "type": "open", "prompt": "Formula un objetivo concreto de observación que un docente podría utilizar en una clase.", "model": "Ejemplo: observar durante una actividad grupal si los alumnos respetan turnos, colaboran y explican sus procedimientos.", "keywords": ["observar", "actividad"]}, {"id": 91, "level": 4, "type": "mcq", "prompt": "¿Qué recoge un cuestionario de observación?", "options": ["Aspectos que interesan al profesor.", "Calificaciones exclusivamente.", "Sólo datos familiares.", "Únicamente respuestas del alumno."], "answer": "Aspectos que interesan al profesor."}, {"id": 92, "level": 4, "type": "open", "prompt": "Explica con tus palabras para qué sirve un cuestionario de observación.", "model": "Sirve para organizar en forma de preguntas los aspectos que el profesor desea conocer mediante la observación.", "keywords": ["preguntas", "aspectos"]}, {"id": 93, "level": 4, "type": "short", "prompt": "¿Qué es un guion de observación?", "model": "Es un esquema organizado de todos los puntos que se quieren observar.", "keywords": ["esquema", "puntos"]}, {"id": 94, "level": 4, "type": "mcq", "prompt": "¿Qué instrumento organiza todos los puntos que se quieren observar?", "options": ["Guion de observación.", "Examen.", "Escala numérica.", "Entrevista."], "answer": "Guion de observación."}, {"id": 95, "level": 4, "type": "short", "prompt": "¿Qué es una lista de control?", "model": "Es una enumeración de rasgos o conductas cuya presencia o ausencia se desea constatar.", "keywords": ["presencia", "ausencia"]}, {"id": 96, "level": 4, "type": "mcq", "prompt": "Una lista de control permite principalmente registrar:", "options": ["Presencia o ausencia.", "Una explicación extensa.", "Opiniones de los padres.", "Calificaciones finales."], "answer": "Presencia o ausencia."}, {"id": 97, "level": 4, "type": "mcq", "prompt": "Queremos saber si un alumno “levanta la mano antes de hablar”. ¿Qué instrumento sería apropiado?", "options": ["Lista de control.", "Ensayo.", "Entrevista abierta.", "Examen escrito."], "answer": "Lista de control."}, {"id": 98, "level": 4, "type": "open", "prompt": "Queremos registrar si un alumno entrega materiales, respeta turnos y colabora con compañeros. ¿Qué instrumento utilizarías y por qué?", "model": "Una lista de control, porque permite constatar la presencia o ausencia de cada conducta definida.", "keywords": ["lista de control", "presencia", "ausencia"]}, {"id": 99, "level": 4, "type": "short", "prompt": "¿Qué es una escala de estimación?", "model": "Es una enumeración de aspectos o rasgos que admiten una valoración o graduación durante la observación.", "keywords": ["valoración", "graduación"]}, {"id": 100, "level": 4, "type": "mcq", "prompt": "La escala de estimación permite:", "options": ["Sólo sí/no.", "Una valoración o graduación.", "Únicamente texto libre.", "Sólo fotografías."], "answer": "Una valoración o graduación."}, {"id": 101, "level": 4, "type": "open", "prompt": "Explica la diferencia entre lista de control y escala de estimación.", "model": "La lista de control registra presencia o ausencia; la escala de estimación permite graduar o valorar el nivel de una conducta o rasgo.", "keywords": ["presencia", "ausencia", "graduar"]}, {"id": 102, "level": 4, "type": "mcq", "prompt": "Se quiere valorar la participación como “nunca, algunas veces, frecuentemente, siempre”. ¿Qué instrumento corresponde?", "options": ["Escala de estimación.", "Lista de control.", "Cuestionario escrito al alumno.", "Examen."], "answer": "Escala de estimación."}, {"id": 103, "level": 4, "type": "mcq", "prompt": "Se quiere saber solamente si una conducta ocurrió o no ocurrió. ¿Qué instrumento corresponde?", "options": ["Lista de control.", "Escala de estimación.", "Ensayo.", "Entrevista."], "answer": "Lista de control."}, {"id": 104, "level": 4, "type": "open", "prompt": "Diseña tres indicadores para una lista de control sobre trabajo colaborativo.", "model": "Ejemplo: respeta turnos de participación; comparte materiales; contribuye a la tarea del equipo.", "keywords": ["turnos", "materiales", "equipo"]}, {"id": 105, "level": 4, "type": "open", "prompt": "Escribe una pregunta que podría formar parte de un cuestionario de observación.", "model": "Ejemplo: ¿El alumno solicita ayuda cuando encuentra una dificultad?", "keywords": ["alumno"]}, {"id": 106, "level": 4, "type": "open", "prompt": "Escribe tres puntos que incluirías en un guion para observar participación en clase.", "model": "Ejemplo: frecuencia de participaciones, respeto de turnos y pertinencia de las intervenciones.", "keywords": ["participación", "turnos"]}, {"id": 107, "level": 4, "type": "open", "prompt": "Una maestra quiere observar autoestima y confianza. ¿Por qué una simple prueba escrita podría ser insuficiente?", "model": "Porque esos aspectos se manifiestan en conductas y situaciones reales y no siempre pueden inferirse adecuadamente de una respuesta escrita.", "keywords": ["conductas", "situaciones"]}, {"id": 108, "level": 4, "type": "open", "prompt": "¿Por qué diferentes objetivos pueden necesitar diferentes instrumentos?", "model": "Porque cada objetivo exige observar y registrar tipos de información distintos; el instrumento debe corresponder a la finalidad.", "keywords": ["objetivo", "instrumento"]}, {"id": 109, "level": 4, "type": "mcq", "prompt": "Según el artículo, los instrumentos deberían responder directamente, en muchas ocasiones, a:", "options": ["La programación del aula.", "Las preferencias del director.", "La duración del ciclo escolar.", "La cantidad de exámenes."], "answer": "La programación del aula."}, {"id": 110, "level": 4, "type": "open", "prompt": "¿Por qué el profesor puede elaborar sus propios instrumentos?", "model": "Porque conoce la programación, las unidades didácticas y los aspectos específicos que necesita observar.", "keywords": ["programación", "aspectos"]}, {"id": 111, "level": 4, "type": "open", "prompt": "¿Qué ventaja ofrece elaborar instrumentos en equipo?", "model": "Las aportaciones de otros enriquecen el instrumento, mejoran el resultado y ayudan a reducir la parcialidad.", "keywords": ["equipo", "enriquece", "parcialidad"]}, {"id": 112, "level": 4, "type": "open", "prompt": "Dos profesores observan al mismo estudiante y posteriormente comparan sus registros. ¿Qué beneficio podría tener?", "model": "Permite contrastar perspectivas, detectar coincidencias y reducir interpretaciones demasiado parciales.", "keywords": ["comparar", "perspectivas"]}, {"id": 113, "level": 4, "type": "open", "prompt": "¿Cómo puede reducirse la parcialidad mediante el trabajo colaborativo?", "model": "Contrastando registros, criterios e interpretaciones entre varios observadores para no depender de una sola perspectiva.", "keywords": ["contrastar", "observadores"]}, {"id": 114, "level": 4, "type": "open", "prompt": "Jennifer debe observar la participación de un grupo durante 20 minutos. Diseña cuatro indicadores observables.", "model": "Ejemplo: número de intervenciones pertinentes; respeto de turnos; respuesta a compañeros; aportación de ideas al trabajo.", "keywords": ["turnos", "ideas", "intervenciones"]}, {"id": 115, "level": 4, "type": "open", "prompt": "¿Qué instrumento escogerías para los indicadores anteriores y por qué?", "model": "Podría usarse una lista de control si interesa presencia/ausencia, o una escala de estimación si se desea valorar frecuencia o grado.", "keywords": ["lista", "escala"]}, {"id": 116, "level": 4, "type": "open", "prompt": "Crea una escala de cuatro niveles para valorar participación.", "model": "Ejemplo: 1 Nunca, 2 A veces, 3 Frecuentemente, 4 Siempre.", "keywords": ["nunca", "siempre"]}, {"id": 117, "level": 4, "type": "open", "prompt": "Escribe dos conductas que deberían registrarse objetivamente sin interpretarlas.", "model": "Ejemplo: 'levantó la mano tres veces' y 'entregó la actividad al terminar el tiempo'.", "keywords": ["conducta"]}, {"id": 118, "level": 4, "type": "open", "prompt": "¿Qué diferencia existe entre registrar “María habló tres veces durante la actividad” y “María es muy participativa”?", "model": "La primera es una descripción observable y cuantificable; la segunda es una interpretación o valoración.", "keywords": ["descripción", "interpretación"]}, {"id": 119, "level": 4, "type": "open", "prompt": "¿Cuál de las dos afirmaciones anteriores es más descriptiva? Explica.", "model": "“María habló tres veces durante la actividad”, porque describe un hecho observable sin atribuirle una cualidad general.", "keywords": ["tres veces", "hecho"]}, {"id": 120, "level": 4, "type": "open", "prompt": "Explica cómo la selección correcta de un instrumento puede mejorar la calidad de una observación.", "model": "Ayuda a registrar de forma ordenada la información relevante para el objetivo y facilita un análisis más consistente.", "keywords": ["registrar", "objetivo", "análisis"]}, {"id": 121, "level": 5, "type": "open", "prompt": "Jennifer observa durante cinco minutos que un niño no participa y concluye: “No le interesa aprender”. ¿Qué errores encuentras?", "model": "La observación es demasiado breve, se generaliza desde un solo momento y se confunde una conducta observada con una interpretación sobre la motivación.", "keywords": ["breve", "generaliza", "interpretación"]}, {"id": 122, "level": 5, "type": "open", "prompt": "¿Qué información adicional necesitaría Jennifer antes de formular una conclusión?", "model": "Observaciones en distintos momentos y contextos, registros de conductas específicas y, si procede, información de otros docentes o familiares.", "keywords": ["momentos", "contextos", "registros"]}, {"id": 123, "level": 5, "type": "open", "prompt": "Durante el recreo, un estudiante que casi nunca habla en clase conversa y organiza un juego. ¿Qué demuestra esto sobre la importancia del contexto?", "model": "Que la conducta puede variar según la situación y que una conclusión sobre el alumno debe considerar diferentes contextos.", "keywords": ["contexto", "varía"]}, {"id": 124, "level": 5, "type": "open", "prompt": "¿Por qué sería incorrecto describir al estudiante simplemente como “poco sociable”?", "model": "Porque esa etiqueta generaliza a partir de un contexto limitado y no coincide con su conducta observada en otras situaciones.", "keywords": ["generaliza", "contexto"]}, {"id": 125, "level": 5, "type": "open", "prompt": "Una profesora quiere conocer el nivel de colaboración de sus alumnos. Formula un objetivo de observación adecuado.", "model": "Ejemplo: observar durante una actividad grupal la frecuencia con que los alumnos comparten materiales, respetan turnos y ayudan a sus compañeros.", "keywords": ["actividad grupal", "colaboración"]}, {"id": 126, "level": 5, "type": "open", "prompt": "Para el caso anterior, ¿a quién observarías?", "model": "A los alumnos que participan en el grupo o grupos definidos para la actividad.", "keywords": ["alumnos", "grupo"]}, {"id": 127, "level": 5, "type": "open", "prompt": "Para el caso anterior, ¿dónde observarías?", "model": "En el aula u otro espacio natural donde se realice la actividad colaborativa.", "keywords": ["aula", "natural"]}, {"id": 128, "level": 5, "type": "open", "prompt": "Para el caso anterior, ¿cuándo observarías?", "model": "Durante una actividad en la que los alumnos necesiten colaborar de manera real.", "keywords": ["actividad", "colaborar"]}, {"id": 129, "level": 5, "type": "open", "prompt": "Para el caso anterior, ¿cómo observarías?", "model": "Con una guía y un instrumento previamente definido, registrando conductas observables sin interrumpir innecesariamente la actividad.", "keywords": ["instrumento", "conductas"]}, {"id": 130, "level": 5, "type": "open", "prompt": "¿Qué instrumento seleccionarías para observar colaboración?", "model": "Una lista de control o una escala de estimación, según si interesa presencia/ausencia o grado/frecuencia.", "keywords": ["lista de control", "escala"]}, {"id": 131, "level": 5, "type": "open", "prompt": "Escribe cinco indicadores observables para evaluar colaboración.", "model": "Ejemplo: comparte materiales; escucha a compañeros; respeta turnos; aporta ideas; ayuda a completar la tarea.", "keywords": ["materiales", "turnos", "ideas"]}, {"id": 132, "level": 5, "type": "open", "prompt": "Un profesor únicamente recuerda las conductas negativas más llamativas de un estudiante. ¿Con qué limitación de la observación accidental se relaciona?", "model": "Con la tendencia a registrar acontecimientos excepcionales o llamativos y darles una importancia desproporcionada.", "keywords": ["llamativos", "accidental"]}, {"id": 133, "level": 5, "type": "open", "prompt": "¿Cómo podría corregir ese problema?", "model": "Planificando observaciones sistemáticas, registrando conductas habituales en distintos momentos y usando criterios definidos.", "keywords": ["sistemática", "criterios"]}, {"id": 134, "level": 5, "type": "open", "prompt": "Dos alumnos realizan correctamente una actividad utilizando procedimientos distintos. ¿Qué debería aprender el docente de esta observación?", "model": "Que los estudiantes pueden usar estrategias diferentes e integrar el aprendizaje de formas distintas.", "keywords": ["estrategias", "diferentes"]}, {"id": 135, "level": 5, "type": "open", "prompt": "¿Cómo puede esta información modificar la enseñanza posterior?", "model": "Puede llevar al docente a ofrecer distintas estrategias, ejemplos o apoyos y diseñar situaciones didácticas más flexibles.", "keywords": ["estrategias", "didácticas"]}, {"id": 136, "level": 5, "type": "open", "prompt": "Una niña cambia inmediatamente su comportamiento cuando entra una persona a observar la clase. ¿Qué problema descrito por Webscolar aparece?", "model": "La alteración de la conducta por sentirse observada, una limitación de la observación directa abierta.", "keywords": ["altera", "conducta", "abierta"]}, {"id": 137, "level": 5, "type": "open", "prompt": "¿Por qué ese cambio puede afectar la confiabilidad de la información?", "model": "Porque la conducta registrada puede no representar el comportamiento habitual del estudiante.", "keywords": ["habitual", "confiabilidad"]}, {"id": 138, "level": 5, "type": "open", "prompt": "Un profesor observa una conducta y consulta posteriormente a otros maestros que trabajan con el mismo alumno. ¿Qué recomendación del documento está aplicando?", "model": "Tener en cuenta los resultados obtenidos por otros maestros y complementar la observación con otras fuentes.", "keywords": ["otros maestros", "resultados"]}, {"id": 139, "level": 5, "type": "open", "prompt": "¿Por qué las observaciones de otros profesores pueden enriquecer el análisis?", "model": "Porque aportan información de otros momentos y contextos y permiten contrastar interpretaciones.", "keywords": ["contextos", "contrastar"]}, {"id": 140, "level": 5, "type": "open", "prompt": "¿Por qué deben evitarse las generalizaciones anticipadas?", "model": "Porque una observación aislada puede no representar el patrón habitual y una conclusión apresurada puede ser incorrecta.", "keywords": ["aislada", "apresurada"]}, {"id": 141, "level": 5, "type": "open", "prompt": "Un profesor escribe: “Pedro es flojo”. Convierte esa interpretación en una descripción de una conducta observable.", "model": "Ejemplo: “Pedro no inició la actividad durante los primeros diez minutos y no entregó el ejercicio al finalizar el tiempo”.", "keywords": ["no inició", "no entregó"]}, {"id": 142, "level": 5, "type": "open", "prompt": "Convierte “Ana es distraída” en dos posibles indicadores observables.", "model": "Ejemplo: desvía la mirada de la tarea durante periodos prolongados; necesita repetir instrucciones antes de comenzar.", "keywords": ["instrucciones", "tarea"]}, {"id": 143, "level": 5, "type": "open", "prompt": "Convierte “Carlos trabaja muy bien con los demás” en tres conductas observables.", "model": "Ejemplo: escucha a compañeros, respeta turnos y contribuye con ideas o materiales al equipo.", "keywords": ["escucha", "turnos", "equipo"]}, {"id": 144, "level": 5, "type": "open", "prompt": "¿Puede una observación ser completamente útil si no se establece previamente un objetivo? Argumenta de acuerdo con el artículo.", "model": "No de manera sistemática. El artículo sostiene que la finalidad guía y orienta la observación; sin ella es difícil decidir qué registrar y para qué usarlo.", "keywords": ["finalidad", "orienta"]}, {"id": 145, "level": 5, "type": "open", "prompt": "¿Por qué observar no es sinónimo de evaluar automáticamente?", "model": "Porque observar produce información; para evaluar es necesario registrarla, analizarla e interpretarla con una finalidad y criterios.", "keywords": ["registrar", "analizar", "criterios"]}, {"id": 146, "level": 5, "type": "open", "prompt": "Explica la relación entre observación → registro → análisis → evaluación → mejora.", "model": "Se observa una situación, se registran datos relevantes, se analizan con criterios, se utilizan para evaluar y finalmente se toman decisiones destinadas a mejorar la actividad educativa.", "keywords": ["registro", "análisis", "evaluación", "mejora"]}, {"id": 147, "level": 5, "type": "open", "prompt": "¿Cómo puede la observación ayudar a un docente a mejorar su propia práctica y no solamente evaluar al estudiante?", "model": "Permite identificar cómo responden los alumnos a las actividades y ajustar estrategias, situaciones didácticas y decisiones de enseñanza.", "keywords": ["ajustar", "enseñanza"]}, {"id": 148, "level": 5, "type": "essay", "prompt": "En 100–150 palabras: ¿Por qué la observación debe considerarse una competencia profesional docente?", "model": "La respuesta debe integrar planificación, objetividad, registro sistemático, comprensión del alumno y uso de la información para mejorar la enseñanza.", "keywords": ["planificación", "objetividad", "registro", "mejorar"], "minWords": 100, "maxWords": 150}, {"id": 149, "level": 5, "type": "essay", "prompt": "En 100–150 palabras: ¿Cuál es la importancia de observar a los estudiantes en situaciones naturales de aprendizaje?", "model": "La respuesta debe explicar que los contextos naturales permiten observar conductas, estrategias y relaciones de manera contextualizada y útil para la enseñanza.", "keywords": ["naturales", "contexto", "estrategias"], "minWords": 100, "maxWords": 150}, {"id": 150, "level": 5, "type": "essay", "prompt": "En 200–250 palabras: Después de estudiar el artículo de Webscolar, ¿cómo aplicarías correctamente la técnica de observación en una situación educativa real desde su planificación hasta el análisis de los resultados?", "model": "La respuesta debe considerar qué, a quién, dónde/cuándo, cómo, quién y para qué observar; selección de instrumentos; registro objetivo; análisis contextualizado y uso de resultados para mejorar.", "keywords": ["qué", "quién", "cómo", "para qué", "instrumento", "registro", "análisis", "mejora"], "minWords": 200, "maxWords": 250}];
+
+const TYPE_NAMES = {
+  mcq:"Opción múltiple",
+  multi:"Selección múltiple",
+  tf:"Verdadero / Falso",
+  open:"Respuesta abierta",
+  short:"Respuesta breve",
+  fill:"Completar",
+  order:"Ordenar",
+  essay:"Ensayo breve"
+};
+
+const LEVEL_NAMES = {
+  1:"Comprensión directa",
+  2:"Comprensión e interpretación",
+  3:"Planificación de la observación",
+  4:"Instrumentos y decisiones",
+  5:"Aplicación profesional"
+};
+
+const STORAGE_KEY = "lab_observacion_webscolar_150_v1";
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"current":1,"answers":{},"shuffles":{}}');
+let current = Math.min(150, Math.max(1, state.current || 1));
+
+function save(){ state.current=current; localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+function shuffledOptions(q){
+  if(!state.shuffles[q.id]){
+    const arr = [...q.options];
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+    state.shuffles[q.id]=arr;
+    save();
+  }
+  return state.shuffles[q.id];
+}
+
+function escapeHtml(s){
+  return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function getQ(){ return QUESTIONS[current-1]; }
+
+function renderLevels(){
+  const box=document.getElementById("levelButtons"); box.innerHTML="";
+  for(let i=1;i<=5;i++){
+    const b=document.createElement("button");
+    b.className="levelBtn"+(getQ().level===i?" active":"");
+    b.textContent=`Nivel ${i} · ${LEVEL_NAMES[i]}`;
+    b.onclick=()=>{ current=(i-1)*30+1; render(); };
+    box.appendChild(b);
+  }
+}
+
+function renderGrid(){
+  const grid=document.getElementById("qgrid"); grid.innerHTML="";
+  QUESTIONS.forEach(q=>{
+    const b=document.createElement("button");
+    b.className="qdot"+(state.answers[q.id]?" done":"")+(q.id===current?" current":"");
+    b.textContent=q.id;
+    b.title=`Pregunta ${q.id}`;
+    b.onclick=()=>{current=q.id;render()};
+    grid.appendChild(b);
+  });
+}
+
+function restoreOpen(q){
+  const a=state.answers[q.id];
+  return a && a.value ? a.value : "";
+}
+
+function renderAnswerArea(q){
+  const area=document.getElementById("answerArea"); area.innerHTML="";
+  const saved=state.answers[q.id];
+
+  if(q.type==="mcq"){
+    const wrap=document.createElement("div"); wrap.className="options";
+    shuffledOptions(q).forEach((opt,idx)=>{
+      const lab=document.createElement("label"); lab.className="option";
+      const checked=saved && saved.value===opt ? "checked":"";
+      lab.innerHTML=`<input type="radio" name="mcq" value="${escapeHtml(opt)}" ${checked}><div><b>${String.fromCharCode(65+idx)}.</b> ${escapeHtml(opt)}</div>`;
+      wrap.appendChild(lab);
+    });
+    area.appendChild(wrap);
+  } else if(q.type==="multi"){
+    const wrap=document.createElement("div"); wrap.className="options";
+    const opts=shuffledOptions(q);
+    opts.forEach(opt=>{
+      const checked=saved && Array.isArray(saved.value) && saved.value.includes(opt) ? "checked":"";
+      const lab=document.createElement("label"); lab.className="option";
+      lab.innerHTML=`<input type="checkbox" value="${escapeHtml(opt)}" ${checked}><div>${escapeHtml(opt)}</div>`;
+      wrap.appendChild(lab);
+    }); area.appendChild(wrap);
+  } else if(q.type==="tf"){
+    const opts=[{v:"true",t:"Verdadero"},{v:"false",t:"Falso"}];
+    const wrap=document.createElement("div"); wrap.className="options";
+    opts.forEach(x=>{
+      const checked=saved && String(saved.value)===x.v ? "checked":"";
+      const lab=document.createElement("label"); lab.className="option";
+      lab.innerHTML=`<input type="radio" name="tf" value="${x.v}" ${checked}><div>${x.t}</div>`;
+      wrap.appendChild(lab);
+    }); area.appendChild(wrap);
+  } else if(q.type==="order"){
+    const arr=(saved && Array.isArray(saved.value)) ? [...saved.value] : [...q.items];
+    const list=document.createElement("div"); list.className="orderList"; list.id="orderList";
+    arr.forEach((item,idx)=>{
+      const row=document.createElement("div"); row.className="orderRow"; row.dataset.item=item;
+      row.innerHTML=`<b>${idx+1}</b><span>${escapeHtml(item)}</span><button type="button" onclick="moveOrder(${idx},-1)">↑</button><button type="button" onclick="moveOrder(${idx},1)">↓</button>`;
+      list.appendChild(row);
+    });
+    area.appendChild(list);
+  } else {
+    if(q.type==="short" || q.type==="fill"){
+      const input=document.createElement("input"); input.className="textInput"; input.id="textAnswer"; input.value=restoreOpen(q); input.placeholder="Escribe tu respuesta...";
+      area.appendChild(input);
+    } else {
+      const ta=document.createElement("textarea"); ta.id="textAnswer"; ta.value=restoreOpen(q); ta.placeholder="Escribe aquí tu respuesta...";
+      area.appendChild(ta);
+      const c=document.createElement("div"); c.className="counter"; c.id="wordCounter"; area.appendChild(c);
+      ta.addEventListener("input",updateCounter); updateCounter();
+    }
+  }
+}
+
+function moveOrder(idx,delta){
+  const list=document.getElementById("orderList");
+  const rows=[...list.children];
+  const target=idx+delta;
+  if(target<0||target>=rows.length) return;
+  if(delta<0) list.insertBefore(rows[idx],rows[target]);
+  else list.insertBefore(rows[target],rows[idx]);
+  [...list.children].forEach((r,i)=>{r.children[0].textContent=i+1; r.children[2].setAttribute("onclick",`moveOrder(${i},-1)`); r.children[3].setAttribute("onclick",`moveOrder(${i},1)`)});
+}
+
+function updateCounter(){
+  const ta=document.getElementById("textAnswer"), c=document.getElementById("wordCounter");
+  if(!ta||!c)return;
+  const words=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;
+  const q=getQ();
+  c.textContent=q.type==="essay" ? `${words} palabras · objetivo: ${q.minWords}–${q.maxWords}` : `${words} palabras`;
+}
+
+function normalize(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim()}
+function sameArray(a,b){return a.length===b.length && [...a].sort().every((x,i)=>normalize(x)==normalize([...b].sort()[i]))}
+
+function submit(){
+  const q=getQ(); let value=null, correct=null, msg="", klass="info";
+
+  if(q.type==="mcq"){
+    const el=document.querySelector('input[name="mcq"]:checked');
+    if(!el) return showFeedback("Selecciona una opción antes de continuar.","bad");
+    value=el.value; correct=normalize(value)===normalize(q.answer);
+    msg=correct?"Correcto.":"Aún no. Revisa el artículo y vuelve a intentarlo."; klass=correct?"ok":"bad";
+  } else if(q.type==="multi"){
+    value=[...document.querySelectorAll('#answerArea input[type="checkbox"]:checked')].map(x=>x.value);
+    if(!value.length) return showFeedback("Selecciona al menos una opción.","bad");
+    correct=sameArray(value,q.answers);
+    msg=correct?"Correcto. Seleccionaste todos los elementos esperados.":"Revisa: puede faltar una opción correcta o haberse marcado una que no corresponde."; klass=correct?"ok":"bad";
+  } else if(q.type==="tf"){
+    const el=document.querySelector('input[name="tf"]:checked');
+    if(!el) return showFeedback("Elige Verdadero o Falso.","bad");
+    value=el.value==="true"; correct=value===q.answer;
+    msg=correct?"Correcto.":"Revisa la afirmación a la luz del texto."; klass=correct?"ok":"bad";
+  } else if(q.type==="order"){
+    value=[...document.querySelectorAll("#orderList .orderRow")].map(r=>r.dataset.item);
+    correct=value.every((x,i)=>x===q.answer[i]);
+    msg=correct?"Orden correcto.":"El orden todavía no coincide con la secuencia presentada en el artículo."; klass=correct?"ok":"bad";
+  } else {
+    const el=document.getElementById("textAnswer"); value=el.value.trim();
+    if(!value) return showFeedback("Escribe una respuesta antes de guardarla.","bad");
+    if(q.type==="essay"){
+      const words=value.split(/\s+/).length;
+      if(words<q.minWords) msg=`Respuesta guardada. Aún faltan palabras para llegar al mínimo de ${q.minWords}.`;
+      else if(words>q.maxWords) msg=`Respuesta guardada. Supera el máximo sugerido de ${q.maxWords} palabras.`;
+      else msg="Respuesta guardada dentro del rango de extensión sugerido.";
+    } else {
+      const hits=(q.keywords||[]).filter(k=>normalize(value).includes(normalize(k))).length;
+      msg = hits ? `Respuesta guardada. Detecté ${hits} idea(s) clave relacionada(s) con el artículo.` : "Respuesta guardada. Compárala con la respuesta orientativa y con el artículo.";
+    }
+    klass="info"; correct=null;
+  }
+
+  const previous=state.answers[q.id] || {};
+  const attempts=(previous.attempts || 0)+1;
+  state.answers[q.id]={value,correct,attempts,ts:Date.now()}; save();
+  showFeedback((q.feedback?msg+" "+q.feedback:msg),klass);
+  renderGrid(); updateStats();
+}
+
+function showFeedback(text,klass){
+  const f=document.getElementById("feedback");
+  f.className=`feedback show ${klass}`; f.textContent=text;
+}
+
+function toggleModel(){
+  const q=getQ(); const box=document.getElementById("modelAnswer");
+  const ans=q.model || q.feedback || (q.answer!==undefined ? `Respuesta: ${Array.isArray(q.answer)?q.answer.join(", "):q.answer}` : q.answers ? `Respuesta: ${q.answers.join(", ")}`:"");
+  box.innerHTML=`<b>Respuesta orientativa</b><br>${escapeHtml(ans)}`;
+  box.classList.toggle("show");
+}
+
+function updateStats(){
+  const entries=Object.entries(state.answers);
+  const done=entries.length;
+  const scored=entries.filter(([_,a])=>a.correct===true).length;
+  const open=entries.filter(([id,a])=>["open","short","fill","essay"].includes(QUESTIONS[Number(id)-1].type)).length;
+  document.getElementById("doneStat").textContent=`${done}/150`;
+  document.getElementById("scoreStat").textContent=scored;
+  document.getElementById("openStat").textContent=open;
+  document.getElementById("levelStat").textContent=`Nivel ${getQ().level}`;
+  document.getElementById("progressBar").style.width=`${done/150*100}%`;
+}
+
+function render(){
+  save(); const q=getQ();
+  document.getElementById("levelBadge").textContent=`Nivel ${q.level} · ${LEVEL_NAMES[q.level]}`;
+  document.getElementById("typeLabel").textContent=TYPE_NAMES[q.type];
+  document.getElementById("positionLabel").textContent=`Pregunta ${q.id} de 150`;
+  document.getElementById("questionText").textContent=q.prompt;
+  document.getElementById("feedback").className="feedback";
+  document.getElementById("modelAnswer").className="model";
+  renderAnswerArea(q); renderLevels(); renderGrid(); updateStats();
+  document.getElementById("prevBtn").disabled=current===1;
+  document.getElementById("nextBtn").disabled=current===150;
+  document.getElementById("nextBtn").style.display=current===150?"none":"inline-block";
+  document.getElementById("finishBtn").style.display=current===150?"inline-block":"none";
+}
+
+
+function formatCapturedValue(q,a){
+  if(!a || a.value===undefined || a.value===null || a.value==="") return "Sin respuesta";
+  if(Array.isArray(a.value)) return a.value.join(" · ");
+  if(typeof a.value==="boolean") return a.value ? "Verdadero" : "Falso";
+  return String(a.value);
+}
+
+function reportStatus(q,a){
+  if(!a) return {text:"Sin respuesta", cls:"statusEmpty"};
+  if(a.correct===true) return {text:"Correcta", cls:"statusOk"};
+  if(a.correct===false) return {text:"Incorrecta / por revisar", cls:"statusBad"};
+  return {text:"Revisión manual", cls:"statusManual"};
+}
+
+function showFinalReport(){
+  const panel=document.getElementById("reportPanel");
+  const body=document.getElementById("reportBody");
+  const student=document.getElementById("studentName");
+  const savedName=localStorage.getItem(STORAGE_KEY+"_student") || "Jennifer";
+  student.value=savedName;
+  student.oninput=()=>localStorage.setItem(STORAGE_KEY+"_student",student.value);
+
+  body.innerHTML="";
+  let answered=0, correct=0, incorrect=0, manual=0, totalAttempts=0;
+  QUESTIONS.forEach(q=>{
+    const a=state.answers[q.id];
+    if(a) answered++;
+    if(a && a.correct===true) correct++;
+    else if(a && a.correct===false) incorrect++;
+    else if(a) manual++;
+    totalAttempts += a?.attempts || 0;
+
+    const st=reportStatus(q,a);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${q.id}</td>
+      <td>Nivel ${q.level}</td>
+      <td>${escapeHtml(q.prompt)}</td>
+      <td>${escapeHtml(formatCapturedValue(q,a))}</td>
+      <td class="${st.cls}">${st.text}</td>
+      <td>${a?.attempts || 0}</td>`;
+    body.appendChild(tr);
+  });
+
+  document.getElementById("reportSummary").innerHTML=`
+    <div class="box"><b>${answered}/150</b><span>Preguntas con respuesta capturada</span></div>
+    <div class="box"><b>${correct}</b><span>Aciertos autocorregibles</span></div>
+    <div class="box"><b>${manual}</b><span>Respuestas para revisión manual</span></div>
+    <div class="box"><b>${totalAttempts}</b><span>Intentos registrados</span></div>`;
+  document.getElementById("reportDate").textContent="Generado: "+new Date().toLocaleString("es-MX");
+  panel.classList.add("show");
+  panel.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function hideReport(){
+  document.getElementById("reportPanel").classList.remove("show");
+  document.querySelector(".card").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function downloadReportTxt(){
+  const name=document.getElementById("studentName").value.trim() || "Jennifer";
+  let lines=[];
+  lines.push("REPORTE FINAL DE RESPUESTAS");
+  lines.push("Estudiante: "+name);
+  lines.push("Fuente: Webscolar - La Técnica de Observación: Una técnica para Evaluar, pp. 1-10.");
+  lines.push("Generado: "+new Date().toLocaleString("es-MX"));
+  lines.push("");
+  QUESTIONS.forEach(q=>{
+    const a=state.answers[q.id], st=reportStatus(q,a);
+    lines.push(`${q.id}. ${q.prompt}`);
+    lines.push(`Respuesta capturada: ${formatCapturedValue(q,a)}`);
+    lines.push(`Estado: ${st.text}`);
+    lines.push(`Intentos: ${a?.attempts || 0}`);
+    lines.push("");
+  });
+  const blob=new Blob([lines.join("\n")],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download=`Reporte_Jennifer_Observacion_${new Date().toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(link); link.click(); link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function resetProgress(){
+  if(confirm("¿Seguro que deseas borrar todas las respuestas y reiniciar el progreso?")){
+    localStorage.removeItem(STORAGE_KEY); state={current:1,answers:{},shuffles:{}}; current=1; render();
+  }
+}
+
+document.getElementById("prevBtn").onclick=()=>{if(current>1){current--;render()}};
+document.getElementById("nextBtn").onclick=()=>{if(current<150){current++;render()}};
+document.getElementById("submitBtn").onclick=submit;
+document.getElementById("finishBtn").onclick=showFinalReport;
+document.getElementById("modelBtn").onclick=toggleModel;
+render();
+</script>
+</body>
+</html>
