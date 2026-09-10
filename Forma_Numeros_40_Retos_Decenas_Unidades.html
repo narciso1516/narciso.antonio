@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>40 retos: forma el número</title>
+<style>
+:root{
+  --bg:#f7fbff;
+  --card:#ffffff;
+  --ink:#203040;
+  --blue:#2f80ed;
+  --red:#eb5757;
+  --green:#27ae60;
+  --yellow:#f2c94c;
+  --soft:#edf6ff;
+  --line:#d7e5f2;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;
+  background:linear-gradient(180deg,#eaf6ff 0%,#fff7e8 100%);
+  color:var(--ink);
+}
+header{text-align:center;padding:22px 14px 10px}
+h1{margin:0;font-size:clamp(30px,7vw,50px)}
+header p{margin:8px auto 0;max-width:780px;font-size:20px}
+main{width:min(980px,94%);margin:auto;padding-bottom:36px}
+.card{
+  background:var(--card);border:2px solid var(--line);border-radius:28px;
+  padding:20px;margin:14px 0;box-shadow:0 10px 28px rgba(20,50,80,.09)
+}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{
+  padding:10px 14px;background:#f4f9ff;border-radius:999px;
+  font-size:18px;font-weight:900
+}
+.progress-wrap{
+  height:15px;background:#edf2f7;border-radius:999px;overflow:hidden;margin-top:12px
+}
+.progress{height:100%;width:0;background:var(--green);transition:.3s}
+.level{
+  text-align:center;
+  margin-top:10px;
+  font-size:18px;
+  font-weight:900;
+}
+.target-label{text-align:center;font-size:22px;font-weight:900}
+.target{
+  text-align:center;font-size:clamp(72px,18vw,120px);
+  font-weight:1000;line-height:1;margin:8px 0 12px
+}
+.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:900}
+.token{
+  width:62px;height:62px;border-radius:50%;border:none;color:#fff;
+  font-size:19px;font-weight:900;display:grid;place-items:center;
+  box-shadow:inset 0 -7px 0 rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.10)
+}
+.token.blue{background:var(--blue)} .token.red{background:var(--red)}
+.workspace{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+@media(max-width:740px){.workspace{grid-template-columns:1fr}}
+.zone{
+  min-height:260px;border:3px dashed #bfd4e7;border-radius:24px;
+  padding:16px;background:#fbfdff
+}
+.zone h2{text-align:center;margin:0 0 12px;font-size:24px}
+.tray{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;min-height:150px}
+.counter{text-align:center;font-size:26px;font-weight:900;margin-top:10px}
+.controls{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:18px}
+button.action{
+  border:none;border-radius:18px;padding:14px 18px;
+  font-size:18px;font-weight:900;cursor:pointer
+}
+.blue-btn{background:var(--blue);color:#fff}
+.red-btn{background:var(--red);color:#fff}
+.green-btn{background:var(--green);color:#fff}
+.yellow-btn{background:var(--yellow);color:#5b4900}
+.soft-btn{background:#eef4f8;color:var(--ink)}
+.message{
+  margin-top:16px;background:#f7fbff;border-radius:18px;padding:14px;
+  text-align:center;font-size:23px;font-weight:900;min-height:62px
+}
+.number-made{text-align:center;font-size:30px;font-weight:900;margin-top:10px}
+.spark{text-align:center;font-size:34px;min-height:40px}
+.finish{text-align:center;padding:30px}.finish .big{font-size:78px}
+footer{text-align:center;color:#6d7b88;padding:16px 10px 30px;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔵🔴 40 retos de decenas y unidades</h1>
+  <p>Forma cada número con fichas. Los retos aumentan poco a poco de dificultad.</p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="top">
+      <div class="badge">⭐ Estrellas: <span id="stars">0</span></div>
+      <div class="badge">🎯 Reto <span id="step">1</span> de 40</div>
+    </div>
+    <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+    <div id="level" class="level"></div>
+  </section>
+
+  <section id="game" class="card">
+    <div class="target-label">Forma este número:</div>
+    <div id="target" class="target">11</div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="token blue">10</div> = una decena</div>
+      <div class="legend-item"><div class="token red">1</div> = una unidad</div>
+    </div>
+
+    <div class="workspace">
+      <div class="zone">
+        <h2>🔵 Decenas</h2>
+        <div id="tensTray" class="tray"></div>
+        <div class="counter">Tienes: <span id="tensCount">0</span></div>
+      </div>
+      <div class="zone">
+        <h2>🔴 Unidades</h2>
+        <div id="onesTray" class="tray"></div>
+        <div class="counter">Tienes: <span id="onesCount">0</span></div>
+      </div>
+    </div>
+
+    <div class="number-made">
+      Número que formaste: <span id="madeNumber">0</span>
+    </div>
+
+    <div class="controls">
+      <button class="action blue-btn" onclick="addTen()">➕ Decena</button>
+      <button class="action red-btn" onclick="addOne()">➕ Unidad</button>
+      <button class="action soft-btn" onclick="removeTen()">➖ Decena</button>
+      <button class="action soft-btn" onclick="removeOne()">➖ Unidad</button>
+    </div>
+
+    <div class="controls">
+      <button class="action yellow-btn" onclick="speak()">🔊 Escuchar</button>
+      <button class="action green-btn" onclick="check()">✅ Comprobar</button>
+      <button class="action soft-btn" onclick="resetBuild()">↩️ Borrar</button>
+    </div>
+
+    <div id="message" class="message">Empieza colocando tus fichas.</div>
+    <div id="spark" class="spark"></div>
+  </section>
+</main>
+
+<footer>Actividad interactiva · Decenas y unidades · 1.º de primaria</footer>
+
+<script>
+const exercises = [
+  11,12,14,15,18,19,21,22,24,27,
+  30,31,33,35,38,40,42,45,48,49,
+  50,53,57,59,60,64,66,68,70,72,
+  75,78,80,83,86,89,90,92,95,98
+];
+
+let index=0,tens=0,ones=0,stars=0,locked=false;
+const el=id=>document.getElementById(id);
+
+function difficultyName(i){
+  if(i<10) return "Nivel 1 · Números sencillos";
+  if(i<20) return "Nivel 2 · Más decenas";
+  if(i<30) return "Nivel 3 · Números más grandes";
+  return "Nivel 4 · Reto final";
+}
+
+function blueToken(){
+  const d=document.createElement('div');
+  d.className='token blue'; d.textContent='10'; return d;
+}
+function redToken(){
+  const d=document.createElement('div');
+  d.className='token red'; d.textContent='1'; return d;
+}
+
+function render(){
+  el('tensTray').innerHTML='';
+  el('onesTray').innerHTML='';
+  for(let i=0;i<tens;i++) el('tensTray').appendChild(blueToken());
+  for(let i=0;i<ones;i++) el('onesTray').appendChild(redToken());
+  el('tensCount').textContent=tens;
+  el('onesCount').textContent=ones;
+  el('madeNumber').textContent=tens*10+ones;
+}
+
+function load(){
+  locked=false;tens=0;ones=0;
+  el('target').textContent=exercises[index];
+  el('step').textContent=index+1;
+  el('level').textContent=difficultyName(index);
+  el('progress').style.width=`${(index/exercises.length)*100}%`;
+  el('message').textContent='Empieza colocando tus fichas.';
+  el('spark').textContent='';
+  render();
+}
+
+function addTen(){if(!locked&&tens<9){tens++;render()}}
+function addOne(){if(!locked&&ones<9){ones++;render()}}
+function removeTen(){if(!locked&&tens>0){tens--;render()}}
+function removeOne(){if(!locked&&ones>0){ones--;render()}}
+
+function resetBuild(){
+  if(locked)return;
+  tens=0;ones=0;render();
+  el('message').textContent='Volvemos a empezar.';
+}
+
+function check(){
+  if(locked)return;
+  const target=exercises[index];
+  const made=tens*10+ones;
+  const targetTens=Math.floor(target/10);
+  const targetOnes=target%10;
+
+  if(made===target){
+    locked=true;
+    stars++;
+    el('stars').textContent=stars;
+    el('message').textContent=`✅ ¡Muy bien! ${targetTens} decena(s) y ${targetOnes} unidad(es) forman ${target}.`;
+    el('spark').textContent='⭐ ¡Excelente!';
+    el('progress').style.width=`${((index+1)/exercises.length)*100}%`;
+    setTimeout(next,900);
+  }else{
+    if(tens!==targetTens && ones!==targetOnes){
+      el('message').textContent='Revisa las fichas azules y rojas.';
+    }else if(tens!==targetTens){
+      el('message').textContent='Revisa cuántas decenas necesitas.';
+    }else{
+      el('message').textContent='Revisa cuántas unidades necesitas.';
+    }
+  }
+}
+
+function next(){
+  if(index<exercises.length-1){
+    index++;load();
+  }else{
+    el('game').innerHTML=`
+    <div class="finish">
+      <div class="big">🎉</div>
+      <h2>¡Terminaste los 40 retos!</h2>
+      <p style="font-size:28px;font-weight:900">Ganaste ${stars} estrellas.</p>
+      <button class="action green-btn" onclick="location.reload()">Jugar otra vez</button>
+    </div>`;
+  }
+}
+
+function speak(){
+  const target=exercises[index];
+  const msg=`Forma el número ${target}. Usa fichas azules para las decenas y fichas rojas para las unidades.`;
+  if('speechSynthesis' in window){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(msg);
+    u.lang='es-MX';u.rate=.88;
+    speechSynthesis.speak(u);
+  }else{
+    el('message').textContent=msg;
+  }
+}
+
+load();
+</script>
+</body>
+</html>
