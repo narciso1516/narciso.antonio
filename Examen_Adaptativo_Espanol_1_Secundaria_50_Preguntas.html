@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evaluación adaptativa · Español 1.º de secundaria</title>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#152033;--muted:#667085;--line:#d8e0ec;--blue:#2f5cc7;--blue2:#eef3ff;--ok:#137a4b;--bad:#b42318;--warn:#9a6700}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:850px;margin:auto;padding:16px}.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;margin-bottom:16px}h1{font-size:clamp(1.55rem,4vw,2.25rem);line-height:1.15;margin:0 0 8px}h2{margin-top:0}p{line-height:1.55}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;background:#fff}.stat b{display:block;font-size:1.2rem}.progress{height:12px;border-radius:99px;background:#e4eaf4;overflow:hidden;margin-top:14px}.bar{height:100%;width:0;background:var(--blue);transition:width .25s}label{display:block;font-weight:700;margin:10px 0 6px}input{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:16px}button{border:0;border-radius:12px;padding:12px 16px;font-weight:750;font-size:1rem;cursor:pointer;min-height:46px}.primary{background:var(--blue);color:#fff}.secondary{background:#e9eef7;color:var(--ink)}.options{display:grid;gap:10px;margin-top:16px}.option{display:flex;align-items:flex-start;gap:10px;text-align:left;background:#fff;color:var(--ink);border:1.5px solid var(--line);padding:13px;border-radius:14px}.option:hover{border-color:#9db2e5}.option:disabled{opacity:1;cursor:default}.letter{flex:0 0 28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#eef2f7;font-weight:850}.feedback{font-weight:800;min-height:28px;margin-top:12px}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}.hidden{display:none!important}.notice{border-left:5px solid var(--blue);background:var(--blue2);border-radius:12px;padding:13px 15px;margin:14px 0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.big{font-size:2rem;font-weight:900}.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.report-box{border:1px solid var(--line);border-radius:14px;padding:12px}small{color:var(--muted)}@media(max-width:560px){.grid{grid-template-columns:1fr 1fr}.grid .stat:last-child{grid-column:1/-1}.report-grid{grid-template-columns:1fr}.panel{padding:16px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="panel" id="startPanel">
+  <h1>Evaluación adaptativa · Español</h1>
+  <p class="muted">1.º de secundaria · Diversidad lingüística, cultural y comunicación</p>
+  <div class="notice"><b>Reglas:</b> tendrás una sola oportunidad por pregunta. Después de responder avanzarás automáticamente. Si te equivocas, no se mostrará la respuesta correcta. El examen puede detenerse antes si el patrón de errores indica que necesitas repasar.</div>
+  <label for="student">Nombre del estudiante</label>
+  <input id="student" autocomplete="name" placeholder="Escribe tu nombre completo">
+  <div class="actions"><button id="startBtn" class="primary">Comenzar evaluación</button></div>
+</section>
+<section class="panel hidden" id="examPanel">
+  <div class="grid"><div class="stat"><span>Pregunta</span><b id="qnum">1 / 50</b></div><div class="stat"><span>Aciertos</span><b id="hits">0</b></div><div class="stat"><span>Errores</span><b id="misses">0</b></div></div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <p class="muted" id="topic"></p><h2 id="question"></h2><div class="options" id="options"></div><div class="feedback" id="feedback" aria-live="polite"></div>
+</section>
+<section class="panel hidden" id="resultPanel">
+  <h2>Informe final</h2><p id="statusLine" class="big"></p><p id="resultText"></p>
+  <div class="report-grid"><div class="report-box"><b>Respondidas</b><div id="rAnswered"></div></div><div class="report-box"><b>Aciertos</b><div id="rCorrect"></div></div><div class="report-box"><b>Errores</b><div id="rWrong"></div></div><div class="report-box"><b>Calificación</b><div id="rGrade"></div></div><div class="report-box"><b>Tema 1</b><div id="rT1"></div></div><div class="report-box"><b>Tema 2</b><div id="rT2"></div></div></div>
+  <div class="notice" id="recommendation"></div>
+  <div class="actions"><button id="pdfBtn" class="primary">Descargar informe PDF</button><button id="restartBtn" class="secondary">Repetir examen</button></div>
+  <small>La calificación final se calcula sobre 50 reactivos. Si existe corte anticipado, las preguntas no alcanzadas se consideran no acreditadas.</small>
+</section>
+</main>
+<script>
+(() => {
+const DATA = [
+[1,"¿Qué es una lengua?",["Una forma de dibujo","Un sistema de comunicación","Una operación matemática","Una señal de tránsito"],"Un sistema de comunicación"],
+[1,"¿Cuál es una lengua originaria de México?",["Italiano","Alemán","Náhuatl","Francés"],"Náhuatl"],
+[1,"¿Qué significa que una persona sea bilingüe?",["Que utiliza dos lenguas","Que sabe dibujar","Que únicamente escribe","Que habla muy rápido"],"Que utiliza dos lenguas"],
+[1,"Si en una comunidad se hablan español, chinanteco y mazateco, existe:",["Una sola lengua","Falta de comunicación","Un dialecto único","Diversidad lingüística"],"Diversidad lingüística"],
+[1,"¿Qué es la lengua materna?",["La lengua más hablada del mundo","La primera lengua que normalmente aprendemos","Una lengua antigua","La lengua que solamente hablan las madres"],"La primera lengua que normalmente aprendemos"],
+[1,"¿Quién produce inicialmente un mensaje?",["El receptor","El canal","El emisor","El contexto"],"El emisor"],
+[1,"Si el profesor explica una actividad y los estudiantes escuchan, los estudiantes son principalmente:",["Receptores","Emisores","Canales","Mensajes"],"Receptores"],
+[1,"¿Qué es el mensaje?",["El lugar donde hablamos","La persona que escucha","El idioma utilizado","La información que se transmite"],"La información que se transmite"],
+[1,"¿Cuál es un ejemplo de comunicación no verbal?",["Escribir un ensayo","Levantar el pulgar para indicar aprobación","Leer una novela","Hablar por teléfono"],"Levantar el pulgar para indicar aprobación"],
+[1,"¿Qué es el canal de comunicación?",["El medio por donde se transmite el mensaje","La persona que escucha","La idea principal","Una lengua originaria"],"El medio por donde se transmite el mensaje"],
+[1,"¿Por qué es importante el contexto?",["Porque reemplaza al emisor","Porque elimina las palabras","Porque ayuda a interpretar el mensaje","Porque siempre cambia la lengua"],"Porque ayuda a interpretar el mensaje"],
+[1,"¿Cuál es una conducta adecuada durante una conversación?",["Interrumpir","Gritar","Ignorar al hablante","Respetar los turnos"],"Respetar los turnos"],
+[1,"¿Qué es una variante lingüística?",["Una forma particular de utilizar una lengua","Una lengua incorrecta","Una falta de ortografía","Una lengua desaparecida"],"Una forma particular de utilizar una lengua"],
+[1,"Dos regiones utilizan palabras diferentes para nombrar el mismo objeto. Esto muestra:",["Falta de educación","Variación lingüística","Ausencia de lenguaje","Una equivocación obligatoria"],"Variación lingüística"],
+[1,"¿Burlarse del acento de una persona es correcto?",["Sí, siempre","Solo entre amigos","Solo en la escuela","No"],"No"],
+[1,"¿Qué significa tradición oral?",["Copiar información","Escribir únicamente novelas","Transmitir relatos y conocimientos mediante la palabra hablada","Aprender matemáticas"],"Transmitir relatos y conocimientos mediante la palabra hablada"],
+[1,"¿Cuál es un ejemplo de tradición oral?",["Una abuela contando una leyenda de su comunidad","Resolver una división","Utilizar una calculadora","Dibujar un triángulo"],"Una abuela contando una leyenda de su comunidad"],
+[1,"¿Por qué es importante conservar las lenguas originarias?",["Porque deben sustituir al español","Porque conservan conocimientos e identidad cultural","Porque nunca cambian","Porque solamente sirven para estudiar"],"Porque conservan conocimientos e identidad cultural"],
+[1,"Si una lengua deja de transmitirse a las nuevas generaciones, puede:",["Convertirse automáticamente en español","Hacerse universal","Multiplicarse","Correr riesgo de desaparecer"],"Correr riesgo de desaparecer"],
+[1,"Una persona habla español y maya. ¿Cómo podemos describirla?",["Monolingüe","Sin lengua materna","Bilingüe","Multilingüe necesariamente"],"Bilingüe"],
+[1,"¿Cuál acción demuestra respeto por la diversidad lingüística?",["Escuchar y valorar diferentes formas de hablar","Prohibir otras lenguas","Burlarse de los acentos","Excluir a sus hablantes"],"Escuchar y valorar diferentes formas de hablar"],
+[1,"Una lengua permite transmitir:",["Únicamente sonidos","Conocimientos, historias y tradiciones","Solamente números","Únicamente nombres"],"Conocimientos, historias y tradiciones"],
+[1,"Cuando dos personas conversan, ¿pueden intercambiar los papeles de emisor y receptor?",["No","Solamente por teléfono","Solamente los adultos","Sí"],"Sí"],
+[1,"¿Qué caracteriza a un mensaje claro?",["Tiene información comprensible y suficiente","Utiliza muchas palabras difíciles","Siempre es muy largo","No tiene receptor"],"Tiene información comprensible y suficiente"],
+[1,"La existencia de diferentes lenguas puede considerarse una riqueza porque:",["Hace que una lengua sea superior","Obliga a todos a hablar igual","Conserva distintas formas de conocimiento y expresión","Elimina las diferencias culturales"],"Conserva distintas formas de conocimiento y expresión"],
+[2,"¿Qué significa diversidad?",["Ausencia","Variedad","Igualdad absoluta","Desorden"],"Variedad"],
+[2,"¿Qué es la cultura?",["Conjunto de conocimientos, costumbres, valores y expresiones de una sociedad","Solamente la música","Únicamente las fiestas","Una asignatura"],"Conjunto de conocimientos, costumbres, valores y expresiones de una sociedad"],
+[2,"¿Cuál es un elemento cultural?",["Gravedad","Velocidad","Temperatura","Lengua"],"Lengua"],
+[2,"¿Qué significa diversidad cultural?",["Tener una sola tradición","Eliminar diferencias","La existencia de diferentes expresiones culturales","Hablar únicamente español"],"La existencia de diferentes expresiones culturales"],
+[2,"¿Qué significa diversidad étnica?",["Presencia de diferentes pueblos y comunidades","Diferencia de edades","Una sola comunidad","Diferentes materias escolares"],"Presencia de diferentes pueblos y comunidades"],
+[2,"Decir que México es pluricultural significa que:",["Todos tienen las mismas costumbres","Conviven diferentes culturas","Existe una sola cultura","No existen pueblos originarios"],"Conviven diferentes culturas"],
+[2,"¿Todas las comunidades mexicanas tienen exactamente las mismas costumbres?",["Sí","Solo las rurales","Solo las ciudades","No"],"No"],
+[2,"¿Cuál puede ser una tradición?",["Una operación matemática","Una contraseña","Una celebración transmitida entre generaciones","Una fórmula química"],"Una celebración transmitida entre generaciones"],
+[2,"¿Puede la comida representar parte de la cultura de una comunidad?",["Sí","No","Solo los postres","Solo la comida extranjera"],"Sí"],
+[2,"Una canción tradicional en una lengua originaria puede conservar:",["Solamente sonidos","Elementos lingüísticos y culturales","Únicamente números","Ninguna identidad"],"Elementos lingüísticos y culturales"],
+[2,"¿Puede la vestimenta tradicional expresar identidad cultural?",["Nunca","Solo en museos","Solo si es moderna","Sí"],"Sí"],
+[2,"¿Qué relación existe entre lengua y cultura?",["La lengua ayuda a transmitir elementos culturales","No existe ninguna relación","La cultura elimina las lenguas","Las lenguas únicamente transmiten números"],"La lengua ayuda a transmitir elementos culturales"],
+[2,"¿Qué es discriminación lingüística?",["Aprender una lengua","Consultar un diccionario","Tratar negativamente a alguien por su lengua o manera de hablar","Investigar una cultura"],"Tratar negativamente a alguien por su lengua o manera de hablar"],
+[2,"Un estudiante es excluido porque habla una lengua originaria. Esto es:",["Inclusión","Discriminación","Cooperación","Diversidad"],"Discriminación"],
+[2,"¿Cuál acción favorece una escuela intercultural?",["Prohibir lenguas originarias","Burlarse de los acentos","Separar estudiantes","Respetar las diferentes lenguas y culturas"],"Respetar las diferentes lenguas y culturas"],
+[2,"Para investigar las costumbres de una comunidad podemos realizar:",["Una entrevista a sus habitantes","Una operación matemática","Una respuesta inventada","Un rumor"],"Una entrevista a sus habitantes"],
+[2,"¿Para qué puede servir entrevistar a una persona mayor de una comunidad?",["Para sustituir todas las fuentes","Para demostrar que todo lo que recuerda es exacto","Para conocer recuerdos y conocimientos comunitarios","Para aprender únicamente fechas"],"Para conocer recuerdos y conocimientos comunitarios"],
+[2,"¿Qué es la idea principal de un texto?",["La palabra más larga","La información central","La última oración obligatoriamente","Un ejemplo secundario"],"La información central"],
+[2,"¿Qué hacen las ideas secundarias?",["Eliminan el tema","Cambian de idioma","No tienen función","Explican o apoyan la idea principal"],"Explican o apoyan la idea principal"],
+[2,"Lee: “México posee una gran diversidad lingüística. En distintas regiones se hablan numerosas lenguas originarias.” ¿Cuál es la idea principal?",["México posee una gran diversidad lingüística","México tiene regiones","Todas las personas hablan igual","Solo existe español"],"México posee una gran diversidad lingüística"],
+[2,"¿Qué es un resumen?",["Una copia completa","Un texto más largo","Una versión breve con las ideas esenciales","Una lista de palabras"],"Una versión breve con las ideas esenciales"],
+[2,"¿Qué debemos conservar principalmente al hacer un resumen?",["Todos los ejemplos","Las ideas esenciales","Todas las repeticiones","Cada palabra del original"],"Las ideas esenciales"],
+[2,"Si encontramos una palabra desconocida durante una lectura, podemos:",["Ignorar siempre el texto","Inventar su significado","Eliminar la palabra","Consultar un diccionario o analizar el contexto"],"Consultar un diccionario o analizar el contexto"],
+[2,"“El suelo estaba árido; no había llovido durante meses y las plantas estaban secas”. Según el contexto, árido significa:",["Muy seco","Muy húmedo","Congelado","Oscuro"],"Muy seco"],
+[2,"¿Por qué debemos respetar la diversidad cultural y lingüística de México?",["Porque todas las personas deben ser iguales","Porque las diferencias deben desaparecer","Porque forma parte del patrimonio y favorece una convivencia respetuosa","Porque únicamente una cultura tiene valor"],"Porque forma parte del patrimonio y favorece una convivencia respetuosa"]
+].map(x=>({tema:x[0],q:x[1],opts:x[2],a:x[3]}));
+const PASS=60;
+const state={idx:0,correct:0,wrong:0,streakWrong:0,answers:[],student:"",ended:false,reason:""};
+const $=s=>document.querySelector(s), startPanel=$("#startPanel"), examPanel=$("#examPanel"), resultPanel=$("#resultPanel");
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function start(){const name=$("#student").value.trim();if(name.length<2){alert("Escribe el nombre del estudiante.");return}Object.assign(state,{idx:0,correct:0,wrong:0,streakWrong:0,answers:[],student:name,ended:false,reason:""});startPanel.classList.add("hidden");resultPanel.classList.add("hidden");examPanel.classList.remove("hidden");render()}
+function render(){const q=DATA[state.idx];$("#qnum").textContent=`${state.idx+1} / 50`;$("#hits").textContent=state.correct;$("#misses").textContent=state.wrong;$("#bar").style.width=`${Math.round(state.idx/50*100)}%`;$("#topic").textContent=q.tema===1?"Tema 1 · Diversidad de lenguas y comunicación":"Tema 2 · Diversidad étnica, cultural y lingüística";$("#question").textContent=q.q;$("#feedback").textContent="";$("#feedback").className="feedback";const box=$("#options");box.innerHTML="";shuffle(q.opts).forEach((text,i)=>{const b=document.createElement("button");b.type="button";b.className="option";b.innerHTML=`<span class="letter">${["A","B","C","D"][i]}</span><span>${esc(text)}</span>`;b.addEventListener("click",()=>answer(text));box.appendChild(b)})}
+function answer(choice){if(state.ended)return;document.querySelectorAll(".option").forEach(b=>b.disabled=true);const q=DATA[state.idx],ok=choice===q.a;state.answers.push({n:state.idx+1,tema:q.tema,ok});if(ok){state.correct++;state.streakWrong=0;$("#feedback").textContent="✓ Respuesta registrada. Avanzas.";$("#feedback").className="feedback ok"}else{state.wrong++;state.streakWrong++;$("#feedback").textContent="Respuesta registrada. Continúa con la siguiente.";$("#feedback").className="feedback bad"}$("#hits").textContent=state.correct;$("#misses").textContent=state.wrong;const answered=state.idx+1,remaining=50-answered,maxPossible=state.correct+remaining,maxPct=maxPossible/50*100;let stop=false,reason="";
+if(answered>=10&&state.streakWrong>=5){stop=true;reason="Se acumularon 5 respuestas incorrectas consecutivas."}else if(answered>=10&&state.wrong/answered>=0.70){stop=true;reason="El porcentaje de error alcanzó 70% o más después de al menos 10 reactivos."}else if(maxPct<PASS){stop=true;reason="Ya no es matemáticamente posible alcanzar la calificación mínima de 60%."}
+setTimeout(()=>{if(stop){finish(reason,true)}else if(answered>=50){finish("Evaluación completada.",false)}else{state.idx++;render()}},650)}
+function scoreTopic(topic){const arr=state.answers.filter(x=>x.tema===topic),c=arr.filter(x=>x.ok).length;return{a:arr.length,c}}
+function finish(reason,early){state.ended=true;state.reason=reason;examPanel.classList.add("hidden");resultPanel.classList.remove("hidden");const grade=state.correct/50*10,pct=Math.round(state.correct/50*100),passed=pct>=PASS&&state.answers.length===50,t1=scoreTopic(1),t2=scoreTopic(2);$("#statusLine").textContent=passed?"APROBADO":"REQUIERE REPETIR";$("#statusLine").className="big "+(passed?"ok":"bad");$("#resultText").textContent=early?"La evaluación se cerró de manera adaptativa antes de llegar al reactivo 50.":"La evaluación llegó al final de los 50 reactivos.";$("#rAnswered").textContent=`${state.answers.length} / 50`;$("#rCorrect").textContent=state.correct;$("#rWrong").textContent=state.wrong;$("#rGrade").textContent=`${grade.toFixed(1)} / 10 · ${pct}%`;$("#rT1").textContent=`${t1.c} aciertos de ${t1.a} respondidos`;$("#rT2").textContent=`${t2.c} aciertos de ${t2.a} respondidos`;$("#recommendation").innerHTML=`<b>Conclusión pedagógica:</b> ${esc(reason)} ${passed?"El desempeño permite continuar con el siguiente nivel de trabajo.":"Se recomienda repasar los contenidos con mayor dificultad y repetir la evaluación desde el inicio."}`}
+function pdf(){if(!window.jspdf){alert("No fue posible cargar el generador PDF. Usa Imprimir > Guardar como PDF.");return}const{jsPDF}=window.jspdf,doc=new jsPDF(),grade=state.correct/50*10,pct=Math.round(state.correct/50*100),passed=pct>=PASS&&state.answers.length===50,t1=scoreTopic(1),t2=scoreTopic(2);doc.setFont("helvetica","bold");doc.setFontSize(18);doc.text("Informe final de evaluación",20,20);doc.setFont("helvetica","normal");doc.setFontSize(12);const lines=[`Estudiante: ${state.student}`,"Área: Español - 1.º de secundaria","Temas: diversidad lingüística, cultural y comunicación",`Fecha: ${new Date().toLocaleString("es-MX")}`,"",`Resultado: ${passed?"APROBADO":"REQUIERE REPETIR"}`,`Respondidas: ${state.answers.length} / 50`,`Aciertos: ${state.correct}`,`Errores: ${state.wrong}`,`Calificación: ${grade.toFixed(1)} / 10 (${pct}%)`,`Tema 1: ${t1.c} aciertos de ${t1.a} respondidos`,`Tema 2: ${t2.c} aciertos de ${t2.a} respondidos`,"",`Criterio de cierre: ${state.reason}`,"",passed?"Recomendación: avanzar al siguiente nivel de trabajo.":"Recomendación: repasar contenidos y repetir la evaluación completa."];let y=32;lines.forEach(line=>{const parts=doc.splitTextToSize(line,170);doc.text(parts,20,y);y+=7*parts.length});doc.setFontSize(10);doc.text("AUTOR · Luis Alberto Antonio Narciso",20,285);doc.save(`Informe_Espanol_${state.student.replace(/[^a-z0-9áéíóúñ]+/gi,"_")}.pdf`)}
+$("#startBtn").addEventListener("click",start);$("#restartBtn").addEventListener("click",()=>{resultPanel.classList.add("hidden");startPanel.classList.remove("hidden");$("#student").focus()});$("#pdfBtn").addEventListener("click",pdf);
+})();
+</script>
+</body>
+</html>
