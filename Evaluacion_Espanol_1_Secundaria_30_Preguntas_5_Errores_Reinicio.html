@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Español 1.º Secundaria · Evaluación de 30 preguntas</title>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#182033;--muted:#667085;--line:#d8e1ef;--accent:#315ec7;--accent2:#edf3ff;--ok:#117a4b;--bad:#b42318;--warn:#946200}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);line-height:1.5}
+.wrap{max-width:860px;margin:auto;padding:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;margin-bottom:16px}
+h1{font-size:clamp(1.5rem,4vw,2.3rem);line-height:1.15;margin:0 0 8px}h2{line-height:1.3}.muted{color:var(--muted)}
+.notice{background:var(--accent2);border-left:5px solid var(--accent);border-radius:12px;padding:14px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{border:1px solid var(--line);border-radius:14px;padding:11px;text-align:center}.stat b{display:block;font-size:1.2rem}
+.progress{height:12px;background:#e4eaf5;border-radius:99px;overflow:hidden;margin:14px 0}.bar{height:100%;background:var(--accent);width:0;transition:width .25s}
+label{font-weight:750;display:block;margin-bottom:6px}input{width:100%;font-size:16px;padding:13px;border:1.5px solid var(--line);border-radius:12px}
+.options{display:grid;gap:10px;margin-top:16px}.option{display:flex;gap:11px;align-items:flex-start;text-align:left;background:#fff;border:1.5px solid var(--line);padding:13px;border-radius:14px;font-size:1rem;color:var(--ink);cursor:pointer}
+.option:hover{border-color:#9bb0e2}.option:disabled{opacity:1;cursor:default}.letter{flex:0 0 28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#eef2f7;font-weight:850}
+.feedback{font-weight:800;min-height:28px;margin-top:12px}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+button{min-height:46px;border:0;border-radius:12px;padding:12px 16px;font-size:1rem;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:#fff}.secondary{background:#e9eef7;color:var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.hidden{display:none!important}.big{font-size:2rem;font-weight:900}.report{display:grid;grid-template-columns:1fr 1fr;gap:10px}.box{border:1px solid var(--line);border-radius:14px;padding:12px}
+footer{text-align:center;color:var(--muted);font-size:.9rem;padding:8px}
+@media(max-width:560px){.card{padding:16px}.grid{grid-template-columns:1fr 1fr}.grid .stat:last-child{grid-column:1/-1}.report{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="card" id="start">
+<h1>Evaluación · Español 1.º de secundaria</h1>
+<p class="muted">30 preguntas · Nivel básico-intermedio+</p>
+<div class="notice"><b>Instrucciones:</b> cada pregunta tiene una sola oportunidad. Los incisos se mezclan automáticamente. Si respondes bien, avanzas; si respondes mal, la respuesta queda registrada y no se muestra cuál era la correcta. Puedes continuar mientras tengas menos de 5 errores acumulados. En cuanto llegues al quinto error, el intento se reinicia automáticamente y vuelves a la pregunta 1.</div>
+<label for="name">Nombre de la estudiante</label><input id="name" placeholder="Escribe el nombre completo">
+<div class="actions"><button class="primary" id="begin">Comenzar</button></div>
+</section>
+
+<section class="card hidden" id="exam">
+<div class="grid"><div class="stat">Pregunta<b id="num">1 / 30</b></div><div class="stat">Aciertos<b id="hits">0</b></div><div class="stat">Errores<b id="fails">0</b></div></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<p class="muted" id="topic"></p><h2 id="question"></h2><div class="options" id="options"></div><div class="feedback" id="feedback" aria-live="polite"></div>
+</section>
+
+<section class="card hidden" id="result">
+<h2>Informe final</h2><div id="status" class="big"></div><p id="summary"></p>
+<div class="report">
+<div class="box"><b>Respondidas</b><div id="ra"></div></div><div class="box"><b>Aciertos</b><div id="rc"></div></div>
+<div class="box"><b>Errores</b><div id="rw"></div></div><div class="box"><b>Calificación</b><div id="rg"></div></div>
+<div class="box"><b>Tema 1</b><div id="rt1"></div></div><div class="box"><b>Tema 2</b><div id="rt2"></div></div>
+</div>
+<div class="notice" id="recommend"></div>
+<div class="actions"><button class="primary" id="pdf">Descargar informe PDF</button><button class="secondary" id="restart">Repetir evaluación</button></div>
+</section>
+<footer>AUTOR · Luis Alberto Antonio Narciso</footer>
+</main>
+<script>
+(()=>{const DATA=[{"tema": 1, "q": "En la comunidad de Elena, sus abuelos hablan chinanteco y español, mientras que ella utiliza principalmente español, pero comprende algunas expresiones en chinanteco. ¿Qué situación se observa principalmente?", "opts": ["Ausencia de comunicación", "Diversidad lingüística", "Discriminación cultural", "Pérdida total de una lengua"], "a": "Diversidad lingüística"}, {"tema": 1, "q": "Una estudiante dice: “Una lengua solamente sirve para hablar con otras personas”. ¿Qué idea completa mejor esa afirmación?", "opts": ["También permite transmitir conocimientos, historias e identidad", "Solamente sirve para escribir libros", "Todas las lenguas transmiten exactamente la misma cultura", "Una lengua deja de ser útil cuando aparece otra"], "a": "También permite transmitir conocimientos, historias e identidad"}, {"tema": 1, "q": "Durante una exposición, Sofía explica un tema a sus compañeros. Después, uno de ellos le hace una pregunta y Sofía escucha. ¿Qué ocurrió con los papeles comunicativos?", "opts": ["El canal desapareció", "Sofía siempre fue emisora", "El mensaje se convirtió en contexto", "Emisor y receptor intercambiaron funciones"], "a": "Emisor y receptor intercambiaron funciones"}, {"tema": 1, "q": "Dos estudiantes mexicanos llaman de manera diferente al mismo alimento porque viven en regiones distintas. Esto demuestra principalmente que:", "opts": ["Uno de ellos necesariamente habla mal", "Las lenguas pueden presentar variantes regionales", "No pueden comunicarse entre sí", "Pertenecen a países diferentes"], "a": "Las lenguas pueden presentar variantes regionales"}, {"tema": 1, "q": "¿Cuál situación representa mejor la conservación de una lengua originaria?", "opts": ["Evitar utilizarla fuera de casa", "Sustituir sus palabras por español", "Enseñarla y utilizarla con nuevas generaciones", "Conservarla únicamente en documentos antiguos"], "a": "Enseñarla y utilizarla con nuevas generaciones"}, {"tema": 1, "q": "Un abuelo relata a sus nietos una historia que él escuchó cuando era niño y que pertenece a su comunidad. ¿Qué proceso ocurre?", "opts": ["Transmisión mediante tradición oral", "Comunicación exclusivamente escrita", "Traducción obligatoria", "Discriminación lingüística"], "a": "Transmisión mediante tradición oral"}, {"tema": 1, "q": "Una alumna se burla de un compañero porque pronuncia algunas palabras con un acento diferente. ¿Cuál es el problema principal de esta conducta?", "opts": ["El compañero debería cambiar su acento", "Los acentos impiden toda comunicación", "Solamente se puede tener un acento correcto", "Se está desvalorizando una forma legítima de hablar"], "a": "Se está desvalorizando una forma legítima de hablar"}, {"tema": 1, "q": "¿Cuál de las siguientes acciones demuestra mejor una actitud intercultural?", "opts": ["Pedir que todos abandonen sus costumbres para evitar diferencias", "Conocer y respetar otras prácticas culturales sin considerar una cultura superior", "Estudiar únicamente las costumbres más conocidas", "Evitar hablar sobre diferencias culturales"], "a": "Conocer y respetar otras prácticas culturales sin considerar una cultura superior"}, {"tema": 1, "q": "Una lengua deja de ser enseñada a niñas y niños de una comunidad durante varias generaciones. ¿Cuál sería una consecuencia posible?", "opts": ["La lengua podría encontrarse en riesgo de desaparecer", "Se convertiría automáticamente en una variante del español", "Todos sus hablantes aprenderían la misma segunda lengua", "La cultura de la comunidad permanecería necesariamente sin cambios"], "a": "La lengua podría encontrarse en riesgo de desaparecer"}, {"tema": 1, "q": "¿Cuál situación muestra con mayor claridad que una lengua también forma parte de la identidad?", "opts": ["Una persona memoriza palabras para un examen", "Un estudiante utiliza una calculadora", "Una familia conserva expresiones y relatos heredados de sus abuelos", "Una alumna copia un texto del pizarrón"], "a": "Una familia conserva expresiones y relatos heredados de sus abuelos"}, {"tema": 1, "q": "Una profesora dice: “Mañana deben traerlo”. Algunos estudiantes no saben si se refiere al libro, al cuaderno o al proyecto. ¿Qué problema presenta el mensaje?", "opts": ["No existe receptor", "Falta información de contexto o precisión", "No existe ninguna lengua", "El canal es necesariamente incorrecto"], "a": "Falta información de contexto o precisión"}, {"tema": 1, "q": "¿Por qué conocer el contexto puede cambiar la interpretación de una expresión?", "opts": ["Porque permite relacionar el mensaje con la situación en que se produce", "Porque transforma al receptor en canal", "Porque elimina las variantes lingüísticas", "Porque determina qué lengua es superior"], "a": "Porque permite relacionar el mensaje con la situación en que se produce"}, {"tema": 1, "q": "En una comunidad se utilizan español, mazateco y chinanteco en diferentes situaciones. ¿Cuál afirmación es más adecuada?", "opts": ["La comunidad debe escoger solamente una lengua", "Las tres lenguas tienen que utilizarse exactamente de la misma manera", "Existe un error de comunicación", "La comunidad presenta diversidad lingüística"], "a": "La comunidad presenta diversidad lingüística"}, {"tema": 1, "q": "¿Cuál acción ayudaría más a conservar el patrimonio lingüístico de una comunidad?", "opts": ["Corregir todas las expresiones regionales", "Evitar que las niñas y niños aprendan la lengua local", "Registrar relatos y promover el uso de la lengua entre generaciones", "Utilizar la lengua únicamente durante ceremonias"], "a": "Registrar relatos y promover el uso de la lengua entre generaciones"}, {"tema": 1, "q": "Una estudiante escucha una palabra que no conoce, pero comprende su significado aproximado por las palabras que aparecen antes y después. ¿Qué estrategia utilizó?", "opts": ["Memorización", "Inferencia mediante el contexto", "Copia textual", "Traducción literal"], "a": "Inferencia mediante el contexto"}, {"tema": 2, "q": "Lee: “En México se hablan numerosas lenguas originarias. Cada una conserva formas particulares de nombrar, explicar y comprender distintos aspectos de la vida comunitaria”. ¿Cuál es la idea principal?", "opts": ["La diversidad lingüística también conserva conocimientos culturales", "Todas las lenguas originarias utilizan las mismas palabras", "Las comunidades deben utilizar una sola lengua", "Las lenguas únicamente sirven para nombrar objetos"], "a": "La diversidad lingüística también conserva conocimientos culturales"}, {"tema": 2, "q": "¿Cuál sería la mejor idea secundaria para apoyar la afirmación “Las lenguas forman parte del patrimonio cultural”?", "opts": ["Algunas palabras tienen muchas letras", "Los estudiantes utilizan cuadernos para escribir", "Existen diferentes materias escolares", "Mediante ellas se transmiten relatos y conocimientos entre generaciones"], "a": "Mediante ellas se transmiten relatos y conocimientos entre generaciones"}, {"tema": 2, "q": "Una estudiante debe resumir un texto sobre diversidad cultural. ¿Qué debería hacer primero?", "opts": ["Copiar todas las oraciones", "Cambiar cada palabra por un sinónimo", "Identificar las ideas principales", "Eliminar la primera parte del texto"], "a": "Identificar las ideas principales"}, {"tema": 2, "q": "¿Cuál de estos textos funciona mejor como resumen? Texto original: “En distintas regiones de México existen comunidades que conservan lenguas, celebraciones, alimentos y formas de organización propias. Esta variedad forma parte de la riqueza cultural del país”.", "opts": ["México es un país.", "La diversidad de prácticas y lenguas de sus comunidades forma parte de la riqueza cultural de México.", "En distintas regiones de México existen comunidades que conservan lenguas, celebraciones, alimentos y formas de organización propias.", "Todas las comunidades mexicanas son iguales."], "a": "La diversidad de prácticas y lenguas de sus comunidades forma parte de la riqueza cultural de México."}, {"tema": 2, "q": "Una estudiante entrevista a su bisabuela para investigar cómo se celebraba anteriormente una fiesta de su comunidad. ¿Qué tipo de información puede obtener principalmente?", "opts": ["Un testimonio sobre la memoria y las prácticas comunitarias", "Una demostración científica", "Una definición de diccionario", "Una estadística nacional"], "a": "Un testimonio sobre la memoria y las prácticas comunitarias"}, {"tema": 2, "q": "¿Por qué sería conveniente comparar la entrevista anterior con fotografías, documentos u otros testimonios?", "opts": ["Porque las entrevistas nunca son útiles", "Porque las fotografías siempre contienen toda la verdad", "Porque las personas mayores no pueden aportar información", "Porque contrastar fuentes permite construir una investigación más sólida"], "a": "Porque contrastar fuentes permite construir una investigación más sólida"}, {"tema": 2, "q": "Una comunidad conserva una receta tradicional, pero las nuevas generaciones modifican algunos ingredientes disponibles. ¿Cuál interpretación es más adecuada?", "opts": ["La cultura desapareció completamente", "Las tradiciones pueden conservar elementos y también transformarse", "La receta dejó automáticamente de pertenecer a la comunidad", "Las tradiciones nunca pueden cambiar"], "a": "Las tradiciones pueden conservar elementos y también transformarse"}, {"tema": 2, "q": "¿Cuál situación constituye discriminación lingüística?", "opts": ["Preguntar respetuosamente qué significa una palabra", "Aprender saludos en otra lengua", "Impedir participar a una estudiante por su manera de hablar", "Investigar las variantes de una región"], "a": "Impedir participar a una estudiante por su manera de hablar"}, {"tema": 2, "q": "En una escuela llega una alumna que habla español y una lengua originaria. ¿Cuál acción favorece mejor su integración?", "opts": ["Permitir su participación y valorar sus conocimientos lingüísticos", "Pedirle que oculte que conoce otra lengua", "Evitar preguntarle sobre su comunidad", "Separarla hasta que hable como los demás"], "a": "Permitir su participación y valorar sus conocimientos lingüísticos"}, {"tema": 2, "q": "¿Cuál afirmación explica mejor la relación entre lengua, cultura e identidad?", "opts": ["La identidad depende únicamente del lugar de nacimiento", "La cultura solamente existe cuando está escrita", "La lengua y la cultura nunca influyen entre sí", "La lengua puede transmitir experiencias culturales que contribuyen al sentido de pertenencia"], "a": "La lengua puede transmitir experiencias culturales que contribuyen al sentido de pertenencia"}, {"tema": 2, "q": "Lee: “En la comunidad se organizan talleres para que las personas mayores enseñen a niñas y niños palabras, relatos y canciones en su lengua originaria”. ¿Cuál es el propósito principal de esta actividad?", "opts": ["Sustituir la educación escolar", "Favorecer la transmisión intergeneracional de la lengua y la cultura", "Evitar que los niños aprendan español", "Convertir la lengua originaria en una lengua extranjera"], "a": "Favorecer la transmisión intergeneracional de la lengua y la cultura"}, {"tema": 2, "q": "Dos comunidades celebran una misma fecha de maneras diferentes. ¿Qué conclusión es más adecuada?", "opts": ["Una de las comunidades necesariamente está equivocada", "Todas las tradiciones deberían unificarse", "Una celebración puede adquirir expresiones culturales distintas según la comunidad", "Las diferencias impiden compartir elementos culturales"], "a": "Una celebración puede adquirir expresiones culturales distintas según la comunidad"}, {"tema": 2, "q": "Una alumna lee: “El pueblo conserva su lengua porque en ella se encuentran los nombres tradicionales de plantas, animales, lugares y prácticas comunitarias”. ¿Qué puede inferirse?", "opts": ["La lengua puede almacenar conocimientos relacionados con el entorno y la comunidad", "Los nombres tradicionales carecen de importancia cultural", "Una lengua solamente conserva nombres de plantas", "El conocimiento comunitario no se relaciona con el lenguaje"], "a": "La lengua puede almacenar conocimientos relacionados con el entorno y la comunidad"}, {"tema": 2, "q": "Si una estudiante quiere investigar la diversidad lingüística de su comunidad, ¿cuál plan sería más completo?", "opts": ["Preguntar únicamente a una amiga", "Buscar una sola palabra regional", "Escribir lo que cree sin consultar fuentes", "Entrevistar habitantes, consultar fuentes y comparar la información obtenida"], "a": "Entrevistar habitantes, consultar fuentes y comparar la información obtenida"}, {"tema": 2, "q": "Después de estudiar estos temas, ¿cuál conclusión demuestra una comprensión más completa?", "opts": ["La diversidad dificulta necesariamente la convivencia", "Conocer y respetar la diversidad lingüística y cultural ayuda a conservar patrimonio y favorecer una convivencia intercultural", "Para evitar discriminación todas las personas deberían hablar igual", "Las lenguas originarias solamente son importantes para quienes las hablan"], "a": "Conocer y respetar la diversidad lingüística y cultural ayuda a conservar patrimonio y favorecer una convivencia intercultural"}],PASS=60;
+const S={i:0,c:0,w:0,streak:0,ans:[],student:"",reason:""};
+const $=s=>document.querySelector(s);
+function sh(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function render(){let q=DATA[S.i];$("#num").textContent=`${S.i+1} / 30`;$("#hits").textContent=S.c;$("#fails").textContent=S.w;$("#bar").style.width=`${Math.round(S.i/30*100)}%`;$("#topic").textContent=q.tema===1?"Tema 1 · Lengua, comunicación y diversidad":"Tema 2 · Cultura, comprensión e interculturalidad";$("#question").textContent=q.q;$("#feedback").textContent="";let box=$("#options");box.innerHTML="";sh(q.opts).forEach((t,i)=>{let b=document.createElement("button");b.className="option";b.type="button";b.innerHTML=`<span class="letter">${["A","B","C","D"][i]}</span><span></span>`;b.lastChild.textContent=t;b.addEventListener("click",()=>answer(t));box.appendChild(b)})}
+function answer(choice){
+  document.querySelectorAll(".option").forEach(b=>b.disabled=true);
+  let q=DATA[S.i], ok=choice===q.a;
+  S.ans.push({n:S.i+1,tema:q.tema,ok});
+
+  if(ok){
+    S.c++;
+    $("#feedback").textContent="✓ Respuesta registrada. Avanzas.";
+    $("#feedback").className="feedback ok";
+  }else{
+    S.w++;
+    $("#feedback").textContent = S.w < 5
+      ? `Respuesta registrada. Llevas ${S.w} de 5 errores permitidos en este intento.`
+      : "Has acumulado 5 respuestas incorrectas. El examen se reiniciará desde la pregunta 1.";
+    $("#feedback").className="feedback bad";
+  }
+
+  $("#hits").textContent=S.c;
+  $("#fails").textContent=S.w;
+  let answered=S.i+1;
+
+  setTimeout(()=>{
+    if(S.w>=5){
+      restartAttempt();
+      return;
+    }
+    if(answered===30){
+      finish("Evaluación completada.",false);
+      return;
+    }
+    S.i++;
+    render();
+  },900);
+}
+
+function restartAttempt(){
+  S.i=0;
+  S.c=0;
+  S.w=0;
+  S.streak=0;
+  S.ans=[];
+  S.reason="";
+  $("#exam").classList.remove("hidden");
+  $("#result").classList.add("hidden");
+  render();
+  $("#feedback").textContent="Nuevo intento iniciado. Regresaste a la pregunta 1.";
+  $("#feedback").className="feedback warn";
+}
+
+function topicScore(t){let a=S.ans.filter(x=>x.tema===t);return [a.filter(x=>x.ok).length,a.length]}
+function finish(reason,early){$("#exam").classList.add("hidden");$("#result").classList.remove("hidden");S.reason=reason;let pct=Math.round(S.c/30*100),grade=S.c/30*10,pass=pct>=PASS&&S.ans.length===30,[t1c,t1n]=topicScore(1),[t2c,t2n]=topicScore(2);$("#status").textContent=pass?"APROBADA":"REQUIERE REPETIR";$("#status").className="big "+(pass?"ok":"bad");$("#summary").textContent=early?"La evaluación se cerró antes de llegar a la pregunta 30 por el filtro de desempeño.":"La estudiante completó las 30 preguntas.";$("#ra").textContent=`${S.ans.length} / 30`;$("#rc").textContent=S.c;$("#rw").textContent=S.w;$("#rg").textContent=`${grade.toFixed(1)} / 10 · ${pct}%`;$("#rt1").textContent=`${t1c} aciertos de ${t1n} respondidos`;$("#rt2").textContent=`${t2c} aciertos de ${t2n} respondidos`;$("#recommend").innerHTML=`<b>Conclusión pedagógica:</b> ${reason} ${pass?"Puede avanzar al siguiente nivel de actividades.":"Se recomienda repasar y repetir la evaluación desde el inicio."}`}
+$("#begin").addEventListener("click",()=>{let n=$("#name").value.trim();if(n.length<2)return alert("Escribe el nombre de la estudiante.");S.i=0;S.c=0;S.w=0;S.streak=0;S.ans=[];S.student=n;$("#start").classList.add("hidden");$("#result").classList.add("hidden");$("#exam").classList.remove("hidden");render()});
+$("#restart").addEventListener("click",()=>{$("#result").classList.add("hidden");$("#start").classList.remove("hidden")})
+$("#pdf").addEventListener("click",()=>{if(!window.jspdf)return alert("No se pudo cargar el generador PDF.");const {jsPDF}=window.jspdf,doc=new jsPDF(),pct=Math.round(S.c/30*100),grade=S.c/30*10,[t1c,t1n]=topicScore(1),[t2c,t2n]=topicScore(2),pass=pct>=PASS&&S.ans.length===30;doc.setFont("helvetica","bold");doc.setFontSize(18);doc.text("Informe de evaluación - Español",20,20);doc.setFont("helvetica","normal");doc.setFontSize(12);let lines=[`Estudiante: ${S.student}`,`Grado: 1.º de secundaria`,`Resultado: ${pass?"APROBADA":"REQUIERE REPETIR"}`,`Respondidas: ${S.ans.length} / 30`,`Aciertos: ${S.c}`,`Errores: ${S.w}`,`Calificación: ${grade.toFixed(1)} / 10 (${pct}%)`,`Tema 1: ${t1c} de ${t1n} respondidas correctamente`,`Tema 2: ${t2c} de ${t2n} respondidas correctamente`,"",`Conclusión: ${S.reason}`,"",pass?"Recomendación: avanzar al siguiente nivel.":"Recomendación: repasar los contenidos y repetir la evaluación."];let y=34;for(let l of lines){for(let p of doc.splitTextToSize(l,170)){doc.text(p,20,y);y+=7}}doc.setFontSize(10);doc.text("AUTOR · Luis Alberto Antonio Narciso",20,285);doc.save("Informe_Espanol_1_Secundaria.pdf")})
+})();
+</script>
+</body>
+</html>
