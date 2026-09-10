@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Material educativo interactivo sobre Pancho Villa y la Revolución Mexicana para estudiantes de secundaria." />
+  <title>Pancho Villa | Historia interactiva para secundaria</title>
+  <style>
+    :root{
+      --bg:#f4efe5;
+      --paper:#fffaf0;
+      --ink:#2f2923;
+      --muted:#6d6257;
+      --accent:#8b2e1f;
+      --accent2:#bc7a25;
+      --dark:#1f2421;
+      --green:#4d5d4a;
+      --line:#dccfbf;
+      --shadow:0 18px 50px rgba(48,39,31,.14);
+      --radius:26px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(188,122,37,.10), transparent 28%),
+        radial-gradient(circle at 90% 8%, rgba(139,46,31,.08), transparent 25%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:inherit}
+    img{max-width:100%;display:block}
+    .wrap{width:min(1180px,92vw);margin:auto}
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(18px);
+      background:rgba(244,239,229,.86);
+      border-bottom:1px solid rgba(47,41,35,.08);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:18px;padding:14px 0;
+    }
+    .brand{font-weight:900;letter-spacing:.03em}
+    .brand span{color:var(--accent)}
+    .navlinks{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .navlinks a{
+      text-decoration:none;padding:8px 12px;border-radius:999px;font-size:.9rem;color:var(--muted)
+    }
+    .navlinks a:hover{background:#fff7ea;color:var(--accent)}
+
+    .hero{padding:72px 0 44px}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border:1px solid #d7c4ad;border-radius:999px;
+      font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)
+    }
+    h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3.2rem,7vw,6.7rem);line-height:.88;margin:22px 0 22px;letter-spacing:-.045em}
+    .hero p{font-size:1.12rem;color:var(--muted);max-width:62ch}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:13px 18px;border-radius:14px;text-decoration:none;font-weight:850;border:1px solid transparent;cursor:pointer
+    }
+    .btn-primary{background:var(--accent);color:white;box-shadow:0 10px 26px rgba(139,46,31,.22)}
+    .btn-secondary{background:rgba(255,250,240,.82);border-color:#d8c9b7}
+    .hero-card{
+      position:relative;overflow:hidden;border-radius:34px;box-shadow:var(--shadow);background:#221c18;min-height:560px
+    }
+    .hero-card img{width:100%;height:100%;min-height:560px;object-fit:cover;filter:saturate(.86) contrast(1.04)}
+    .hero-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 42%,rgba(25,20,16,.80))}
+    .hero-label{position:absolute;left:24px;right:24px;bottom:22px;z-index:2;color:white}
+    .hero-label strong{font-family:Georgia,serif;font-size:1.7rem;display:block}
+    .hero-label span{opacity:.82;font-size:.92rem}
+
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px auto 58px}
+    .stat{background:rgba(255,250,240,.86);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 24px rgba(65,50,35,.06)}
+    .stat b{display:block;font-family:Georgia,serif;font-size:1.65rem;color:var(--accent)}
+    .stat span{color:var(--muted);font-size:.9rem}
+
+    section{padding:62px 0}
+    .section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:28px}
+    .section-head h2{font-family:Georgia,serif;font-size:clamp(2.2rem,4.5vw,4.1rem);line-height:1;margin:0}
+    .section-head p{max-width:54ch;color:var(--muted);margin:0}
+
+    .story{display:grid;gap:26px}
+    .chapter{
+      display:grid;grid-template-columns:1fr 1fr;gap:0;
+      overflow:hidden;border-radius:var(--radius);background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow)
+    }
+    .chapter:nth-child(even) .visual{order:2}
+    .visual{background:#1f1a16;min-height:430px}
+    .visual img{width:100%;height:100%;object-fit:cover}
+    .copy{padding:40px}
+    .chapter-number{font-weight:900;color:var(--accent2);letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+    .copy h3{font-family:Georgia,serif;font-size:2.2rem;line-height:1.05;margin:10px 0 16px}
+    .copy p{color:var(--muted)}
+    .fact{margin-top:20px;padding:16px 18px;border-left:4px solid var(--accent);background:#f8eee0;border-radius:0 14px 14px 0}
+    .fact strong{color:var(--accent)}
+
+    .timeline{position:relative;margin-top:10px;padding-left:28px;border-left:3px solid #cebca6}
+    .event{position:relative;padding:0 0 26px 24px}
+    .event:before{content:"";position:absolute;left:-34px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--bg)}
+    .event time{font-weight:900;color:var(--accent)}
+    .event h4{margin:3px 0 6px;font-size:1.12rem}
+    .event p{margin:0;color:var(--muted)}
+
+    .concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .concept{padding:24px;border-radius:22px;background:var(--dark);color:white;min-height:230px}
+    .concept small{color:#e5c18b;text-transform:uppercase;font-weight:900;letter-spacing:.07em}
+    .concept h3{font-family:Georgia,serif;font-size:1.8rem;margin:12px 0}
+    .concept p{color:#d7d6d1;margin:0}
+
+    .quiz-shell{background:linear-gradient(140deg,#2b2a25,#171b18);color:white;border-radius:30px;padding:clamp(24px,5vw,50px);box-shadow:var(--shadow)}
+    .quiz-shell h2{font-family:Georgia,serif;font-size:clamp(2.2rem,5vw,4rem);margin-top:0}
+    .quiz-shell>p{color:#d3d6d2}
+    .q{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:20px;margin:18px 0}
+    .q strong{display:block;margin-bottom:12px}
+    .options{display:grid;gap:10px}
+    .option{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:12px;background:rgba(255,255,255,.04);cursor:pointer}
+    .option:hover{background:rgba(255,255,255,.10)}
+    .feedback{margin-top:10px;font-size:.92rem;min-height:1.3em}
+    .correct{color:#8fe0a7}.wrong{color:#ffb1a8}
+    .quiz-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px}
+    .score{font-weight:900}
+
+    .reflection{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .panel{padding:26px;border-radius:22px;background:var(--paper);border:1px solid var(--line)}
+    .panel h3{font-family:Georgia,serif;margin-top:0;font-size:1.6rem}
+    textarea{width:100%;min-height:150px;border:1px solid #cdbca9;background:#fffdf8;border-radius:14px;padding:14px;font:inherit;resize:vertical}
+
+    footer{padding:40px 0 60px;color:var(--muted);font-size:.9rem;text-align:center}
+
+    @media (max-width:900px){
+      .hero-grid,.chapter,.reflection{grid-template-columns:1fr}
+      .chapter:nth-child(even) .visual{order:0}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .concepts{grid-template-columns:1fr}
+      .section-head{align-items:start;flex-direction:column}
+      .hero-card,.hero-card img{min-height:430px}
+    }
+    @media (max-width:640px){
+      .nav{align-items:flex-start}.navlinks{display:none}
+      .hero{padding-top:44px}
+      .stats{grid-template-columns:1fr 1fr}
+      .copy{padding:28px}
+      .visual{min-height:310px}
+      .hero-card,.hero-card img{min-height:360px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <div class="brand">HISTORIA <span>MX</span></div>
+      <nav class="navlinks" aria-label="Navegación principal">
+        <a href="#historia">Historia</a>
+        <a href="#linea">Línea del tiempo</a>
+        <a href="#conceptos">Conceptos</a>
+        <a href="#quiz">Reto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Material para secundaria · Historia de México</span>
+          <h1>Pancho<br>Villa</h1>
+          <p>Conoce al líder revolucionario del norte a través de imágenes, episodios clave y preguntas para pensar. El objetivo no es memorizar fechas, sino comprender por qué su figura sigue siendo una de las más discutidas de la Revolución Mexicana.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#historia">Comenzar recorrido</a>
+            <a class="btn btn-secondary" href="#quiz">Ir al reto final</a>
+          </div>
+        </div>
+        <figure class="hero-card">
+          <img src="09cd11b97ff14549e53054821297c048cd9e40fd0b4e2d125d48f3fb59e1107d.jpg" alt="Ilustración educativa de Pancho Villa" />
+          <figcaption class="hero-label">
+            <strong>Francisco “Pancho” Villa</strong>
+            <span>Figura central de la Revolución Mexicana en el norte del país.</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="wrap stats" aria-label="Datos rápidos">
+      <div class="stat"><b>1878</b><span>Año de nacimiento de Doroteo Arango.</span></div>
+      <div class="stat"><b>1910</b><span>Inicio de la Revolución Mexicana.</span></div>
+      <div class="stat"><b>1913</b><span>Consolidación de la División del Norte.</span></div>
+      <div class="stat"><b>1923</b><span>Asesinato de Villa en Parral, Chihuahua.</span></div>
+    </div>
+
+    <section id="historia">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Un personaje entre la historia y la leyenda</h2>
+          <p>Pancho Villa fue militar, caudillo revolucionario y símbolo popular. Su trayectoria permite estudiar desigualdad, lucha armada, liderazgo, propaganda y conflicto político.</p>
+        </div>
+
+        <div class="story">
+          <article class="chapter">
+            <div class="visual"><img src="54775d72bde598d27caf65fb63b7b5314797c1a14b2fbf7522bdb30f9825ba9d.jpg" alt="Escena ilustrada relacionada con la juventud de Pancho Villa" loading="lazy"></div>
+            <div class="copy">
+              <span class="chapter-number">Capítulo 1</span>
+              <h3>De Doroteo Arango a Pancho Villa</h3>
+              <p>Su nombre original fue Doroteo Arango. Nació en Durango en 1878 y creció en un ambiente rural marcado por fuertes desigualdades sociales. Con el paso de los años adoptó el nombre con el que sería conocido en todo México: Francisco “Pancho” Villa.</p>
+              <div class="fact"><strong>Para pensar:</strong> ¿por qué una persona puede transformarse en símbolo político cuando representa problemas compartidos por muchas otras?</div>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="visual"><img src="59c0200a2f5476ead789c81b0eaa4340103b0b541a7632e29e465b4e45ac93e4.jpg" alt="Escena de la Revolución Mexicana en el norte" loading="lazy"></div>
+            <div class="copy">
+              <span class="chapter-number">Capítulo 2</span>
+              <h3>La Revolución abre una oportunidad</h3>
+              <p>En 1910, Francisco I. Madero llamó a levantarse contra el largo gobierno de Porfirio Díaz. Villa se unió a la lucha revolucionaria y destacó por su movilidad, conocimiento del territorio y capacidad para organizar hombres a caballo.</p>
+              <div class="fact"><strong>Clave histórica:</strong> la Revolución Mexicana no fue una sola lucha uniforme. Participaron grupos distintos, con intereses y proyectos políticos diferentes.</div>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="visual"><img src="7846d798f96b781bdb8ee0ee390a7450600444afe1530bd588688cb34d66a2a1.jpg" alt="Representación de la División del Norte" loading="lazy"></div>
+            <div class="copy">
+              <span class="chapter-number">Capítulo 3</span>
+              <h3>La fuerza de la División del Norte</h3>
+              <p>Villa llegó a comandar la División del Norte, una de las fuerzas militares más poderosas de la Revolución. Su ejército combinaba caballería, ferrocarriles, comunicaciones y una estructura capaz de movilizar miles de combatientes.</p>
+              <div class="fact"><strong>Observa:</strong> un ejército moderno no depende solo de armas. También necesita transporte, información, abastecimiento y coordinación.</div>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="visual"><img src="933b952755b1a3eae3540d6b28e3508ecaba90372666145efd85f63ed5e9bc57.jpg" alt="Pancho Villa como figura política y militar" loading="lazy"></div>
+            <div class="copy">
+              <span class="chapter-number">Capítulo 4</span>
+              <h3>Alianzas, rupturas y poder</h3>
+              <p>Tras la caída de Victoriano Huerta, los revolucionarios comenzaron a enfrentarse entre sí. Villa se acercó al movimiento de Emiliano Zapata y entró en conflicto con Venustiano Carranza y Álvaro Obregón. La Revolución pasó entonces de una lucha contra un enemigo común a una disputa por el rumbo político del país.</p>
+              <div class="fact"><strong>Pregunta clave:</strong> ¿qué ocurre cuando una coalición gana una guerra, pero sus integrantes no comparten el mismo proyecto de gobierno?</div>
+            </div>
+          </article>
+
+          <article class="chapter">
+            <div class="visual"><img src="c76cbd7a34ebe77016d9a02a68f206a4df9beb8cae956f9e76337d07a427d42c.jpg" alt="Escena final sobre el legado de Pancho Villa" loading="lazy"></div>
+            <div class="copy">
+              <span class="chapter-number">Capítulo 5</span>
+              <h3>El final de la lucha y su legado</h3>
+              <p>En 1920 Villa aceptó retirarse de la vida militar. Tres años después fue asesinado en Parral, Chihuahua. Desde entonces su figura ha sido interpretada de maneras distintas: héroe popular, caudillo, estratega militar, rebelde y personaje polémico.</p>
+              <div class="fact"><strong>Historia vs. mito:</strong> estudiar a un personaje histórico implica distinguir documentos, hechos comprobables, testimonios y relatos construidos después.</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="linea">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Línea del tiempo esencial</h2>
+          <p>Ubica los acontecimientos para entender cómo cambió la posición de Villa dentro de la Revolución.</p>
+        </div>
+        <div class="timeline">
+          <div class="event"><time>1878</time><h4>Nace Doroteo Arango</h4><p>Nace en el estado de Durango.</p></div>
+          <div class="event"><time>1910</time><h4>Se suma a la Revolución</h4><p>Participa en el movimiento encabezado por Francisco I. Madero contra Porfirio Díaz.</p></div>
+          <div class="event"><time>1913–1914</time><h4>Apogeo de la División del Norte</h4><p>Villa se convierte en uno de los principales comandantes revolucionarios.</p></div>
+          <div class="event"><time>1914</time><h4>Ruptura revolucionaria</h4><p>Villa y Zapata se enfrentan políticamente al constitucionalismo de Carranza.</p></div>
+          <div class="event"><time>1915</time><h4>Derrotas militares</h4><p>Las fuerzas de Álvaro Obregón vencen a la División del Norte en batallas decisivas como Celaya.</p></div>
+          <div class="event"><time>1920</time><h4>Retiro</h4><p>Villa negocia el abandono de las armas y se establece en la hacienda de Canutillo.</p></div>
+          <div class="event"><time>1923</time><h4>Asesinato en Parral</h4><p>Muere en una emboscada en Hidalgo del Parral, Chihuahua.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="conceptos">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Tres ideas que debes comprender</h2>
+          <p>Estas ideas ayudan a pasar de la memorización al análisis histórico.</p>
+        </div>
+        <div class="concepts">
+          <article class="concept"><small>Concepto 01</small><h3>Caudillismo</h3><p>Liderazgo político y militar concentrado alrededor de una figura con gran influencia personal sobre sus seguidores.</p></article>
+          <article class="concept"><small>Concepto 02</small><h3>Revolución</h3><p>Proceso de transformación profunda del poder político y de la organización social; suele involucrar conflictos entre proyectos diferentes.</p></article>
+          <article class="concept"><small>Concepto 03</small><h3>Fuente histórica</h3><p>Documento, fotografía, carta, objeto o testimonio que permite investigar el pasado y comparar distintas versiones de un hecho.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="wrap">
+        <div class="quiz-shell">
+          <h2>Reto final: ¿qué entendiste?</h2>
+          <p>Responde las cinco preguntas. Al final podrás comprobar tu puntaje.</p>
+
+          <div class="q" data-answer="b">
+            <strong>1. ¿Cuál era el nombre original de Pancho Villa?</strong>
+            <div class="options">
+              <label class="option"><input type="radio" name="q1" value="a"> Francisco Arango</label>
+              <label class="option"><input type="radio" name="q1" value="b"> Doroteo Arango</label>
+              <label class="option"><input type="radio" name="q1" value="c"> Victoriano Villa</label>
+              <label class="option"><input type="radio" name="q1" value="d"> Pascual Orozco</label>
+            </div><div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c">
+            <strong>2. ¿Qué fue la División del Norte?</strong>
+            <div class="options">
+              <label class="option"><input type="radio" name="q2" value="a"> Un partido político</label>
+              <label class="option"><input type="radio" name="q2" value="b"> Una región administrativa</label>
+              <label class="option"><input type="radio" name="q2" value="c"> Una poderosa fuerza militar revolucionaria</label>
+              <label class="option"><input type="radio" name="q2" value="d"> Una organización extranjera</label>
+            </div><div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="a">
+            <strong>3. ¿Por qué la Revolución Mexicana no puede entenderse como una sola lucha uniforme?</strong>
+            <div class="options">
+              <label class="option"><input type="radio" name="q3" value="a"> Porque participaron grupos con proyectos e intereses distintos</label>
+              <label class="option"><input type="radio" name="q3" value="b"> Porque ocurrió únicamente en Chihuahua</label>
+              <label class="option"><input type="radio" name="q3" value="c"> Porque no existieron dirigentes</label>
+              <label class="option"><input type="radio" name="q3" value="d"> Porque duró solo unos meses</label>
+            </div><div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="d">
+            <strong>4. ¿Con qué revolucionario se relacionó Villa frente al constitucionalismo de Carranza?</strong>
+            <div class="options">
+              <label class="option"><input type="radio" name="q4" value="a"> Porfirio Díaz</label>
+              <label class="option"><input type="radio" name="q4" value="b"> Victoriano Huerta</label>
+              <label class="option"><input type="radio" name="q4" value="c"> Bernardo Reyes</label>
+              <label class="option"><input type="radio" name="q4" value="d"> Emiliano Zapata</label>
+            </div><div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="b">
+            <strong>5. ¿Qué habilidad histórica se practica al distinguir entre hechos comprobables y relatos posteriores?</strong>
+            <div class="options">
+              <label class="option"><input type="radio" name="q5" value="a"> Cálculo mental</label>
+              <label class="option"><input type="radio" name="q5" value="b"> Análisis crítico de fuentes</label>
+              <label class="option"><input type="radio" name="q5" value="c"> Memorización mecánica</label>
+              <label class="option"><input type="radio" name="q5" value="d"> Dibujo técnico</label>
+            </div><div class="feedback"></div>
+          </div>
+
+          <div class="quiz-actions">
+            <button class="btn btn-primary" id="checkQuiz">Calificar respuestas</button>
+            <button class="btn btn-secondary" id="resetQuiz" type="button">Reiniciar</button>
+            <span class="score" id="score" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap reflection">
+        <div class="panel">
+          <h3>Pregunta para reflexionar</h3>
+          <p>¿Por qué crees que Pancho Villa puede ser considerado héroe por algunas personas y personaje polémico por otras?</p>
+          <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
+        </div>
+        <div class="panel">
+          <h3>Actividad de fuente histórica</h3>
+          <p>Elige una de las imágenes del recorrido y responde:</p>
+          <ol>
+            <li>¿Qué detalles observas?</li>
+            <li>¿Qué información parece histórica y qué parte podría ser una recreación artística?</li>
+            <li>¿Qué otra fuente necesitarías para comprobar lo que muestra?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Material educativo sobre Pancho Villa · Historia de México · Nivel secundaria</div>
+  </footer>
+
+  <script>
+    const questions = [...document.querySelectorAll('.q')];
+    const scoreEl = document.getElementById('score');
+
+    document.getElementById('checkQuiz').addEventListener('click', () => {
+      let score = 0;
+      questions.forEach((q) => {
+        const selected = q.querySelector('input:checked');
+        const fb = q.querySelector('.feedback');
+        if (!selected) {
+          fb.textContent = 'Selecciona una respuesta.';
+          fb.className = 'feedback wrong';
+          return;
+        }
+        if (selected.value === q.dataset.answer) {
+          score++;
+          fb.textContent = '✓ Correcto';
+          fb.className = 'feedback correct';
+        } else {
+          fb.textContent = '✗ Revisa la información del recorrido.';
+          fb.className = 'feedback wrong';
+        }
+      });
+      const msg = score === 5 ? 'Excelente dominio del tema.' : score >= 4 ? 'Muy buen resultado.' : score >= 3 ? 'Vas bien; revisa los capítulos indicados.' : 'Conviene volver a recorrer la historia.';
+      scoreEl.textContent = `${score}/5 · ${msg}`;
+    });
+
+    document.getElementById('resetQuiz').addEventListener('click', () => {
+      document.querySelectorAll('input[type="radio"]').forEach(i => i.checked = false);
+      document.querySelectorAll('.feedback').forEach(f => { f.textContent=''; f.className='feedback'; });
+      scoreEl.textContent='';
+      document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+    });
+  </script>
+</body>
+</html>
