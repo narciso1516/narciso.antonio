@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Juego de Restas con Canicas</title>
+<style>
+:root{
+  --bg1:#fff8e8;
+  --bg2:#eaf7ff;
+  --card:#ffffff;
+  --ink:#203040;
+  --blue:#3b82f6;
+  --red:#ef4444;
+  --green:#22c55e;
+  --yellow:#facc15;
+  --purple:#a855f7;
+  --soft:#eef6ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;
+  background:linear-gradient(180deg,var(--bg2),var(--bg1));
+  color:var(--ink);
+}
+header{
+  text-align:center;
+  padding:20px 14px 8px;
+}
+h1{
+  margin:0;
+  font-size:clamp(30px,7vw,52px);
+}
+.subtitle{
+  font-size:clamp(18px,4vw,24px);
+  margin:8px auto 0;
+}
+main{
+  width:min(980px,94%);
+  margin:auto;
+  padding-bottom:40px;
+}
+.card{
+  background:var(--card);
+  border-radius:28px;
+  padding:18px;
+  margin:14px 0;
+  box-shadow:0 12px 28px rgba(31,41,55,.10);
+  border:2px solid #e5eef8;
+}
+.topline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:#f4f9ff;
+  font-size:18px;
+  font-weight:900;
+}
+.problem{
+  text-align:center;
+  font-size:clamp(42px,10vw,76px);
+  font-weight:900;
+  margin:10px 0;
+}
+.instruction{
+  text-align:center;
+  font-size:clamp(22px,5vw,32px);
+  font-weight:900;
+  margin:8px 0 16px;
+}
+.board{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+@media(max-width:760px){
+  .board{grid-template-columns:1fr}
+}
+.zone{
+  min-height:240px;
+  border:3px dashed #c9d9e8;
+  border-radius:24px;
+  padding:16px;
+  background:#fbfdff;
+}
+.zone h2{
+  text-align:center;
+  font-size:24px;
+  margin:0 0 12px;
+}
+.marbles{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  align-content:flex-start;
+}
+.marble{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:inset 0 -7px 0 rgba(0,0,0,.15),0 4px 8px rgba(0,0,0,.12);
+  transition:.15s ease;
+}
+.marble:active{transform:scale(.9)}
+.marble.red{background:var(--red)}
+.marble.blue{
+  background:var(--blue);
+  display:grid;
+  place-items:center;
+  color:white;
+  font-size:18px;
+}
+.marble.removed{
+  opacity:.16;
+  transform:scale(.75);
+  filter:grayscale(1);
+  pointer-events:none;
+}
+.counter{
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
+  margin-top:14px;
+}
+.answer-choices{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.choice{
+  width:86px;
+  height:70px;
+  border:none;
+  border-radius:20px;
+  font-size:30px;
+  font-weight:900;
+  background:#eff6ff;
+  cursor:pointer;
+  box-shadow:0 5px 0 #cbddec;
+}
+.choice:hover{transform:translateY(-2px)}
+.choice:active{transform:translateY(3px);box-shadow:0 2px 0 #cbddec}
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+button.action{
+  border:none;
+  border-radius:18px;
+  padding:14px 20px;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+.primary{background:var(--blue);color:white}
+.green{background:var(--green);color:white}
+.yellow{background:var(--yellow);color:#594900}
+.soft{background:#eef4f8;color:var(--ink)}
+.message{
+  text-align:center;
+  margin-top:14px;
+  min-height:62px;
+  padding:12px;
+  border-radius:18px;
+  background:#f7fbff;
+  font-size:24px;
+  font-weight:900;
+}
+.progress-wrap{
+  height:16px;
+  background:#edf2f7;
+  border-radius:999px;
+  overflow:hidden;
+  margin:12px 0 4px;
+}
+.progress{
+  height:100%;
+  width:0%;
+  background:var(--green);
+  transition:.3s;
+}
+.starline{
+  text-align:center;
+  font-size:28px;
+  min-height:38px;
+}
+.help{
+  font-size:20px;
+  line-height:1.45;
+  text-align:center;
+}
+.hidden{display:none}
+.finish{
+  text-align:center;
+  padding:24px;
+}
+.finish .big{
+  font-size:72px;
+}
+footer{
+  text-align:center;
+  padding:18px 10px 30px;
+  color:#667788;
+  font-size:14px;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔴 Juego de Restas</h1>
+  <div class="subtitle">Toca, quita y cuenta lo que queda.</div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="topline">
+      <div class="badge">⭐ Estrellas: <span id="stars">0</span></div>
+      <div class="badge">🎯 Reto <span id="levelTxt">1</span> de <span id="totalTxt">10</span></div>
+    </div>
+    <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+  </section>
+
+  <section id="gameCard" class="card">
+    <div id="problem" class="problem">8 − 3 = ?</div>
+    <div id="instruction" class="instruction">Toca 3 canicas para quitarlas.</div>
+
+    <div class="board">
+      <div class="zone">
+        <h2>🔴 Tus canicas</h2>
+        <div id="marbles" class="marbles"></div>
+        <div class="counter">Quedan: <span id="leftCount">0</span></div>
+      </div>
+
+      <div class="zone">
+        <h2>🗑️ Canicas que quitaste</h2>
+        <div id="removed" class="marbles"></div>
+        <div class="counter">Quitaste: <span id="removedCount">0</span></div>
+      </div>
+    </div>
+
+    <div id="choices" class="answer-choices"></div>
+
+    <div class="controls">
+      <button class="action yellow" onclick="speakInstruction()">🔊 Escuchar</button>
+      <button class="action soft" onclick="resetCurrent()">↩️ Volver a intentar</button>
+    </div>
+
+    <div id="message" class="message">Primero toca las canicas que vas a quitar.</div>
+    <div id="starline" class="starline"></div>
+  </section>
+
+  <section class="card">
+    <div class="help">
+      <strong>Para la niña:</strong><br>
+      1. Mira cuántas canicas tienes.<br>
+      2. Toca las que vas a quitar.<br>
+      3. Cuenta cuántas quedan.<br>
+      4. Elige la respuesta.
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="help">
+      <strong>Cuando ya domine estos ejercicios:</strong><br>
+      puedes pasar poco a poco a restas como <strong>12 − 5</strong>, usando grupos de 10.
+      Primero debe comprender “quitar” y “contar lo que queda”.
+    </div>
+  </section>
+</main>
+
+<footer>
+  Material didáctico interactivo para 1.º de primaria
+</footer>
+
+<script>
+const exercises = [
+  {a:5,b:1},
+  {a:6,b:2},
+  {a:7,b:3},
+  {a:8,b:2},
+  {a:9,b:4},
+  {a:10,b:3},
+  {a:10,b:5},
+  {a:11,b:4},
+  {a:12,b:5},
+  {a:13,b:6}
+];
+
+let idx = 0;
+let removedCount = 0;
+let stars = 0;
+let selectedDone = false;
+
+const el = id => document.getElementById(id);
+
+function makeMarble(n){
+  const d = document.createElement('button');
+  d.className = 'marble red';
+  d.setAttribute('aria-label','canica');
+  d.dataset.index = n;
+  d.onclick = () => removeMarble(d);
+  return d;
+}
+
+function loadExercise(){
+  const ex = exercises[idx];
+  removedCount = 0;
+  selectedDone = false;
+  el('problem').textContent = `${ex.a} − ${ex.b} = ?`;
+  el('instruction').textContent = `Toca ${ex.b} canica${ex.b===1?'':'s'} para quitarla${ex.b===1?'':'s'}.`;
+  el('marbles').innerHTML = '';
+  el('removed').innerHTML = '';
+  el('choices').innerHTML = '';
+  el('message').textContent = 'Primero toca las canicas que vas a quitar.';
+  el('starline').textContent = '';
+  for(let i=0;i<ex.a;i++) el('marbles').appendChild(makeMarble(i));
+  updateCounts();
+  el('levelTxt').textContent = idx+1;
+  el('totalTxt').textContent = exercises.length;
+  el('progress').style.width = `${(idx/exercises.length)*100}%`;
+}
+
+function removeMarble(m){
+  if(selectedDone) return;
+  const ex = exercises[idx];
+  if(removedCount >= ex.b){
+    el('message').textContent = `Ya quitaste ${ex.b}. Ahora cuenta cuántas quedan.`;
+    return;
+  }
+  m.disabled = true;
+  m.classList.add('removed');
+  removedCount++;
+
+  const copy = document.createElement('div');
+  copy.className = 'marble red';
+  el('removed').appendChild(copy);
+
+  updateCounts();
+
+  if(removedCount === ex.b){
+    selectedDone = true;
+    el('message').textContent = '¡Muy bien! Ahora cuenta las canicas que quedan.';
+    showChoices();
+  } else {
+    el('message').textContent = `Muy bien. Falta quitar ${ex.b-removedCount}.`;
+  }
+}
+
+function updateCounts(){
+  const ex = exercises[idx];
+  el('removedCount').textContent = removedCount;
+  el('leftCount').textContent = ex.a - removedCount;
+}
+
+function showChoices(){
+  const ex = exercises[idx];
+  const correct = ex.a - ex.b;
+  const set = new Set([correct]);
+  while(set.size < 3){
+    let n = correct + Math.floor(Math.random()*5)-2;
+    if(n>=0 && n<=15) set.add(n);
+  }
+  [...set].sort(()=>Math.random()-.5).forEach(n=>{
+    const b=document.createElement('button');
+    b.className='choice';
+    b.textContent=n;
+    b.onclick=()=>checkChoice(n);
+    el('choices').appendChild(b);
+  });
+}
+
+function checkChoice(n){
+  const ex = exercises[idx];
+  const correct = ex.a-ex.b;
+  if(n===correct){
+    stars++;
+    el('stars').textContent = stars;
+    el('message').textContent = `✅ ¡Correcto! Quedan ${correct}.`;
+    el('starline').textContent = '⭐ ¡Excelente!';
+    [...el('choices').children].forEach(b=>b.disabled=true);
+    setTimeout(nextExercise,900);
+  }else{
+    el('message').textContent = 'Mira otra vez las canicas que quedaron y vuelve a contar.';
+  }
+}
+
+function nextExercise(){
+  if(idx < exercises.length-1){
+    idx++;
+    loadExercise();
+  }else{
+    el('progress').style.width='100%';
+    el('gameCard').innerHTML = `
+      <div class="finish">
+        <div class="big">🎉</div>
+        <h2>¡Terminaste!</h2>
+        <p style="font-size:28px;font-weight:900">Ganaste ${stars} estrellas.</p>
+        <button class="action green" onclick="location.reload()">Jugar otra vez</button>
+      </div>`;
+  }
+}
+
+function resetCurrent(){
+  loadExercise();
+}
+
+function speakInstruction(){
+  const ex = exercises[idx];
+  const msg = `Tienes ${ex.a} canicas. Toca ${ex.b} canicas para quitarlas. Después cuenta cuántas quedan.`;
+  if('speechSynthesis' in window){
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(msg);
+    u.lang='es-MX';
+    u.rate=.9;
+    speechSynthesis.speak(u);
+  }else{
+    el('message').textContent = msg;
+  }
+}
+
+loadExercise();
+</script>
+</body>
+</html>
