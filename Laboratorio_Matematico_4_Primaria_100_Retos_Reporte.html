@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+<title>Laboratorio Matemático Interactivo · 4.º de Primaria</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --text:#162033; --muted:#62708a; --line:#dfe6ef;
+  --accent:#5b6cff; --accent2:#00a78e; --danger:#c43d4b; --warn:#ad6b00;
+  --shadow:0 16px 40px rgba(26,42,73,.10); --radius:24px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#eef3ff 0,#f8fbff 25%,#f4f7fb 100%);color:var(--text)}
+button,input{font:inherit}
+.app{max-width:1100px;margin:auto;padding:18px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(244,247,251,.92);backdrop-filter:blur(14px);padding:12px 0}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{font-weight:900;letter-spacing:-.02em}.small{font-size:.9rem;color:var(--muted)}
+.progress{height:12px;background:#dde5f2;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.4s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-top:18px}
+.kicker{font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1,h2,h3{margin:.35rem 0 .8rem}
+h1{font-size:clamp(1.8rem,5vw,3.1rem);line-height:1.02}
+h2{font-size:clamp(1.4rem,3.5vw,2rem)}
+.question{font-size:clamp(1.12rem,2.8vw,1.5rem);line-height:1.45;font-weight:750}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px}
+.badge{padding:7px 10px;border-radius:999px;background:#eef1ff;color:#3644b3;font-size:.85rem;font-weight:700}
+.workspace{min-height:300px;border:2px dashed #ccd6e5;border-radius:20px;padding:18px;background:linear-gradient(180deg,#fbfdff,#f5f9ff);display:flex;flex-direction:column;justify-content:center}
+.visual{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;margin:8px 0 18px}
+.group{background:white;border:1px solid var(--line);border-radius:18px;padding:14px;min-width:120px;text-align:center}
+.big{font-size:2rem;font-weight:900}
+.op{font-size:1.6rem;font-weight:900;color:var(--accent)}
+.answer-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.answer{min-width:190px;max-width:320px;width:100%;padding:14px 16px;border:2px solid #cfd8e7;border-radius:14px;font-size:1.1rem;text-align:center}
+.btn{border:0;border-radius:14px;padding:13px 18px;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--accent);color:white}.btn.secondary{background:#e9eef8;color:#24324b}.btn.good{background:var(--accent2);color:white}.btn:disabled{opacity:.45;cursor:not-allowed}
+.feedback{margin-top:14px;padding:14px;border-radius:16px;display:none}
+.feedback.show{display:block}.feedback.ok{background:#e9fbf6;color:#146a59}.feedback.bad{background:#fff0f1;color:#8e2c36}.feedback.hint{background:#fff8e7;color:#7d5200}
+.choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.choice{padding:14px;border:2px solid #d7dfeb;border-radius:14px;background:white;cursor:pointer;font-weight:700}
+.choice.selected{border-color:var(--accent);background:#eef0ff}
+.frac{display:inline-grid;grid-template-rows:auto 2px auto;align-items:center;text-align:center;vertical-align:middle;min-width:34px;margin:0 4px;font-weight:900}
+.frac .bar{height:2px;background:currentColor;width:100%}
+.objects{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:180px;overflow:auto}
+.obj{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#e8edff;border:1px solid #c9d1ff;font-size:.9rem;user-select:none;cursor:pointer}
+.obj.marked{opacity:.3;transform:scale(.9)}
+.numberline{display:flex;align-items:end;gap:0;overflow:auto;padding:16px 0}
+.tick{min-width:46px;text-align:center;position:relative;padding-top:26px}
+.tick:before{content:"";position:absolute;top:8px;left:50%;height:14px;border-left:2px solid #60708d}
+.report{display:none}
+.report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.metric{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fbfdff}
+.metric .n{font-size:2rem;font-weight:900}
+.skill-row{display:grid;grid-template-columns:1.4fr .5fr .5fr 1fr;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.skillbar{height:9px;background:#e4eaf4;border-radius:999px;overflow:hidden}.skillbar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.note{padding:14px;border-left:4px solid var(--accent);background:#f2f4ff;border-radius:10px;margin:12px 0}
+footer{text-align:center;color:var(--muted);padding:28px 8px}
+@media(max-width:640px){
+  .app{padding:10px}.card{padding:16px;border-radius:18px}.workspace{padding:12px}
+  .skill-row{grid-template-columns:1fr .5fr}.skill-row>*:nth-child(3),.skill-row>*:nth-child(4){grid-column:1/-1}
+}
+@media print{
+  .topbar,.quiz-card,.nav-actions,footer{display:none!important}.report{display:block!important}.card{box-shadow:none;border:1px solid #ccc}
+  body{background:white}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brandrow">
+      <div><div class="brand">Laboratorio Matemático · 4.º de Primaria</div><div class="small" id="statusText">Reto 1 de 100</div></div>
+      <div class="small"><strong id="scoreMini">0</strong> aciertos</div>
+    </div>
+    <div class="progress"><div id="progressBar"></div></div>
+  </div>
+
+  <section class="card intro" id="intro">
+    <div class="kicker">Evaluación diagnóstica interactiva</div>
+    <h1>Resolver, representar y razonar</h1>
+    <p>Este laboratorio evalúa cálculo, comprensión de problemas, operaciones, fracciones, medición y razonamiento lógico. Cada reto ofrece retroalimentación progresiva y registra intentos y uso de pistas.</p>
+    <div class="meta">
+      <span class="badge">100 retos</span><span class="badge">4.º de primaria</span><span class="badge">Responsive</span><span class="badge">Reporte profesional</span>
+    </div>
+    <button class="btn primary" onclick="startQuiz()">Comenzar evaluación</button>
+  </section>
+
+  <section class="card quiz-card" id="quiz" style="display:none">
+    <div class="kicker" id="levelLabel"></div>
+    <h2 id="qTitle"></h2>
+    <div class="question" id="qText"></div>
+    <div class="meta"><span class="badge" id="skillBadge"></span><span class="badge" id="typeBadge"></span></div>
+    <div class="workspace" id="workspace"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="answer-row nav-actions">
+      <button class="btn secondary" id="hintBtn" onclick="showHint()">Pista</button>
+      <button class="btn primary" id="checkBtn" onclick="checkAnswer()">Comprobar</button>
+      <button class="btn good" id="nextBtn" onclick="nextQuestion()" disabled>Continuar</button>
+    </div>
+  </section>
+
+  <section class="card report" id="report"></section>
+  <footer>Instrumento educativo interactivo · Reporte generado localmente en el navegador</footer>
+</div>
+
+<script>
+const Q = [
+["Ana tiene 24 estampas y su amiga le regala 13. ¿Cuántas estampas tiene ahora?",37,"Suma","Cambio positivo","Junta los dos grupos de estampas.","24 + 13 = 37"],
+["Pedro tenía 48 canicas y perdió 16. ¿Cuántas le quedan?",32,"Resta","Quitar","Debes quitar 16 canicas del total inicial.","48 − 16 = 32"],
+["En un salón hay 18 niñas y 17 niños. ¿Cuántos alumnos hay en total?",35,"Suma","Parte-todo","Ambos grupos pertenecen al mismo salón.","18 + 17 = 35"],
+["Una caja tenía 60 lápices. Se utilizaron 23. ¿Cuántos quedan?",37,"Resta","Quitar","Los lápices utilizados ya no están en la caja.","60 − 23 = 37"],
+["Luis leyó 35 páginas el lunes y 28 el martes. ¿Cuántas páginas leyó en total?",63,"Suma","Combinar","Suma lo leído en ambos días.","35 + 28 = 63"],
+["Una tienda tenía 75 globos y vendió 29. ¿Cuántos quedan?",46,"Resta","Inventario","Lo vendido sale del inventario.","75 − 29 = 46"],
+["María ahorró $46 y después recibió $25. ¿Cuánto dinero tiene?",71,"Dinero","Suma monetaria","El dinero recibido se agrega al que ya tenía.","46 + 25 = 71"],
+["En un árbol había 52 naranjas y cortaron 18. ¿Cuántas quedaron?",34,"Resta","Cosecha","Las naranjas cortadas dejan de estar en el árbol.","52 − 18 = 34"],
+["Una escuela tiene 125 alumnos de primaria y 84 de secundaria. ¿Cuántos alumnos son en total?",209,"Suma","Parte-todo","Combina ambos niveles escolares.","125 + 84 = 209"],
+["Un autobús llevaba 67 pasajeros. Bajaron 24. ¿Cuántos continuaron el viaje?",43,"Resta","Cambio negativo","Quienes bajaron ya no continúan.","67 − 24 = 43"],
+["Una biblioteca tiene 235 libros de cuentos y 164 libros de ciencias. ¿Cuántos libros hay entre ambos grupos?",399,"Suma","Agrupación","Junta centenas, decenas y unidades.","235 + 164 = 399"],
+["Una granja produjo 450 huevos y vendió 175. ¿Cuántos quedaron?",275,"Resta","Inventario","Resta lo vendido de la producción.","450 − 175 = 275"],
+["Sofía tenía $500 y compró unos zapatos de $325. ¿Cuánto dinero le quedó?",175,"Dinero","Cambio","El cambio más el precio debe completar 500.","500 − 325 = 175"],
+["En una carrera participaron 148 niños y 136 niñas. ¿Cuántas personas participaron?",284,"Suma","Total","Suma los dos grupos.","148 + 136 = 284"],
+["Un tanque contiene 800 litros de agua. Se utilizaron 245. ¿Cuántos litros quedan?",555,"Medición","Resta","Extrae 245 litros del total.","800 − 245 = 555"],
+["Una tienda recibió 320 cuadernos por la mañana y 185 por la tarde. ¿Cuántos recibió en total?",505,"Suma","Acumulación","Son dos entregas que se acumulan.","320 + 185 = 505"],
+["Un agricultor cosechó 675 mangos y vendió 298. ¿Cuántos le quedaron?",377,"Resta","Inventario","Puedes comprobar sumando lo que quedó y lo vendido.","675 − 298 = 377"],
+["Una escuela reunió $850 el lunes y $475 el martes. ¿Cuánto reunió en total?",1325,"Dinero","Suma","Combina ambos montos.","850 + 475 = 1325"],
+["Carlos necesita recorrer 900 metros y ya recorrió 635. ¿Cuántos metros le faltan?",265,"Medición","Diferencia","Busca cuánto falta para llegar de 635 a 900.","900 − 635 = 265"],
+["Una biblioteca tenía 1,000 libros y prestó 347. ¿Cuántos permanecen en la biblioteca?",653,"Resta","Inventario","Los prestados ya no están físicamente en la biblioteca.","1000 − 347 = 653"],
+["Hay 6 bolsas con 8 naranjas cada una. ¿Cuántas naranjas hay?",48,"Multiplicación","Grupos iguales","Son 6 grupos de 8.","6 × 8 = 48"],
+["Una maestra reparte 36 lápices entre 6 alumnos por igual. ¿Cuántos recibe cada uno?",6,"División","Reparto","Todos deben recibir la misma cantidad.","36 ÷ 6 = 6"],
+["Hay 7 mesas con 4 niños en cada una. ¿Cuántos niños hay?",28,"Multiplicación","Grupos iguales","Cuenta 7 grupos de 4.","7 × 4 = 28"],
+["Se guardan 45 pelotas en 5 cajas iguales. ¿Cuántas pelotas van en cada caja?",9,"División","Reparto","Las 5 cajas deben quedar iguales.","45 ÷ 5 = 9"],
+["Una araña tiene 8 patas. ¿Cuántas patas tienen 7 arañas?",56,"Multiplicación","Grupos iguales","Cada araña aporta 8 patas.","7 × 8 = 56"],
+["Cada paquete contiene 9 galletas. ¿Cuántas galletas contienen 6 paquetes?",54,"Multiplicación","Grupos iguales","Repite 9 seis veces.","6 × 9 = 54"],
+["Se reparten 72 dulces entre 8 niños. ¿Cuántos recibe cada niño?",9,"División","Reparto","Reparte todos los dulces por igual.","72 ÷ 8 = 9"],
+["Un salón tiene 5 filas con 7 sillas cada una. ¿Cuántas sillas hay?",35,"Multiplicación","Arreglo rectangular","Filas × sillas por fila.","5 × 7 = 35"],
+["Una familia compra 4 cajas con 12 botellas cada una. ¿Cuántas botellas compró?",48,"Multiplicación","Grupos iguales","Son 4 grupos de 12.","4 × 12 = 48"],
+["Se acomodan 63 libros en 9 estantes con la misma cantidad. ¿Cuántos libros habrá en cada estante?",7,"División","Reparto","Distribuye los 63 libros por igual.","63 ÷ 9 = 7"],
+["Un agricultor planta 8 filas con 15 plantas en cada fila. ¿Cuántas plantas sembró?",120,"Multiplicación","Arreglo","Cada una de las 8 filas tiene 15.","8 × 15 = 120"],
+["Una escuela compra 9 paquetes con 24 lápices cada uno. ¿Cuántos lápices compró?",216,"Multiplicación","Grupos iguales","Representa 24 nueve veces.","9 × 24 = 216"],
+["Hay 144 manzanas que deben colocarse en 12 cajas iguales. ¿Cuántas manzanas irán en cada caja?",12,"División","Reparto","Comprueba cajas × contenido.","144 ÷ 12 = 12"],
+["Un cine tiene 14 filas con 20 asientos cada una. ¿Cuántos asientos tiene?",280,"Multiplicación","Arreglo rectangular","Multiplica filas por lugares.","14 × 20 = 280"],
+["Cada boleto cuesta $35. ¿Cuánto cuestan 8 boletos?",280,"Dinero","Multiplicación","El precio se repite 8 veces.","8 × 35 = 280"],
+["Una fábrica produce 125 juguetes diariamente. ¿Cuántos produce en 4 días?",500,"Multiplicación","Tabla","125 se repite cuatro días.","125 × 4 = 500"],
+["Se reparten 240 hojas entre 8 alumnos. ¿Cuántas recibe cada uno?",30,"División","Reparto","Todos deben recibir igual cantidad.","240 ÷ 8 = 30"],
+["Una camioneta transporta 32 cajas. Cada caja contiene 15 kg de fruta. ¿Cuántos kilogramos transporta?",480,"Multiplicación","Peso","Cada caja aporta 15 kg.","32 × 15 = 480"],
+["Una escuela necesita acomodar 360 alumnos en 9 grupos iguales. ¿Cuántos alumnos tendrá cada grupo?",40,"División","Reparto","Forma 9 grupos del mismo tamaño.","360 ÷ 9 = 40"],
+["Una tienda recibe 25 paquetes con 24 botellas cada uno. ¿Cuántas botellas recibió?",600,"Multiplicación","Descomposición","Puedes descomponer 25×24.","25 × 24 = 600"],
+["Una libreta cuesta $28. Si pagas con $50, ¿cuánto cambio recibes?",22,"Dinero","Cambio","Precio + cambio = 50.","50 − 28 = 22"],
+["Un juguete cuesta $75 y tienes $48. ¿Cuánto dinero te falta?",27,"Dinero","Diferencia","Busca cuánto falta para llegar a 75.","75 − 48 = 27"],
+["Compras 3 jugos de $15 cada uno. ¿Cuánto pagas?",45,"Dinero","Compra","El precio se repite tres veces.","3 × 15 = 45"],
+["Una película comienza a las 4:00 p. m. y dura 2 horas. ¿A qué hora termina?","6:00","Tiempo","Reloj","Avanza dos horas completas.","Termina a las 6:00 p. m."],
+["Una clase comienza a las 8:30 a. m. y termina a las 10:00 a. m. ¿Cuánto dura?","1:30","Tiempo","Duración","De 8:30 a 9:00 hay 30 min; después una hora.","1 h 30 min"],
+["Una botella contiene 1 litro de agua. ¿Cuántos litros contienen 7 botellas?",7,"Medición","Capacidad","Cada botella aporta un litro.","7 L"],
+["Una cuerda mide 10 metros. Si cortas 3 metros, ¿cuánto queda?",7,"Medición","Longitud","La parte cortada deja de contar.","10 − 3 = 7"],
+["Una bolsa pesa 4 kg. ¿Cuánto pesan 6 bolsas iguales?",24,"Medición","Peso","Son seis grupos de 4 kg.","6 × 4 = 24"],
+["Elena tiene $200. Compra un libro de $85 y una libreta de $35. ¿Cuánto dinero le queda?",80,"Dinero","Dos pasos","Primero calcula el gasto total.","200 − (85 + 35) = 80"],
+["Compras 4 panes de $8 y pagas con $50. ¿Cuánto cambio recibes?",18,"Dinero","Dos pasos","Primero encuentra el costo de los cuatro panes.","50 − (4 × 8) = 18"],
+["Un viaje comienza a las 9:15 a. m. y dura 3 horas. ¿A qué hora termina?","12:15","Tiempo","Reloj","Avanza tres horas conservando los 15 minutos.","12:15 p. m."],
+["Una familia consume 5 litros de agua al día para cocinar. ¿Cuántos litros utiliza durante 7 días?",35,"Medición","Multiplicación","El consumo se repite siete días.","5 × 7 = 35"],
+["Un corredor recorre 2 km cada día. ¿Cuántos kilómetros recorrerá en 9 días?",18,"Medición","Recta numérica","Da nueve saltos de 2.","2 × 9 = 18"],
+["Una caja pesa 12 kg. ¿Cuánto pesan 8 cajas?",96,"Medición","Multiplicación","Son ocho grupos de 12 kg.","8 × 12 = 96"],
+["Julia compra 3 cuadernos de $24 y 2 lápices de $7. ¿Cuánto paga en total?",86,"Dinero","Dos pasos","Calcula cada tipo por separado y luego suma.","3×24 + 2×7 = 86"],
+["Miguel tiene $500. Compra una mochila de $289. ¿Cuánto le queda?",211,"Dinero","Cambio","Precio + cambio = 500.","500 − 289 = 211"],
+["Un autobús recorre 85 km por la mañana y 67 km por la tarde. ¿Cuántos kilómetros recorre?",152,"Medición","Suma","Une ambos trayectos.","85 + 67 = 152"],
+["Una tienda tiene 10 metros de tela y vende 4 metros. Después recibe otros 7 metros. ¿Cuántos metros tiene ahora?",13,"Medición","Secuencia","Respeta el orden: vender y después recibir.","10 − 4 + 7 = 13"],
+["Una función comienza a las 6:20 p. m. y termina a las 8:05 p. m. ¿Cuánto tiempo dura?","1:45","Tiempo","Duración","Divide el intervalo en tramos fáciles.","1 h 45 min"],
+["Una familia compra 5 kg de manzanas a $32 por kilogramo. ¿Cuánto debe pagar?",160,"Dinero","Precio por unidad","Cada kilogramo mantiene el mismo precio.","5 × 32 = 160"],
+["Una pizza se divide en 8 partes iguales. Pedro come 2. ¿Qué fracción de la pizza comió?","2/8","Fracciones","Parte de un entero","El numerador cuenta partes tomadas y el denominador partes totales.","2/8"],
+["Una barra de chocolate tiene 12 partes. María come 3. ¿Qué fracción comió?","3/12","Fracciones","Parte de un entero","Cuenta partes comidas sobre partes totales.","3/12"],
+["Una jarra está dividida en 4 partes iguales y tiene agua hasta 3 partes. ¿Qué fracción está llena?","3/4","Fracciones","Medición fraccionaria","El denominador indica cuatro partes iguales.","3/4"],
+["Una caja contiene 20 chocolates. Se come la mitad. ¿Cuántos quedan?",10,"Fracciones","Mitad","Mitad significa dos grupos iguales.","20 ÷ 2 = 10"],
+["Hay 24 alumnos. La mitad son niñas. ¿Cuántas niñas hay?",12,"Fracciones","Mitad","Divide 24 en dos grupos iguales.","24 ÷ 2 = 12"],
+["Una granja tiene 36 gallinas. Un tercio está dentro del gallinero. ¿Cuántas son?",12,"Fracciones","Tercio","Un tercio es uno de tres grupos iguales.","36 ÷ 3 = 12"],
+["De 40 canicas, una cuarta parte es roja. ¿Cuántas canicas rojas hay?",10,"Fracciones","Cuarta parte","Forma cuatro grupos iguales.","40 ÷ 4 = 10"],
+["Una pizza tiene 8 rebanadas. Ana come 3 y Luis 2. ¿Qué fracción de la pizza queda?","3/8","Fracciones","Resta de partes","Cuenta las rebanadas que todavía permanecen.","3/8"],
+["Una cinta mide 12 metros. Se utiliza la mitad. ¿Cuántos metros quedan?",6,"Fracciones","Mitad","La mitad divide la cinta en dos partes iguales.","6 m"],
+["De 60 árboles, un tercio son limoneros. ¿Cuántos limoneros hay?",20,"Fracciones","Tercio","Divide 60 en tres grupos iguales.","20"],
+["Una escuela tiene 100 alumnos. Una cuarta parte participa en fútbol. ¿Cuántos participan?",25,"Fracciones","Cuarta parte","Divide 100 en cuatro partes iguales.","25"],
+["Una bolsa contiene 48 dulces. Se regala la mitad y después se comen 6. ¿Cuántos quedan?",18,"Fracciones","Dos pasos","Primero regala la mitad; después resta seis.","48÷2 − 6 = 18"],
+["Un pastel se divide en 12 partes. Se comen 5 por la mañana y 3 por la tarde. ¿Qué fracción del pastel queda?","4/12","Fracciones","Resta de partes","Cuenta lo que queda, no lo que se comió.","4/12"],
+["Pedro recorrió 1/4 de una ruta de 20 km. ¿Cuántos kilómetros recorrió?",5,"Fracciones","Fracción de cantidad","Divide la ruta en cuatro partes iguales.","20 ÷ 4 = 5"],
+["En una caja hay 32 lápices. Un cuarto son rojos y el resto azules. ¿Cuántos son azules?",24,"Fracciones","Fracción y complemento","Primero encuentra los rojos; luego el resto.","32 − 8 = 24"],
+["Una tienda tenía 80 pelotas. Vendió 25 por la mañana y 18 por la tarde. ¿Cuántas quedaron?",37,"Dos pasos","Resta secuencial","Haz las ventas en orden.","80 − 25 − 18 = 37"],
+["En una escuela hay 6 grupos con 25 alumnos. Hoy faltaron 12 alumnos. ¿Cuántos asistieron?",138,"Dos pasos","Multiplicación y resta","Primero calcula cuántos están inscritos.","6×25 − 12 = 138"],
+["Una granja recoge 45 huevos diarios. ¿Cuántos recoge en 5 días? Si vende 100, ¿cuántos quedan?",125,"Dos pasos","Multiplicación y resta","Calcula primero los huevos de cinco días.","45×5 − 100 = 125"],
+["Una familia compra 4 pizzas de 8 rebanadas cada una. Se comen 21 rebanadas. ¿Cuántas quedan?",11,"Dos pasos","Multiplicación y resta","Cuenta todas las rebanadas antes de comer.","4×8 − 21 = 11"],
+["Una tienda tiene 9 cajas con 20 refrescos cada una. Vende 75 refrescos. ¿Cuántos quedan?",105,"Dos pasos","Inventario","Primero determina el inventario inicial.","9×20 − 75 = 105"],
+["Marta tenía $500. Compró 3 libros de $85 cada uno. ¿Cuánto dinero le quedó?",245,"Dinero","Dos pasos","No restes 85 una sola vez.","500 − 3×85 = 245"],
+["Un autobús comienza con 45 pasajeros. En una parada bajan 12 y suben 18. ¿Cuántos pasajeros lleva ahora?",51,"Dos pasos","Secuencia","Respeta qué sucede primero.","45 − 12 + 18 = 51"],
+["Una escuela compró 8 paquetes de 30 lápices. Repartió 175. ¿Cuántos lápices quedaron?",65,"Dos pasos","Multiplicación y resta","Primero calcula el total comprado.","8×30 −175 = 65"],
+["Un agricultor cosecha 125 naranjas el lunes y 175 el martes. Coloca todas las naranjas en 10 cajas iguales. ¿Cuántas coloca en cada caja?",30,"Dos pasos","Suma y división","Primero junta toda la cosecha.","(125+175) ÷10 = 30"],
+["Un cine tiene 12 filas con 25 lugares cada una. Si se ocupan 245 lugares, ¿cuántos quedan vacíos?",55,"Dos pasos","Capacidad","Determina primero la capacidad total.","12×25 −245 = 55"],
+["Una familia ahorra $125 cada semana durante 4 semanas y después gasta $180. ¿Cuánto dinero conserva?",320,"Dinero","Dos pasos","Calcula lo acumulado antes del gasto.","125×4 −180 = 320"],
+["Una escuela recibe 500 hojas. Cada uno de 20 alumnos utiliza 12 hojas. ¿Cuántas quedan?",260,"Dos pasos","Multiplicación y resta","Calcula primero cuántas hojas se usaron.","500 −20×12 = 260"],
+["Un vendedor tiene 15 cajas con 24 manzanas cada una. Vende 190 manzanas. ¿Cuántas conserva?",170,"Dos pasos","Multiplicación y resta","Primero determina el inventario.","15×24 −190 = 170"],
+["Una excursión cuesta $75 por alumno. Si participan 8 alumnos y pagan con $700 en total, ¿cuánto dinero sobra?",100,"Dinero","Dos pasos","Calcula primero el costo del grupo.","700 −8×75 = 100"],
+["Una biblioteca tiene 650 libros. Compra 175 nuevos y presta 238. ¿Cuántos libros quedan físicamente en la biblioteca?",587,"Dos pasos","Inventario","Los nuevos entran y los prestados salen.","650+175−238 = 587"],
+["Pienso un número. Le sumo 18 y obtengo 50. ¿Qué número pensé?",32,"Razonamiento lógico","Número faltante","Busca qué cantidad necesita 18 para llegar a 50.","32 +18 =50"],
+["Pienso un número. Lo multiplico por 6 y obtengo 42. ¿Cuál es?",7,"Razonamiento lógico","Máquina matemática","Busca qué número produce 42 al multiplicarse por 6.","7×6=42"],
+["María tiene el doble de canicas que Pedro. Pedro tiene 18. ¿Cuántas tiene María? ¿Cuántas tienen entre los dos?","36,54","Razonamiento lógico","Doble y total","Primero encuentra el doble de 18; después suma ambos.","María 36; total 54"],
+["Hay 36 niños. Se quieren formar equipos con la misma cantidad de integrantes. Escribe tres maneras diferentes de formar los equipos sin que sobre ningún niño.","varias","Razonamiento lógico","Divisibilidad","Busca factores de 36.","Ej.: 2×18, 3×12, 4×9, 6×6"],
+["Una tienda ofrece 3 lápices por $18. Si todos cuestan lo mismo, ¿cuánto costarán 8 lápices?",48,"Razonamiento lógico","Proporcionalidad","Primero descubre cuánto cuesta un lápiz.","18÷3=6; 8×6=48"],
+["Ana tiene $100. Quiere comprar cuadernos de $24 cada uno. ¿Cuál es el mayor número de cuadernos que puede comprar y cuánto dinero le sobrará?","4,4","Razonamiento lógico","División con residuo","No puedes gastar más de $100.","4 cuadernos y $4"],
+["Hay 50 alumnos y autobuses con capacidad para 12 alumnos cada uno. ¿Cuántos autobuses se necesitan como mínimo?",5,"Razonamiento lógico","Interpretación del residuo","Si quedan alumnos fuera, necesitas otro autobús.","5 autobuses"],
+["Una familia necesita 30 litros de agua. Tiene recipientes de 8 litros. ¿Cuántos recipientes completos necesita como mínimo para poder transportar al menos 30 litros?",4,"Razonamiento lógico","División con techo","Tres recipientes solo llegan a 24 litros.","4 recipientes"],
+["Carlos dice: “Si multiplico cualquier número por 5, el resultado siempre termina en 5.” ¿Carlos tiene razón? Da un ejemplo que demuestre tu respuesta.","falso","Razonamiento lógico","Contraejemplo","Prueba también con números pares.","Falso, por ejemplo 4×5=20"],
+["Un granjero tiene gallinas y conejos. En total observa 10 animales y 28 patas. ¿Cuántas gallinas y cuántos conejos hay?","6,4","Razonamiento lógico","Simulación","Conserva 10 animales y ajusta el número de patas.","6 gallinas y 4 conejos"]
+];
+
+let current=0, started=false;
+let results=Q.map(()=>({attempts:0,hints:0,correct:false,firstTry:false}));
+let selectedChoice=null;
+
+function startQuiz(){started=true;document.getElementById('intro').style.display='none';document.getElementById('quiz').style.display='block';renderQuestion()}
+function normalize(s){return String(s).toLowerCase().trim().replace(/\s+/g,'').replace(/\$/g,'').replace(/p\.?m\.?/g,'').replace(/a\.?m\.?/g,'').replace(/horas?/g,'').replace(/hrs?/g,'')}
+function isCorrect(user,expected,index){
+  let u=normalize(user), e=normalize(expected);
+  if(index===93){ // q94
+    let nums=(String(user).match(/\d+/g)||[]).map(Number);
+    if(nums.length<6) return false;
+    let pairs=[]; for(let i=0;i+1<nums.length;i+=2) pairs.push([nums[i],nums[i+1]]);
+    let valid=pairs.filter(([a,b])=>a*b===36 && a>0 && b>0);
+    let uniq=new Set(valid.map(p=>p.slice().sort((x,y)=>x-y).join('x')));
+    return uniq.size>=3;
+  }
+  if(index===98){
+    return /falso|no/.test(String(user).toLowerCase()) && /(?:2|4|6|8|10)\s*(?:x|×|\*)\s*5\s*=\s*(?:10|20|30|40|50)/i.test(String(user));
+  }
+  if(index===92){
+    let nums=(String(user).match(/\d+/g)||[]).map(Number);
+    return nums.includes(36) && nums.includes(54);
+  }
+  if(index===95){
+    let nums=(String(user).match(/\d+/g)||[]).map(Number);
+    return nums.includes(4) && nums.filter(x=>x===4).length>=2;
+  }
+  if(index===99){
+    let nums=(String(user).match(/\d+/g)||[]).map(Number);
+    return nums.includes(6) && nums.includes(4);
+  }
+  if(typeof expected==="number"){
+    let n=parseFloat(u.replace(',','.')); return Math.abs(n-expected)<1e-9;
+  }
+  if(e==="varias") return isCorrect(user,expected,93);
+  if(e==="falso") return /falso|no/.test(String(user).toLowerCase());
+  if(e.includes(",")){
+    let en=e.match(/\d+/g)||[], un=String(user).match(/\d+/g)||[];
+    return en.every(x=>un.includes(x));
+  }
+  return u===e || u.includes(e);
+}
+
+function renderObjects(count,emoji="●"){
+  let shown=Math.min(count,80), s='<div class="objects">';
+  for(let i=0;i<shown;i++) s+=`<span class="obj">${emoji}</span>`;
+  if(count>shown) s+=`<span class="badge">+${count-shown}</span>`;
+  return s+'</div>';
+}
+function fracHTML(txt){
+  if(!String(txt).includes('/')) return txt;
+  let [a,b]=String(txt).split('/');
+  return `<span class="frac"><span>${a}</span><span class="bar"></span><span>${b}</span></span>`;
+}
+function getLevel(i){
+ if(i<20)return "Nivel 1 · Comprender y elegir la operación";
+ if(i<40)return "Nivel 2 · Multiplicar, repartir y agrupar";
+ if(i<60)return "Nivel 3 · Dinero, tiempo y medidas";
+ if(i<75)return "Nivel 4 · Fracciones y representación";
+ if(i<90)return "Nivel 5 · Problemas de dos pasos";
+ return "Nivel 6 · Razonamiento y desafíos";
+}
+function renderQuestion(){
+ const q=Q[current];
+ document.getElementById('statusText').textContent=`Reto ${current+1} de ${Q.length}`;
+ document.getElementById('progressBar').style.width=`${current/Q.length*100}%`;
+ document.getElementById('qTitle').textContent=`Reto ${current+1}`;
+ document.getElementById('qText').textContent=q[0];
+ document.getElementById('skillBadge').textContent=q[2];
+ document.getElementById('typeBadge').textContent=q[3];
+ document.getElementById('levelLabel').textContent=getLevel(current);
+ document.getElementById('feedback').className='feedback';
+ document.getElementById('feedback').textContent='';
+ document.getElementById('nextBtn').disabled=!results[current].correct;
+ document.getElementById('checkBtn').disabled=results[current].correct;
+ selectedChoice=null;
+ document.getElementById('workspace').innerHTML=workspaceFor(current,q);
+ updateMini();
+}
+function workspaceFor(i,q){
+ let vis='';
+ if(i<20){
+   let nums=q[0].match(/\d[\d,]*/g)||[];
+   vis=`<div class="visual">${nums.slice(0,2).map(n=>`<div class="group"><div class="big">${n}</div><div class="small">${q[3]}</div></div>`).join('<div class="op">→</div>')}</div>`;
+ } else if(i<40){
+   let nums=q[0].match(/\d+/g)||[];
+   vis=`<div class="visual"><div class="group"><div class="big">${nums[0]||''}</div><div class="small">grupos / total</div></div><div class="op">↔</div><div class="group"><div class="big">${nums[1]||''}</div><div class="small">por grupo / grupos</div></div></div>`;
+ } else if(i<60){
+   vis=`<div class="visual"><div class="group"><div class="big">${q[2]==='Tiempo'?'🕒':q[2]==='Dinero'?'💵':'📏'}</div><div class="small">${q[3]}</div></div></div>`;
+ } else if(i<75){
+   let exp=q[1];
+   vis=`<div class="visual"><div class="group"><div class="big">◔</div><div class="small">Representa partes iguales</div></div>${String(exp).includes('/')?`<div class="group"><div class="big">${fracHTML(exp)}</div><div class="small">formato fracción</div></div>`:''}</div>`;
+ } else if(i<90){
+   vis=`<div class="visual"><div class="group"><div class="big">1</div><div class="small">Primera acción</div></div><div class="op">→</div><div class="group"><div class="big">2</div><div class="small">Segunda acción</div></div></div>`;
+ } else {
+   vis=`<div class="visual"><div class="group"><div class="big">🧠</div><div class="small">Prueba, compara y justifica</div></div></div>`;
+ }
+ if(i===93) return vis+`<div class="note">Escribe tres formas como pares, por ejemplo: <strong>2×18, 3×12, 4×9</strong>.</div><div class="answer-row"><input id="answer" class="answer" placeholder="Escribe 3 formas diferentes"></div>`;
+ if(i===98) return vis+`<div class="note">Debes indicar si Carlos tiene razón y escribir un ejemplo que lo demuestre.</div><div class="answer-row"><input id="answer" class="answer" placeholder="Ej.: Falso, 4×5=20"></div>`;
+ if(i===92) return vis+`<div class="note">Responde las dos cantidades: canicas de María y total entre ambos.</div><div class="answer-row"><input id="answer" class="answer" placeholder="Ej.: María __, total __"></div>`;
+ if(i===95) return vis+`<div class="note">Indica cuántos cuadernos puede comprar y cuánto dinero sobra.</div><div class="answer-row"><input id="answer" class="answer" placeholder="Ej.: __ cuadernos y $__"></div>`;
+ if(i===99) return vis+`<div class="note">Indica cuántas gallinas y cuántos conejos.</div><div class="answer-row"><input id="answer" class="answer" placeholder="__ gallinas y __ conejos"></div>`;
+ return vis+`<div class="answer-row"><input id="answer" class="answer" inputmode="${typeof q[1]==='number'?'decimal':'text'}" placeholder="Escribe tu respuesta"></div>`;
+}
+function showHint(){
+ results[current].hints++;
+ const f=document.getElementById('feedback'); f.className='feedback show hint'; f.textContent=Q[current][4];
+}
+function checkAnswer(){
+ const inp=document.getElementById('answer');
+ const user=inp?inp.value:'';
+ if(!String(user).trim()) return;
+ results[current].attempts++;
+ const ok=isCorrect(user,Q[current][1],current);
+ const f=document.getElementById('feedback');
+ if(ok){
+   results[current].correct=true;
+   results[current].firstTry=results[current].attempts===1;
+   f.className='feedback show ok';
+   f.innerHTML=`<strong>Correcto.</strong> ${Q[current][5]}`;
+   document.getElementById('nextBtn').disabled=false;
+   document.getElementById('checkBtn').disabled=true;
+ }else{
+   f.className='feedback show bad';
+   let a=results[current].attempts;
+   let msg=a===1?Q[current][4]:a===2?`Piensa en la representación del problema. ${Q[current][4]}`:`Revisa el procedimiento paso a paso antes de volver a comprobar.`;
+   f.textContent=msg;
+ }
+ updateMini();
+}
+function nextQuestion(){
+ if(!results[current].correct)return;
+ if(current<Q.length-1){current++;renderQuestion();window.scrollTo({top:0,behavior:'smooth'})}
+ else finish();
+}
+function updateMini(){document.getElementById('scoreMini').textContent=results.filter(r=>r.correct).length}
+function finish(){
+ document.getElementById('quiz').style.display='none';
+ document.getElementById('progressBar').style.width='100%';
+ document.getElementById('statusText').textContent='Evaluación finalizada';
+ buildReport();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function pct(n,d){return d?Math.round(n/d*100):0}
+function band(p){return p>=90?'Dominio sobresaliente':p>=80?'Dominio sólido':p>=70?'En desarrollo':p>=60?'Requiere refuerzo':'Requiere intervención prioritaria'}
+function buildReport(){
+ const rep=document.getElementById('report'); rep.style.display='block';
+ const total=Q.length, correct=results.filter(r=>r.correct).length, first=results.filter(r=>r.firstTry).length;
+ const attempts=results.reduce((a,r)=>a+r.attempts,0), hints=results.reduce((a,r)=>a+r.hints,0), score=pct(correct,total);
+ const skills={};
+ Q.forEach((q,i)=>{let s=q[2]; if(!skills[s])skills[s]={n:0,c:0,a:0,h:0}; skills[s].n++;skills[s].c+=results[i].correct?1:0;skills[s].a+=results[i].attempts;skills[s].h+=results[i].hints});
+ let rows=Object.entries(skills).map(([s,v])=>{let p=pct(v.c,v.n);return {s,...v,p}}).sort((a,b)=>a.p-b.p);
+ let strengths=rows.filter(x=>x.p>=80).slice(-3).map(x=>x.s);
+ let needs=rows.filter(x=>x.p<80).slice(0,3).map(x=>x.s);
+ let interp=score>=90?'Muestra desempeño muy sólido y consistente en la mayoría de las habilidades evaluadas.'
+ :score>=80?'Presenta dominio general adecuado, con áreas puntuales que conviene consolidar.'
+ :score>=70?'Muestra comprensión parcial; requiere práctica focalizada en algunas habilidades.'
+ :score>=60?'El desempeño indica brechas relevantes que conviene trabajar con apoyo guiado.'
+ :'Se recomienda intervención pedagógica prioritaria y práctica estructurada antes de aumentar la dificultad.';
+ rep.innerHTML=`
+ <div class="kicker">Reporte final profesional</div>
+ <h1>Resultados de desempeño matemático</h1>
+ <p class="small">Evaluación de 100 retos · resolución de problemas, representación y razonamiento</p>
+ <div class="report-grid">
+   <div class="metric"><div class="small">Resultado global</div><div class="n">${score}%</div><strong>${band(score)}</strong></div>
+   <div class="metric"><div class="small">Aciertos</div><div class="n">${correct}/100</div><span>${first} al primer intento</span></div>
+   <div class="metric"><div class="small">Intentos totales</div><div class="n">${attempts}</div><span>${(attempts/100).toFixed(1)} por reto</span></div>
+   <div class="metric"><div class="small">Pistas utilizadas</div><div class="n">${hints}</div><span>${pct(hints,Math.max(attempts,1))}% respecto a intentos</span></div>
+ </div>
+ <h2>Interpretación pedagógica</h2>
+ <div class="note">${interp}</div>
+ <h2>Desempeño por habilidad</h2>
+ <div>${rows.map(x=>`
+   <div class="skill-row">
+     <strong>${x.s}</strong>
+     <span>${x.c}/${x.n}</span>
+     <span>${x.p}%</span>
+     <div class="skillbar"><span style="width:${x.p}%"></span></div>
+   </div>`).join('')}</div>
+ <h2>Fortalezas observadas</h2>
+ <p>${strengths.length?strengths.join(', '):'Aún no hay habilidades con desempeño consolidado superior al 80%.'}</p>
+ <h2>Áreas prioritarias de mejora</h2>
+ <p>${needs.length?needs.join(', '):'No se identificaron áreas prioritarias por debajo del 80%.'}</p>
+ <h2>Recomendaciones instruccionales</h2>
+ <ul>
+   <li>Reforzar primero las habilidades con menor porcentaje antes de aumentar la complejidad.</li>
+   <li>Repetir problemas equivalentes cambiando el contexto, no solamente los números.</li>
+   <li>En errores recurrentes, pedir al alumno que represente la situación antes de operar.</li>
+   <li>En problemas de dos pasos, trabajar la secuencia “comprender → planear → resolver → comprobar”.</li>
+   <li>En razonamiento lógico, valorar estrategias y justificaciones, no solo el resultado final.</li>
+ </ul>
+ <h2>Indicadores de proceso</h2>
+ <p>El uso de intentos y pistas permite distinguir entre una respuesta inmediata y una respuesta lograda con apoyo. Un número elevado de aciertos con muchos intentos sugiere que el alumno puede llegar al resultado, pero todavía necesita consolidar procedimientos y comprensión.</p>
+ <div class="answer-row">
+   <button class="btn primary" onclick="window.print()">Imprimir / Guardar reporte en PDF</button>
+   <button class="btn secondary" onclick="location.reload()">Reiniciar evaluación</button>
+ </div>`;
+}
+</script>
+</body>
+</html>
