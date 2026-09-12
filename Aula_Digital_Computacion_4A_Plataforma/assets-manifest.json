@@ -1,0 +1,72 @@
+[
+  {
+    "clase": 1,
+    "titulo": "Conozco mi computadora",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-72482a76-e97a-43d9-84a0-451732f02071.png",
+    "archivo": "assets/clase-1-original.png",
+    "sha256": "6201e89875db4a7aca41cbada6e6b278fc04811b1e2c993c1de11d427d3fcaaf"
+  },
+  {
+    "clase": 2,
+    "titulo": "Entrada, proceso y salida",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-47cdd929-8baa-4b0b-80c5-d6505ac4fdb8.png",
+    "archivo": "assets/clase-2-original.png",
+    "sha256": "f6464fe17f55b2bab34e66ffdf2149b47d33af37cb0560e7c7ec771d9c547ade"
+  },
+  {
+    "clase": 3,
+    "titulo": "El mouse y las ventanas",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-59ae16d5-00f1-45bc-97ae-833e8fb2d60b.png",
+    "archivo": "assets/clase-3-original.png",
+    "sha256": "dab9facf28a52753df491e3c8a0da2540b13469eb55feda01c2bc22e89a382e1"
+  },
+  {
+    "clase": 4,
+    "titulo": "El teclado: escribo y aprendo",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-6c9cafb3-92bc-4b9d-a5db-5001d44caa41.png",
+    "archivo": "assets/clase-4-original.png",
+    "sha256": "182910a1c950f7f1e3bafaf18c10f8e18df95cf29ca5aaeaadba0628c4803de8"
+  },
+  {
+    "clase": 5,
+    "titulo": "Mis archivos y carpetas",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-c3358686-0274-494b-95a2-e58e63963e08.png",
+    "archivo": "assets/clase-5-original.png",
+    "sha256": "f4bd5b9828b5f367c3c54efe2c980199598c62d1e67fe0e68d6c3d804c25071e"
+  },
+  {
+    "clase": 6,
+    "titulo": "Navego en Internet",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-743c0c09-ffb4-4319-a765-49c41ca64a4d.png",
+    "archivo": "assets/clase-6-original.png",
+    "sha256": "32c46bfb82dc252eec695293d5f6bf6889c635be6f3e87e6fae50591286deba7"
+  },
+  {
+    "clase": 7,
+    "titulo": "Uso de programas",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-4544b109-e640-4224-b999-a85580da090b.png",
+    "archivo": "assets/clase-7-original.png",
+    "sha256": "6db395a75bbd74d468cad3204cdf87307306222f237fe371fa6fdcec37e5b4f9"
+  },
+  {
+    "clase": 8,
+    "titulo": "Seguridad en la computadora",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-0f114691-7dac-4ecf-86c5-55598dd11062.png",
+    "archivo": "assets/clase-8-original.png",
+    "sha256": "85192ef4e05bc90da613d21e23fb8b49763965a4d7bcf877ac561fcdfc0f5393"
+  },
+  {
+    "clase": 9,
+    "titulo": "Manejo de archivos",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-dbadbbdb-3cc3-43bd-99ed-917654def955.png",
+    "archivo": "assets/clase-9-original.png",
+    "sha256": "7d1c32ccd6f63d0c61ce68193916029bed62d3f950fc741c81b61b8004fa023a"
+  },
+  {
+    "clase": 10,
+    "titulo": "Creo mi presentación",
+    "origen": "/var/folders/bh/67tdw2x96qqg9mv2ydr66_fw0000gn/T/codex-clipboard-04f0502a-c183-438e-9876-dffdb2c5d51b.png",
+    "archivo": "assets/clase-10-original.png",
+    "sha256": "b263dd50322d15000f250da0f6c90718a5254b319b9cb6a994ac81b186737aad"
+  }
+]
