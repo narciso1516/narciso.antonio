@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Examen Interactivo - Términos Semejantes</title>
+<style>
+  :root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --primary:#355c7d;
+    --secondary:#6c5b7b;
+    --accent:#f8b195;
+    --success:#2e8b57;
+    --danger:#c94c4c;
+    --text:#243447;
+    --muted:#6b7280;
+    --border:#dbe4ee;
+    --shadow:0 18px 45px rgba(53,92,125,.14);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:linear-gradient(135deg,#eef3f8 0%,#fdf4ef 100%);
+    color:var(--text);
+    min-height:100vh;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 50px}
+  .hero{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:white;
+    border-radius:24px;
+    padding:26px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+  }
+  .hero h1{margin:0 0 8px;font-size:clamp(1.7rem,4vw,2.5rem)}
+  .hero p{margin:0;opacity:.92;line-height:1.55}
+  .progress-shell{margin-top:20px;background:rgba(255,255,255,.18);height:12px;border-radius:999px;overflow:hidden}
+  .progress-bar{height:100%;width:0;background:var(--accent);transition:width .3s ease}
+  .meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:.95rem}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:26px;
+    box-shadow:var(--shadow);
+  }
+  .q-number{color:var(--secondary);font-weight:800;letter-spacing:.02em;margin-bottom:8px}
+  .question{font-size:clamp(1.25rem,3vw,1.65rem);font-weight:800;line-height:1.4;margin-bottom:20px}
+  .options{display:grid;gap:12px}
+  .option{
+    width:100%;
+    text-align:left;
+    padding:15px 16px;
+    border:2px solid var(--border);
+    background:#fff;
+    color:var(--text);
+    border-radius:15px;
+    cursor:pointer;
+    font-size:1rem;
+    transition:.18s ease;
+  }
+  .option:hover:not(:disabled){border-color:var(--primary);transform:translateY(-1px)}
+  .option:disabled{cursor:not-allowed;opacity:1}
+  .option.correct{border-color:var(--success);background:#edf9f2}
+  .option.wrong{border-color:var(--danger);background:#fff0f0}
+  .feedback{margin-top:18px;padding:14px 16px;border-radius:14px;font-weight:700;display:none}
+  .feedback.good{display:block;background:#eaf8f0;color:#1f6f45}
+  .feedback.bad{display:block;background:#fff1f1;color:#9e3030}
+  .actions{display:flex;justify-content:flex-end;margin-top:18px}
+  .btn{
+    border:none;border-radius:14px;padding:13px 20px;font-size:1rem;font-weight:800;cursor:pointer;
+    background:var(--primary);color:white;box-shadow:0 8px 20px rgba(53,92,125,.18)
+  }
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .result{display:none;text-align:center}
+  .result.show{display:block}
+  .score-circle{
+    width:150px;height:150px;border-radius:50%;margin:10px auto 18px;display:grid;place-items:center;
+    background:conic-gradient(var(--success) 0deg,#e5e7eb 0deg);position:relative
+  }
+  .score-circle::after{content:"";position:absolute;width:118px;height:118px;border-radius:50%;background:white}
+  .score-text{position:relative;z-index:2;font-size:1.8rem;font-weight:900;color:var(--primary)}
+  .summary{max-width:600px;margin:0 auto 18px;line-height:1.65;color:var(--muted)}
+  .pass{color:var(--success);font-weight:900}
+  .fail{color:var(--danger);font-weight:900}
+  .palette{display:flex;gap:8px;justify-content:center;margin-top:20px}
+  .sw{width:28px;height:28px;border-radius:8px;border:2px solid white;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+  footer{text-align:center;color:var(--muted);font-size:.9rem;margin-top:18px}
+  @media(max-width:600px){.card,.hero{padding:20px}.option{padding:14px}.wrap{padding:18px 12px 36px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero" id="hero">
+    <h1>Examen: Términos semejantes</h1>
+    <p>Selecciona una respuesta. Una vez elegida, quedará bloqueada y podrás continuar a la siguiente pregunta.</p>
+    <div class="progress-shell"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="meta"><span id="progressText">Pregunta 1 de 25</span><span id="scoreLive">Aciertos: 0</span></div>
+  </section>
+
+  <main class="card" id="quizCard">
+    <div class="q-number" id="qNumber"></div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions"><button class="btn" id="nextBtn" disabled>Siguiente</button></div>
+  </main>
+
+  <section class="card result" id="resultCard">
+    <h2 id="resultTitle"></h2>
+    <div class="score-circle" id="scoreCircle"><div class="score-text" id="scoreText"></div></div>
+    <p class="summary" id="resultSummary"></p>
+    <button class="btn" id="retryBtn" style="display:none">Volver a intentar</button>
+    <div class="palette" aria-label="Paleta de colores">
+      <div class="sw" style="background:#355c7d"></div>
+      <div class="sw" style="background:#6c5b7b"></div>
+      <div class="sw" style="background:#f8b195"></div>
+      <div class="sw" style="background:#2e8b57"></div>
+      <div class="sw" style="background:#f4f7fb"></div>
+    </div>
+  </section>
+
+  <footer>Actividad de práctica y evaluación de suma y resta de términos semejantes.</footer>
+</div>
+
+<script>
+const questions = [
+  {q:'Cuando dos términos semejantes tienen el mismo signo, ¿qué hacemos con sus coeficientes?',o:['Los restamos y cambiamos el signo','Los multiplicamos','Eliminamos los signos','Los sumamos y conservamos el signo'],a:3},
+  {q:'Cuando dos términos semejantes tienen signos diferentes, ¿qué hacemos con sus coeficientes?',o:['Los sumamos y siempre ponemos signo positivo','Los restamos y conservamos el signo del término con mayor valor absoluto','Los multiplicamos','Eliminamos ambos términos'],a:1},
+  {q:'Si tenemos −3x − 5x, ¿qué debemos hacer?',o:['Sumar 3 + 5 y conservar el signo negativo','Restar 5 − 3 y poner signo positivo','Cambiar ambos términos a positivos','No se pueden combinar'],a:0},
+  {q:'Si tenemos 8x − 3x, ¿por qué el resultado es positivo?',o:['Porque todos los resultados deben ser positivos','Porque la x siempre es positiva','Porque 8 tiene mayor valor absoluto que 3 y su signo es positivo','Porque los signos desaparecen'],a:2},
+  {q:'¿Cuál regla es correcta para sumar términos semejantes?',o:['Siempre se suman sin importar los signos','Mismo signo: sumar. Signos diferentes: restar y conservar el signo del término con mayor valor absoluto','Mismo signo: restar. Signos diferentes: sumar','Siempre se restan'],a:1},
+  {q:'Si dos términos semejantes son positivos, como 4x + 3x, ¿qué ocurre?',o:['El resultado es negativo','Se restan los coeficientes','No se pueden sumar','Se suman los coeficientes y el resultado es positivo'],a:3},
+  {q:'¿Cuál es el resultado de −4x − 2x?',o:['−6x','6x','−2x','2x'],a:0},
+  {q:'Sin realizar toda la operación, ¿qué signo tendrá el resultado de −9x + 4x?',o:['Positivo','Cero','Negativo','No se puede determinar'],a:2},
+  {q:'¿Por qué 5x − 8x = −3x?',o:['Porque siempre gana el signo negativo','Porque se restan 8 − 5 y se conserva el signo del término con mayor valor absoluto, −8x','Porque 5 + 8 = 13','Porque las letras se restan'],a:1},
+  {q:'Sin resolver completamente, ¿qué signo tendrá el resultado de −6x + 10x?',o:['Negativo','Cero','No se puede determinar','Positivo'],a:3},
+  {q:'2x + 3x =',o:['6x','5','5x','x'],a:2},
+  {q:'6x + 2x =',o:['8x','12x','4x','8'],a:0},
+  {q:'7x − 3x =',o:['10x','3x','4','4x'],a:3},
+  {q:'9x − 5x =',o:['14x','4x','5x','4'],a:1},
+  {q:'4a + 5a =',o:['9a','20a','9','a'],a:0},
+  {q:'8a − 2a =',o:['10a','4a','6a','6'],a:2},
+  {q:'3y + 6y =',o:['18y','3y','9','9y'],a:3},
+  {q:'10y − 4y =',o:['4y','6y','14y','6'],a:1},
+  {q:'2x + 3x + 4x =',o:['9x','7x','24x','9'],a:0},
+  {q:'7x − 2x + 3x =',o:['5x','12x','8x','2x'],a:2},
+  {q:'8x − 3x − 2x =',o:['13x','7x','3','3x'],a:3},
+  {q:'3a + 4a + 2a =',o:['24a','9a','7a','9'],a:1},
+  {q:'9a − 4a + 2a =',o:['7a','5a','15a','3a'],a:0},
+  {q:'5y + 3y − 2y =',o:['10y','4y','6y','6'],a:2},
+  {q:'10y − 3y − 4y =',o:['7y','11y','3','3y'],a:3}
+];
+
+let current=0, score=0, answers=[];
+const qNumber=document.getElementById('qNumber');
+const question=document.getElementById('question');
+const options=document.getElementById('options');
+const feedback=document.getElementById('feedback');
+const nextBtn=document.getElementById('nextBtn');
+const progressBar=document.getElementById('progressBar');
+const progressText=document.getElementById('progressText');
+const scoreLive=document.getElementById('scoreLive');
+const quizCard=document.getElementById('quizCard');
+const resultCard=document.getElementById('resultCard');
+const resultTitle=document.getElementById('resultTitle');
+const scoreText=document.getElementById('scoreText');
+const resultSummary=document.getElementById('resultSummary');
+const retryBtn=document.getElementById('retryBtn');
+const scoreCircle=document.getElementById('scoreCircle');
+
+function render(){
+  const item=questions[current];
+  qNumber.textContent=`Pregunta ${current+1}`;
+  question.textContent=item.q;
+  options.innerHTML='';
+  feedback.className='feedback'; feedback.textContent='';
+  nextBtn.disabled=true;
+  progressText.textContent=`Pregunta ${current+1} de ${questions.length}`;
+  progressBar.style.width=`${(current/questions.length)*100}%`;
+  item.o.forEach((text,i)=>{
+    const b=document.createElement('button');
+    b.className='option'; b.textContent=`${String.fromCharCode(65+i)}) ${text}`;
+    b.addEventListener('click',()=>select(i,b));
+    options.appendChild(b);
+  });
+}
+
+function select(index,button){
+  if(answers[current]!==undefined) return;
+  answers[current]=index;
+  const item=questions[current];
+  [...options.children].forEach(b=>b.disabled=true);
+  if(index===item.a){
+    score++; button.classList.add('correct');
+    feedback.textContent='Correcto. Puedes continuar.'; feedback.classList.add('good');
+  } else {
+    button.classList.add('wrong');
+    options.children[item.a].classList.add('correct');
+    feedback.textContent='Respuesta registrada. La opción correcta aparece marcada en verde.'; feedback.classList.add('bad');
+  }
+  scoreLive.textContent=`Aciertos: ${score}`;
+  nextBtn.disabled=false;
+}
+
+nextBtn.addEventListener('click',()=>{
+  current++;
+  if(current<questions.length){ render(); }
+  else showResult();
+});
+
+function showResult(){
+  quizCard.style.display='none';
+  resultCard.classList.add('show');
+  progressBar.style.width='100%';
+  progressText.textContent='Examen finalizado';
+  const pct=Math.round(score/questions.length*100);
+  const pass=pct>=70;
+  scoreText.textContent=`${pct}%`;
+  scoreCircle.style.background=`conic-gradient(${pass?'var(--success)':'var(--danger)'} ${pct*3.6}deg,#e5e7eb 0deg)`;
+  resultTitle.innerHTML=pass?'<span class="pass">¡Examen aprobado!</span>':'<span class="fail">Necesitas volver a intentarlo</span>';
+  resultSummary.innerHTML=`Obtuviste <strong>${score} de ${questions.length}</strong> respuestas correctas (${pct}%). ${pass?'Demostraste comprensión básica de la suma y resta de términos semejantes.':'Para aprobar necesitas al menos 70%. Revisa especialmente las reglas de signos y vuelve a realizar el examen.'}`;
+  retryBtn.style.display=pass?'none':'inline-block';
+}
+
+retryBtn.addEventListener('click',()=>{
+  current=0; score=0; answers=[];
+  resultCard.classList.remove('show'); quizCard.style.display='block';
+  scoreLive.textContent='Aciertos: 0'; render(); window.scrollTo({top:0,behavior:'smooth'});
+});
+
+render();
+</script>
+</body>
+</html>
