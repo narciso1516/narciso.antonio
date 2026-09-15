@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>50 Retos de Tablas de Multiplicar</title>
+  <style>
+    :root{
+      --bg:#f6f8ff;
+      --card:#ffffff;
+      --text:#24304a;
+      --muted:#6d7890;
+      --line:#dfe5f2;
+      --purple:#7c6df2;
+      --purple-soft:#eeeafe;
+      --blue:#4f9df8;
+      --blue-soft:#e9f4ff;
+      --green:#39b980;
+      --green-soft:#e9f9f1;
+      --yellow:#f4c542;
+      --yellow-soft:#fff7d5;
+      --orange:#f28b4b;
+      --orange-soft:#fff0e6;
+      --danger:#e05d5d;
+      --shadow:0 14px 35px rgba(53,69,112,.10);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,ui-rounded,"SF Pro Rounded","Segoe UI",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 10% 10%,rgba(124,109,242,.10),transparent 25%),
+        radial-gradient(circle at 90% 20%,rgba(79,157,248,.10),transparent 24%),
+        radial-gradient(circle at 20% 90%,rgba(244,197,66,.13),transparent 25%),
+        var(--bg);
+      min-height:100vh;
+    }
+
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+
+    .app{
+      width:min(920px,calc(100% - 28px));
+      margin:24px auto 42px;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:28px;
+      padding:28px 22px;
+      text-align:center;
+      color:#1e2851;
+      background:linear-gradient(135deg,#ddd7ff 0%,#dff0ff 52%,#fff1b8 100%);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.8);
+    }
+    .hero::after{
+      content:"✦  ✨  ★";
+      position:absolute;
+      right:18px;
+      top:10px;
+      font-size:30px;
+      opacity:.22;
+    }
+    .hero-emoji{font-size:64px;line-height:1;margin-bottom:10px}
+    .hero h1{margin:0;font-size:clamp(28px,5vw,46px);line-height:1.05}
+    .hero p{margin:10px auto 0;max-width:650px;font-weight:700;color:#4f5874}
+
+    .panel{
+      margin-top:18px;
+      background:rgba(255,255,255,.96);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .stages{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin:16px 0 18px;
+    }
+    .stage-card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px 10px;
+      text-align:center;
+      background:#fff;
+    }
+    .stage-card .icon{font-size:30px;display:block;margin-bottom:4px}
+    .stage-card strong{display:block;font-size:14px}
+    .stage-card small{display:block;margin-top:4px;color:var(--muted);line-height:1.3}
+
+    .field{margin-top:14px}
+    .field label{display:block;font-weight:900;margin-bottom:8px}
+    select,input[type="number"]{
+      width:100%;
+      min-height:52px;
+      border:2px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+      color:var(--text);
+      padding:0 14px;
+      outline:none;
+      font-size:16px;
+    }
+    select:focus,input[type="number"]:focus{
+      border-color:var(--purple);
+      box-shadow:0 0 0 4px rgba(124,109,242,.13);
+    }
+
+    .focus-box{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:16px;
+      padding:14px;
+      border-radius:18px;
+      background:var(--yellow-soft);
+      border:1px solid #f3e39d;
+    }
+    .focus-box .face{font-size:42px}
+    .focus-box strong{display:block;margin-bottom:3px}
+    .focus-box p{margin:0;color:#665f49;font-size:14px}
+
+    .primary{
+      width:100%;
+      min-height:54px;
+      margin-top:16px;
+      border:none;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--purple),#6656e9);
+      color:#fff;
+      font-weight:950;
+      font-size:18px;
+      box-shadow:0 10px 22px rgba(124,109,242,.22);
+    }
+    .primary:active{transform:translateY(1px)}
+
+    .hidden{display:none!important}
+
+    .phase-track{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      margin-bottom:12px;
+    }
+    .phase-pill{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:9px 6px;
+      text-align:center;
+      background:#fff;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:900;
+    }
+    .phase-pill.active{border-color:var(--purple);background:var(--purple-soft);color:#4e42b7}
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin-bottom:10px;
+    }
+    .stat{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:10px;
+      text-align:center;
+    }
+    .stat span{display:block;font-size:12px;color:var(--muted);font-weight:800}
+    .stat strong{display:block;margin-top:2px;font-size:18px}
+
+    .progress{
+      height:12px;
+      background:#e8ecf5;
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:12px;
+    }
+    .progress>div{
+      height:100%;
+      width:0;
+      border-radius:inherit;
+      background:linear-gradient(90deg,var(--blue),var(--purple));
+      transition:width .25s ease;
+    }
+
+    .question-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .question-card::before{
+      content:"";
+      position:absolute;
+      top:0;left:0;right:0;
+      height:7px;
+      background:linear-gradient(90deg,var(--blue),var(--purple),var(--yellow));
+    }
+
+    .coach-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+    }
+    .coach-wrap{display:flex;align-items:center;gap:12px;min-width:0}
+    .coach{font-size:60px;line-height:1;transform-origin:center bottom}
+    .pop{animation:pop .35s ease}
+    @keyframes pop{50%{transform:translateY(-7px) scale(1.08)}}
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border-radius:999px;
+      padding:7px 11px;
+      background:var(--blue-soft);
+      color:#345c89;
+      font-size:13px;
+      font-weight:950;
+    }
+    .coach-msg{margin-top:7px;color:var(--muted);font-weight:700;font-size:14px}
+
+    .timer{
+      width:80px;
+      height:80px;
+      flex:0 0 auto;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      position:relative;
+      background:conic-gradient(var(--purple) var(--timer),#e9edf5 0);
+    }
+    .timer::after{
+      content:"";
+      position:absolute;
+      inset:8px;
+      background:#fff;
+      border-radius:50%;
+    }
+    .timer span{z-index:1;font-size:22px;font-weight:950}
+
+    .instruction{text-align:center;color:var(--muted);font-weight:900;margin-top:18px}
+    .question{
+      text-align:center;
+      margin:12px 0 18px;
+      font-size:clamp(60px,14vw,108px);
+      line-height:1;
+      letter-spacing:-.055em;
+      font-weight:950;
+    }
+
+    .answer-input{
+      text-align:center;
+      min-height:62px!important;
+      font-size:30px!important;
+      font-weight:950;
+    }
+
+    .choices-label{text-align:center;font-size:12px;color:var(--muted);font-weight:800;margin:14px 0 8px}
+    .choices{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .choice{
+      min-height:54px;
+      border:2px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+      color:var(--text);
+      font-size:22px;
+      font-weight:950;
+    }
+    .choice:hover{border-color:var(--blue);background:var(--blue-soft)}
+    .choice:active{transform:scale(.98)}
+
+    .feedback{
+      min-height:32px;
+      margin-top:12px;
+      text-align:center;
+      font-weight:950;
+      font-size:16px;
+    }
+    .feedback.ok{color:var(--green)}
+    .feedback.bad{color:var(--danger)}
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-top:18px;
+    }
+    .result-box{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px 8px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+    .result-box span{display:block;color:var(--muted);font-size:12px;font-weight:800}
+    .result-box strong{display:block;font-size:26px;margin-top:5px}
+
+    .recommendation{
+      margin-top:14px;
+      padding:16px;
+      border-radius:18px;
+      border:1px solid #dfe9df;
+      background:var(--green-soft);
+    }
+    .recommendation strong{display:block;margin-bottom:6px}
+    .recommendation p{margin:0;line-height:1.5}
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:20px;
+      padding:12px;
+    }
+
+    @media(max-width:700px){
+      .stages{grid-template-columns:1fr 1fr}
+      .result-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:480px){
+      .app{width:min(100% - 18px,920px);margin-top:10px}
+      .hero,.panel,.question-card{border-radius:20px}
+      .phase-track{grid-template-columns:1fr 1fr}
+      .coach{font-size:50px}
+      .timer{width:70px;height:70px}
+      .stats{gap:5px}
+      .stat strong{font-size:16px}
+      .question-card{padding:16px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="startScreen">
+      <div class="hero">
+        <div class="hero-emoji">🧒🏽 🧠 ✨</div>
+        <h1>Misión: dominar las tablas</h1>
+        <p>50 tarjetas con tiempo, concentración y práctica en diferentes órdenes para evitar depender de recitar la tabla completa.</p>
+      </div>
+
+      <div class="panel">
+        <h2 style="margin:0 0 6px">Así vamos a entrenar</h2>
+        <div class="stages">
+          <div class="stage-card"><span class="icon">1️⃣</span><strong>Impares</strong><small>×1 · ×3 · ×5 · ×7 · ×9</small></div>
+          <div class="stage-card"><span class="icon">2️⃣</span><strong>Pares</strong><small>×2 · ×4 · ×6 · ×8 · ×10</small></div>
+          <div class="stage-card"><span class="icon">🔙</span><strong>En reversa</strong><small>×10 hasta ×1</small></div>
+          <div class="stage-card"><span class="icon">🎲</span><strong>Al azar</strong><small>Sin depender del orden</small></div>
+        </div>
+
+        <div class="field">
+          <label for="timeChoice">⏱️ Tiempo por tarjeta</label>
+          <select id="timeChoice">
+            <option value="15">15 segundos · entrenamiento</option>
+            <option value="12" selected>12 segundos · recomendado</option>
+            <option value="8">8 segundos · desafío</option>
+          </select>
+        </div>
+
+        <div class="focus-box">
+          <div class="face">🦊</div>
+          <div>
+            <strong>Regla de concentración</strong>
+            <p>Mira los dos números, piensa el resultado y responde. No intentes adivinar ni recitar toda la tabla.</p>
+          </div>
+        </div>
+
+        <button id="startGame" class="primary" type="button">🚀 Comenzar los 50 retos</button>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="hidden" aria-live="polite">
+      <div class="phase-track">
+        <div id="phase1" class="phase-pill">1 · IMPARES</div>
+        <div id="phase2" class="phase-pill">2 · PARES</div>
+        <div id="phase3" class="phase-pill">3 · REVERSA</div>
+        <div id="phase4" class="phase-pill">4 · AZAR</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span>Tarjeta</span><strong id="cardNumber">1/50</strong></div>
+        <div class="stat"><span>Correctas</span><strong id="correctCount">0 ⭐</strong></div>
+        <div class="stat"><span>Racha</span><strong id="streakCount">0 🔥</strong></div>
+      </div>
+
+      <div class="progress"><div id="progress"></div></div>
+
+      <div class="question-card">
+        <div class="coach-row">
+          <div class="coach-wrap">
+            <div id="coach" class="coach" aria-hidden="true">🧒🏽</div>
+            <div>
+              <div id="phaseLabel" class="phase-label">🟣 Ronda 1 · Impares</div>
+              <div id="coachMessage" class="coach-msg">Concéntrate en una sola tarjeta.</div>
+            </div>
+          </div>
+          <div id="timerRing" class="timer" style="--timer:100%"><span id="timeLeft">12</span></div>
+        </div>
+
+        <div id="instruction" class="instruction">Multiplicadores impares</div>
+        <div id="question" class="question">7 × 5</div>
+
+        <form id="answerForm">
+          <label for="answerInput" style="position:absolute;left:-9999px">Escribe el resultado</label>
+          <input id="answerInput" class="answer-input" type="number" inputmode="numeric" min="0" max="200" autocomplete="off" placeholder="¿Resultado?">
+          <button type="submit" class="primary">✅ Comprobar</button>
+        </form>
+
+        <div class="choices-label">También puedes tocar una respuesta</div>
+        <div id="choices" class="choices"></div>
+        <div id="feedback" class="feedback" aria-live="assertive"></div>
+      </div>
+    </section>
+
+    <section id="endScreen" class="hidden">
+      <div class="hero">
+        <div id="endEmoji" class="hero-emoji">🏆</div>
+        <h1 id="endTitle">¡Entrenamiento terminado!</h1>
+        <p id="endText"></p>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-box"><span>Resultado</span><strong id="finalScore">0/50</strong></div>
+        <div class="result-box"><span>Precisión</span><strong id="accuracy">0%</strong></div>
+        <div class="result-box"><span>Mejor racha</span><strong id="bestStreak">0 🔥</strong></div>
+        <div class="result-box"><span>Fuera de tiempo</span><strong id="timeouts">0</strong></div>
+      </div>
+
+      <div id="recommendation" class="recommendation"></div>
+      <button id="restart" type="button" class="primary">🔄 Nueva ronda aleatoria</button>
+    </section>
+
+    <footer>AUTOR: Luis Alberto Antonio Narciso</footer>
+  </main>
+
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const startScreen = $('startScreen');
+      const gameScreen = $('gameScreen');
+      const endScreen = $('endScreen');
+      const buddies = ['🧒🏽','🐻','🦊','🐼','🐯','🐸','🤖','🦁'];
+      const encouragement = [
+        'Respira, mira y piensa.',
+        'Una tarjeta a la vez.',
+        'Concéntrate en los dos números.',
+        'Piensa antes de responder.',
+        '¡Activa tu mente matemática!'
+      ];
+
+      let deck = [];
+      let pos = 0;
+      let correct = 0;
+      let streak = 0;
+      let maxStreak = 0;
+      let timeLimit = 12;
+      let left = 12;
+      let timer = null;
+      let locked = false;
+      let records = [];
+      let reverseBase = 2;
+
+      function shuffle(a){
+        for(let i=a.length-1;i>0;i--){
+          const j=Math.floor(Math.random()*(i+1));
+          [a[i],a[j]]=[a[j],a[i]];
+        }
+        return a;
+      }
+
+      function randomBase(){
+        return 2 + Math.floor(Math.random()*9);
+      }
+
+      function createDeck(){
+        const out=[];
+        const odds=[1,3,5,7,9];
+        const evens=[2,4,6,8,10];
+
+        const oddPart=[];
+        for(let i=0;i<10;i++){
+          oddPart.push({b:randomBase(),m:odds[i%5],phase:1});
+        }
+        shuffle(oddPart);
+        out.push(...oddPart);
+
+        const evenPart=[];
+        for(let i=0;i<10;i++){
+          evenPart.push({b:randomBase(),m:evens[i%5],phase:2});
+        }
+        shuffle(evenPart);
+        out.push(...evenPart);
+
+        reverseBase=randomBase();
+        for(let m=10;m>=1;m--){
+          out.push({b:reverseBase,m,phase:3});
+        }
+
+        const used=new Set();
+        const mixed=[];
+        while(mixed.length<20){
+          const b=randomBase();
+          const m=1+Math.floor(Math.random()*10);
+          const key=b+'x'+m;
+          if(!used.has(key)){
+            used.add(key);
+            mixed.push({b,m,phase:4});
+          }
+        }
+        shuffle(mixed);
+        out.push(...mixed);
+
+        return out.map(q=>({...q,ans:q.b*q.m}));
+      }
+
+      function phaseInfo(p){
+        if(p===1) return ['🟣 Ronda 1 · Impares','Multiplicadores impares: 1, 3, 5, 7 y 9','Primero rompemos la secuencia tradicional.'];
+        if(p===2) return ['🔵 Ronda 2 · Pares','Multiplicadores pares: 2, 4, 6, 8 y 10','Ahora entrenamos la otra mitad.'];
+        if(p===3) return ['🟠 Ronda 3 · Reversa','Tabla del '+reverseBase+' desde ×10 hasta ×1','Tu cerebro debe recorrer la tabla al revés.'];
+        return ['🟢 Ronda 4 · Al azar','Recuperación rápida y completamente mezclada','Aquí comprobamos si ya no dependes del orden.'];
+      }
+
+      function setPhase(p){
+        for(let i=1;i<=4;i++) $('phase'+i).classList.toggle('active',i===p);
+        const info=phaseInfo(p);
+        $('phaseLabel').textContent=info[0];
+        $('instruction').textContent=info[1];
+        $('coachMessage').textContent=info[2];
+      }
+
+      function makeChoices(q){
+        const values=new Set([q.ans]);
+        const candidates=[
+          q.ans+q.b,q.ans-q.b,q.ans+q.m,q.ans-q.m,
+          q.ans+1,q.ans-1,q.ans+2,q.ans-2
+        ].filter(v=>v>=0&&v<=120&&v!==q.ans);
+        shuffle(candidates);
+        for(const v of candidates){
+          if(values.size===4) break;
+          values.add(v);
+        }
+        while(values.size<4){
+          const v=Math.max(0,q.ans+(Math.floor(Math.random()*15)-7));
+          if(v!==q.ans) values.add(v);
+        }
+        return shuffle([...values]);
+      }
+
+      function updateTimer(){
+        const pct=Math.max(0,left/timeLimit*100);
+        $('timeLeft').textContent=left;
+        $('timerRing').style.setProperty('--timer',pct+'%');
+      }
+
+      function buddy(ok){
+        const node=$('coach');
+        node.textContent=buddies[Math.floor(Math.random()*buddies.length)];
+        node.classList.remove('pop');
+        void node.offsetWidth;
+        node.classList.add('pop');
+
+        if(ok===true){
+          $('coachMessage').textContent='¡Excelente! Recuperaste el resultado sin depender del orden.';
+        }else if(ok===false){
+          $('coachMessage').textContent='Observa el resultado y concéntrate otra vez en la siguiente.';
+        }else{
+          $('coachMessage').textContent=encouragement[Math.floor(Math.random()*encouragement.length)];
+        }
+      }
+
+      function render(){
+        clearInterval(timer);
+        locked=false;
+        left=timeLimit;
+        const q=deck[pos];
+        setPhase(q.phase);
+
+        $('cardNumber').textContent=(pos+1)+'/50';
+        $('correctCount').textContent=correct+' ⭐';
+        $('streakCount').textContent=streak+' 🔥';
+        $('progress').style.width=(pos/50*100)+'%';
+        $('question').textContent=q.b+' × '+q.m;
+        $('feedback').textContent='';
+        $('feedback').className='feedback';
+        $('answerInput').value='';
+
+        const choices=$('choices');
+        choices.innerHTML='';
+        for(const v of makeChoices(q)){
+          const btn=document.createElement('button');
+          btn.type='button';
+          btn.className='choice';
+          btn.textContent=v;
+          btn.addEventListener('click',()=>submit(v));
+          choices.appendChild(btn);
+        }
+
+        buddy(null);
+        updateTimer();
+        $('answerInput').focus();
+        timer=setInterval(()=>{
+          left--;
+          updateTimer();
+          if(left<=0){
+            clearInterval(timer);
+            timeoutQuestion();
+          }
+        },1000);
+      }
+
+      function timeoutQuestion(){
+        if(locked) return;
+        locked=true;
+        const q=deck[pos];
+        streak=0;
+        records.push({...q,ok:false,timeout:true});
+        $('feedback').textContent='⏰ Tiempo. '+q.b+' × '+q.m+' = '+q.ans;
+        $('feedback').className='feedback bad';
+        buddy(false);
+        setTimeout(next,850);
+      }
+
+      function submit(value){
+        if(locked) return;
+        locked=true;
+        clearInterval(timer);
+        const q=deck[pos];
+        const ok=Number(value)===q.ans;
+
+        if(ok){
+          correct++;
+          streak++;
+          maxStreak=Math.max(maxStreak,streak);
+          $('feedback').textContent='✅ ¡Correcto! '+q.b+' × '+q.m+' = '+q.ans;
+          $('feedback').className='feedback ok';
+          buddy(true);
+        }else{
+          streak=0;
+          $('feedback').textContent='❌ La respuesta correcta es '+q.ans;
+          $('feedback').className='feedback bad';
+          buddy(false);
+        }
+
+        records.push({...q,ok,timeout:false,user:Number(value)});
+        $('correctCount').textContent=correct+' ⭐';
+        $('streakCount').textContent=streak+' 🔥';
+        setTimeout(next,700);
+      }
+
+      function next(){
+        pos++;
+        if(pos>=50) finish();
+        else render();
+      }
+
+      function finish(){
+        clearInterval(timer);
+        gameScreen.classList.add('hidden');
+        endScreen.classList.remove('hidden');
+
+        const pct=Math.round(correct/50*100);
+        const timeoutCount=records.filter(r=>r.timeout).length;
+        $('finalScore').textContent=correct+'/50';
+        $('accuracy').textContent=pct+'%';
+        $('bestStreak').textContent=maxStreak+' 🔥';
+        $('timeouts').textContent=timeoutCount;
+
+        if(pct>=90){
+          $('endEmoji').textContent='🏆';
+          $('endTitle').textContent='¡Dominio excelente!';
+          $('endText').textContent='Ya puedes recuperar muchas multiplicaciones sin depender de una secuencia.';
+        }else if(pct>=70){
+          $('endEmoji').textContent='🌟';
+          $('endTitle').textContent='¡Muy buen avance!';
+          $('endText').textContent='Repite el entrenamiento para aumentar rapidez y precisión.';
+        }else{
+          $('endEmoji').textContent='🧠';
+          $('endTitle').textContent='¡Entrenamiento completado!';
+          $('endText').textContent='Todavía conviene fortalecer algunas asociaciones antes de aumentar la velocidad.';
+        }
+
+        const errors=records.filter(r=>!r.ok);
+        const counts={};
+        for(const r of errors) counts[r.b]=(counts[r.b]||0)+1;
+        const weak=Object.entries(counts)
+          .sort((a,b)=>b[1]-a[1])
+          .slice(0,3)
+          .map(x=>'tabla del '+x[0]);
+
+        $('recommendation').innerHTML=
+          '<strong>📊 Recomendación para la siguiente práctica</strong>'+
+          '<p>'+
+          (weak.length
+            ? 'Conviene reforzar especialmente <b>'+weak.join(', ')+'</b>. '
+            : 'No hubo tablas claramente débiles. Continúa practicando al azar. ')+
+          'El objetivo es responder una multiplicación aislada con rapidez, no recitar toda la tabla.</p>';
+      }
+
+      function start(){
+        timeLimit=Math.max(8,Math.min(15,Number($('timeChoice').value)||12));
+        deck=createDeck();
+        pos=0;
+        correct=0;
+        streak=0;
+        maxStreak=0;
+        records=[];
+        startScreen.classList.add('hidden');
+        endScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
+        render();
+      }
+
+      $('startGame').addEventListener('click',start);
+      $('restart').addEventListener('click',()=>{
+        endScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+      });
+      $('answerForm').addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const raw=$('answerInput').value.trim();
+        if(raw===''){
+          $('feedback').textContent='✏️ Escribe una respuesta primero.';
+          $('feedback').className='feedback bad';
+          return;
+        }
+        submit(Number(raw));
+      });
+    })();
+  </script>
+</body>
+</html>
