@@ -132,6 +132,38 @@ body.locked{overflow:hidden}
 <footer>POBLADO TRES · EJIDO NUEVO LOS ÁNGELES</footer>
 </main>
 <script>
+const __music=document.getElementById("weddingMusic");
+const __open=document.getElementById("openInvite");
+const __gate=document.getElementById("inviteGate");
+const __musicBtn=document.getElementById("musicBtn");
+const __hint=document.getElementById("musicHint");
+function __playWeddingMusic(){
+  __music.muted=false;
+  __music.volume=1;
+  const p=__music.play();
+  if(p) p.then(()=>{
+    __musicBtn.textContent="❚❚";
+    __musicBtn.classList.add("playing");
+    __hint.classList.remove("show");
+  }).catch(err=>{
+    console.error("AUDIO PLAY ERROR",err);
+    __hint.textContent="Toca ♪ para escuchar la canción";
+    __hint.classList.add("show");
+  });
+}
+__open.addEventListener("click",()=>{
+  __playWeddingMusic();
+  document.body.classList.remove("locked");
+  __gate.classList.add("opened");
+  setTimeout(()=>__gate.remove(),1500);
+});
+__musicBtn.addEventListener("click",e=>{
+  e.stopPropagation();
+  if(__music.paused)__playWeddingMusic();
+  else{__music.pause();__musicBtn.textContent="♪";__musicBtn.classList.remove("playing");}
+});
+__music.addEventListener("canplay",()=>{__hint.textContent="Canción lista";});
+__music.addEventListener("error",()=>{__hint.textContent="No se pudo cargar el audio";__hint.classList.add("show");});
 const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");burst(7)}}),{threshold:.16});
 document.querySelectorAll(".reveal").forEach(e=>io.observe(e));
@@ -140,71 +172,6 @@ const photos=[...document.querySelectorAll(".photo img")],tl=document.getElement
 let busy=false;function scrollMagic(){busy=false;let vh=innerHeight;photos.forEach(img=>{let r=img.parentElement.getBoundingClientRect(),p=Math.max(0,Math.min(1,(vh-r.top)/(vh+r.height)));img.style.transform=`translateY(${(p-.5)*45}px) scale(${1.09-p*.045}) rotate(${.8-p*.8}deg)`});if(tl){let r=tl.getBoundingClientRect(),p=Math.max(0,Math.min(1,(vh*.8-r.top)/r.height));tl.style.setProperty("--progress",(p*100)+"%")}}
 addEventListener("scroll",()=>{if(!busy){requestAnimationFrame(scrollMagic);busy=true}},{passive:true});scrollMagic();
 const wedding=new Date("2026-12-12T16:30:00");function tick(){let x=Math.max(0,wedding-new Date()),dd=Math.floor(x/86400000);x%=86400000;let hh=Math.floor(x/3600000);x%=3600000;let mm=Math.floor(x/60000),ss=Math.floor((x%60000)/1000);d.textContent=String(dd).padStart(2,"0");h.textContent=String(hh).padStart(2,"0");m.textContent=String(mm).padStart(2,"0");s.textContent=String(ss).padStart(2,"0")}tick();setInterval(tick,1000);
-
-const music=document.getElementById("weddingMusic"), musicBtn=document.getElementById("musicBtn"), musicHint=document.getElementById("musicHint");
-
-let beatTimer=null;
-function initBeatSync(){
-  if(reduced || beatTimer) return;
-  beatTimer=setInterval(()=>{ if(!music.paused) pulseToMusic(78); },760);
-}
-function pulseToMusic(energy){
-  document.body.classList.add("beat");
-  setTimeout(()=>document.body.classList.remove("beat"),170);
-  beatRing.classList.remove("go"); void beatRing.offsetWidth; beatRing.classList.add("go");
-  if(energy>70) burst(2);
-}
-
-music.volume=.75;
-music.addEventListener("error",()=>{
-  musicHint.textContent="Error al cargar la canción";
-  musicHint.classList.add("show");
-});
-function setMusicUI(on){musicBtn.classList.toggle("playing",on);musicBtn.textContent=on?"❚❚":"♪";musicBtn.setAttribute("aria-label",on?"Pausar música":"Reproducir música")}
-async function startMusic(){
-  try{initBeatSync();await music.play();setMusicUI(true);musicHint.classList.remove("show");return true}
-  catch(e){setMusicUI(false);musicHint.classList.add("show");setTimeout(()=>musicHint.classList.remove("show"),6500);return false}
-}
-
-
-musicBtn.addEventListener("click",e=>{
-  e.stopPropagation();
-  if(music.paused){
-    music.volume=.75;
-    music.play().then(()=>{setMusicUI(true);initBeatSync();musicHint.classList.remove("show")})
-      .catch(()=>{musicHint.textContent="No se pudo cargar la canción";musicHint.classList.add("show")});
-  }else{music.pause();setMusicUI(false)}
-});
-
-
-const inviteGate=document.getElementById("inviteGate");
-const openInvite=document.getElementById("openInvite");
-
-openInvite.addEventListener("click", ()=>{
-  music.volume=.75;
-  music.currentTime=0;
-
-  // Critical: play() is the first media action executed by the user's tap.
-  const playPromise=music.play();
-
-  document.body.classList.remove("locked");
-  inviteGate.classList.add("opened");
-  setTimeout(()=>burst(16),350);
-  setTimeout(()=>inviteGate.remove(),1500);
-
-  if(playPromise!==undefined){
-    playPromise.then(()=>{
-      setMusicUI(true);
-      initBeatSync();
-      musicHint.classList.remove("show");
-    }).catch(err=>{
-      console.error("No se pudo reproducir el audio:",err);
-      setMusicUI(false);
-      musicHint.textContent="Toca ♪ para reproducir la canción";
-      musicHint.classList.add("show");
-    });
-  }
-});
 
 </script>
 </body></html>
