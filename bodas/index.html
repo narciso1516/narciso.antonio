@@ -84,9 +84,7 @@ body.locked{overflow:hidden}
   </div>
 </div>
 
-<audio id="weddingMusic" preload="auto" loop>
-  <source src="../Enrique%20Iglesias%20-%20Por%20Amarte%20-%20Enrique%20Iglesias%20%28youtube%29.mp3" type="audio/mpeg">
-</audio>
+<audio id="weddingMusic" preload="auto" loop playsinline src="/narciso.antonio/Enrique%20Iglesias%20-%20Por%20Amarte%20-%20Enrique%20Iglesias%20%28youtube%29.mp3"></audio>
 <button class="music-btn" id="musicBtn" aria-label="Reproducir o pausar música" title="Música">♪</button>
 <div class="music-hint" id="musicHint">Toca para escuchar “Por Amarte”</div>
 <div class="petals" id="petals"></div><main>
@@ -157,7 +155,11 @@ function pulseToMusic(energy){
   if(energy>70) burst(2);
 }
 
-music.volume=.55;
+music.volume=.75;
+music.addEventListener("error",()=>{
+  musicHint.textContent="Error al cargar la canción";
+  musicHint.classList.add("show");
+});
 function setMusicUI(on){musicBtn.classList.toggle("playing",on);musicBtn.textContent=on?"❚❚":"♪";musicBtn.setAttribute("aria-label",on?"Pausar música":"Reproducir música")}
 async function startMusic(){
   try{initBeatSync();await music.play();setMusicUI(true);musicHint.classList.remove("show");return true}
@@ -165,30 +167,43 @@ async function startMusic(){
 }
 
 
-musicBtn.addEventListener("click",async e=>{e.stopPropagation();if(music.paused)await startMusic();else{music.pause();setMusicUI(false)}});
+musicBtn.addEventListener("click",e=>{
+  e.stopPropagation();
+  if(music.paused){
+    music.volume=.75;
+    music.play().then(()=>{setMusicUI(true);initBeatSync();musicHint.classList.remove("show")})
+      .catch(()=>{musicHint.textContent="No se pudo cargar la canción";musicHint.classList.add("show")});
+  }else{music.pause();setMusicUI(false)}
+});
 
 
 const inviteGate=document.getElementById("inviteGate");
 const openInvite=document.getElementById("openInvite");
-openInvite.addEventListener("click", async ()=>{
-  // The play request occurs directly inside the user's gesture, which is the
-  // most reliable path on iOS Safari and mobile Chrome.
-  try{
-    initBeatSync();
-    
-    music.currentTime=0;
-    await music.play();
-    setMusicUI(true);
-  }catch(err){
-    // Keep the invitation usable even if the remote audio host is unavailable.
-    setMusicUI(false);
-    musicHint.textContent="Toca ♪ para iniciar la música";
-    musicHint.classList.add("show");
-  }
+
+openInvite.addEventListener("click", ()=>{
+  music.volume=.75;
+  music.currentTime=0;
+
+  // Critical: play() is the first media action executed by the user's tap.
+  const playPromise=music.play();
+
   document.body.classList.remove("locked");
   inviteGate.classList.add("opened");
   setTimeout(()=>burst(16),350);
   setTimeout(()=>inviteGate.remove(),1500);
+
+  if(playPromise!==undefined){
+    playPromise.then(()=>{
+      setMusicUI(true);
+      initBeatSync();
+      musicHint.classList.remove("show");
+    }).catch(err=>{
+      console.error("No se pudo reproducir el audio:",err);
+      setMusicUI(false);
+      musicHint.textContent="Toca ♪ para reproducir la canción";
+      musicHint.classList.add("show");
+    });
+  }
 });
 
 </script>
