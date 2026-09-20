@@ -85,7 +85,7 @@ body.locked{overflow:hidden}
 </div>
 
 <audio id="weddingMusic" preload="auto" loop>
-  <source src="https://raw.githubusercontent.com/narciso1516/narciso.antonio/main/Enrique%20Iglesias%20-%20Por%20Amarte%20-%20Enrique%20Iglesias%20%28youtube%29.mp3" type="audio/mpeg">
+  <source src="../Enrique%20Iglesias%20-%20Por%20Amarte%20-%20Enrique%20Iglesias%20%28youtube%29.mp3" type="audio/mpeg">
 </audio>
 <button class="music-btn" id="musicBtn" aria-label="Reproducir o pausar música" title="Música">♪</button>
 <div class="music-hint" id="musicHint">Toca para escuchar “Por Amarte”</div>
@@ -145,30 +145,10 @@ const wedding=new Date("2026-12-12T16:30:00");function tick(){let x=Math.max(0,w
 
 const music=document.getElementById("weddingMusic"), musicBtn=document.getElementById("musicBtn"), musicHint=document.getElementById("musicHint");
 
-let audioCtx, analyser, sourceNode, freqData, lastBeat=0, avgEnergy=0;
+let beatTimer=null;
 function initBeatSync(){
-  if(reduced || audioCtx) return;
-  try{
-    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    sourceNode=audioCtx.createMediaElementSource(music);
-    analyser=audioCtx.createAnalyser(); analyser.fftSize=256; analyser.smoothingTimeConstant=.78;
-    sourceNode.connect(analyser); analyser.connect(audioCtx.destination);
-    freqData=new Uint8Array(analyser.frequencyBinCount);
-    requestAnimationFrame(beatLoop);
-  }catch(e){}
-}
-function beatLoop(t){
-  if(!analyser){return}
-  analyser.getByteFrequencyData(freqData);
-  let sum=0, n=Math.min(24,freqData.length);
-  for(let i=1;i<n;i++) sum+=freqData[i];
-  const energy=sum/n;
-  avgEnergy=avgEnergy?avgEnergy*.94+energy*.06:energy;
-  const threshold=Math.max(48,avgEnergy*1.20);
-  if(!music.paused && energy>threshold && t-lastBeat>380){
-    lastBeat=t; pulseToMusic(energy);
-  }
-  requestAnimationFrame(beatLoop);
+  if(reduced || beatTimer) return;
+  beatTimer=setInterval(()=>{ if(!music.paused) pulseToMusic(78); },760);
 }
 function pulseToMusic(energy){
   document.body.classList.add("beat");
@@ -180,7 +160,7 @@ function pulseToMusic(energy){
 music.volume=.55;
 function setMusicUI(on){musicBtn.classList.toggle("playing",on);musicBtn.textContent=on?"❚❚":"♪";musicBtn.setAttribute("aria-label",on?"Pausar música":"Reproducir música")}
 async function startMusic(){
-  try{initBeatSync();if(audioCtx&&audioCtx.state==="suspended")await audioCtx.resume();await music.play();setMusicUI(true);musicHint.classList.remove("show");return true}
+  try{initBeatSync();await music.play();setMusicUI(true);musicHint.classList.remove("show");return true}
   catch(e){setMusicUI(false);musicHint.classList.add("show");setTimeout(()=>musicHint.classList.remove("show"),6500);return false}
 }
 
@@ -195,7 +175,7 @@ openInvite.addEventListener("click", async ()=>{
   // most reliable path on iOS Safari and mobile Chrome.
   try{
     initBeatSync();
-    if(audioCtx && audioCtx.state==="suspended") await audioCtx.resume();
+    
     music.currentTime=0;
     await music.play();
     setMusicUI(true);
