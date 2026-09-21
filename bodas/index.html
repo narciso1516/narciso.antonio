@@ -73,6 +73,14 @@ linear-gradient(180deg,#17100a18 20%,#17100ae8 100%),url("pareja-1.png") center/
 .gate-note{font-size:16px;font-weight:600;margin-top:15px;opacity:1}
 body.locked{overflow:hidden}
 
+
+.rsvp-card{position:relative;overflow:hidden;background:#fffaf2;border:2px solid var(--terracotta);border-radius:30px;padding:38px 22px 34px;box-shadow:0 20px 55px #5d463025}
+.rsvp-card:before,.rsvp-card:after{content:"❦";position:absolute;color:var(--terracotta);opacity:.14;font:60px Georgia,serif}
+.rsvp-card:before{left:-8px;top:-12px}.rsvp-card:after{right:-8px;bottom:-18px;transform:rotate(180deg)}
+.rsvp-title{font:700 clamp(38px,10vw,50px)/1.05 "Cormorant Garamond",serif;color:var(--wine);margin:8px auto 15px}
+.rsvp-date{display:inline-block;margin:13px auto 4px;padding:10px 15px;border-block:1px solid var(--gold);font-weight:700;color:#514238}
+.rsvp-btn{display:flex;justify-content:center;width:min(100%,350px);margin:24px auto 0;min-height:60px;background:var(--wine);color:#fff;border:0;box-shadow:0 10px 25px #7d3d4c35;font-size:16px;font-weight:700;letter-spacing:.07em}
+.rsvp-btn:hover,.rsvp-btn:focus{transform:translateY(-2px)}
 </style>
 </head>
 <body class="locked">
@@ -125,9 +133,16 @@ body.locked{overflow:hidden}
 <div class="divider"></div><div class="kicker">Sugerencia de regalo</div><h2>Tu presencia es nuestro mejor regalo</h2><p>Si deseas tener un detalle con nosotros, hemos elegido la modalidad de <strong>lluvia de sobres</strong>.</p>
 <div class="divider"></div><div class="kicker">Celebración para adultos</div><p>Hemos reservado esta ocasión para disfrutar de una celebración exclusivamente entre adultos. Agradecemos mucho tu comprensión.</p></div></section>
 
-<section><div class="reveal"><div class="kicker">Confirma tu asistencia</div><h2>Queremos celebrar contigo</h2><p>Por favor confirma tu asistencia antes del <strong>22 de noviembre de 2026</strong>.</p>
-<a class="btn" href="https://wa.me/?text=Hola%2C%20confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Mariana%20y%20Sebasti%C3%A1n." target="_blank">Confirmar por WhatsApp</a>
-<div class="divider"></div><p class="quote">«El amor todo lo disculpa, todo lo cree, todo lo espera, todo lo soporta.»</p><p>1 Corintios 13, 7</p></div></section>
+<section><div class="reveal">
+<div class="rsvp-card">
+  <div class="kicker">Tu presencia es muy importante para nosotros</div>
+  <div class="rsvp-title">Confirma tu asistencia</div>
+  <p>Ayúdanos a preparar cada detalle de este día especial confirmando si podrás acompañarnos.</p>
+  <div class="rsvp-date">FECHA LÍMITE · 22 DE NOVIEMBRE DE 2026</div>
+  <a class="btn rsvp-btn" href="https://wa.me/?text=Hola%2C%20Mariana%20y%20Sebasti%C3%A1n.%20Confirmo%20mi%20asistencia%20a%20su%20boda%20el%2012%20de%20diciembre%20de%202026.%20Mi%20nombre%20es%3A%20" target="_blank" rel="noopener">CONFIRMAR POR WHATSAPP</a>
+</div>
+<div class="divider"></div><p class="quote">«El amor todo lo disculpa, todo lo cree, todo lo espera, todo lo soporta.»</p><p>1 Corintios 13, 7</p>
+</div></section>
 
 <section class="final"><div class="content reveal"><div class="kicker">Gracias por ser parte de nuestra historia</div><h2>Mariana & Sebastián</h2><p>Nos hará inmensamente felices compartir este día contigo.</p><p>12 · 12 · 2026</p></div></section>
 <footer>POBLADO TRES · EJIDO NUEVO LOS ÁNGELES</footer>
