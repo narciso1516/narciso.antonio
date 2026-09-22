@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>TIME LAB · Controla el tiempo con tu mano</title>
+<style>
+:root{--p:.45;--accent:#ff9d18;--fg:#f7f7f7;--muted:#a6a6a6;--glass:rgba(18,18,20,.66)}
+*{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:var(--fg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button{font:inherit;color:inherit} button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#app{position:relative;width:100%;height:100dvh;overflow:hidden;background:radial-gradient(circle at 50% 42%,#191919 0,#090909 47%,#020202 100%);isolation:isolate}
+#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+#scene{position:absolute;inset:0;display:grid;place-items:center;z-index:1;overflow:hidden}
+#scene:after{content:"";position:absolute;inset:0;background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.58) 100%);pointer-events:none}
+.object{position:relative;width:min(60vw,620px);height:min(68vh,680px);display:grid;place-items:center;filter:drop-shadow(0 28px 34px #0009);transition:filter .4s,transform .4s}
+.object.switching{animation:warp .48s cubic-bezier(.2,.8,.2,1)}
+@keyframes warp{0%{filter:blur(0);transform:scale(1)}45%{filter:blur(16px);transform:scale(.72) rotate(-3deg);opacity:.1}55%{filter:blur(16px);transform:scale(1.2) rotate(3deg);opacity:.1}100%{filter:blur(0);transform:scale(1);opacity:1}}
+header{position:absolute;z-index:8;top:max(22px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);text-align:center;width:min(90%,850px);pointer-events:none}
+.kicker{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#ffffff73}.title{margin:6px 0 0;font-size:clamp(1.35rem,3vw,2.25rem);letter-spacing:-.035em}.subtitle{margin:7px 0;color:#ffffff8c;font-size:.88rem}
+#menuBtn{position:absolute;z-index:15;left:max(16px,env(safe-area-inset-left));top:max(18px,env(safe-area-inset-top));border:1px solid #ffffff22;background:#111b;backdrop-filter:blur(16px);border-radius:999px;padding:11px 15px;cursor:pointer}
+#menu{position:absolute;z-index:30;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(22px);display:grid;place-items:center;padding:24px;transition:.35s}
+#menu.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.menuCard{width:min(980px,96vw);max-height:90dvh;overflow:auto}.menuTop{text-align:center;margin-bottom:22px}.menuTop h2{font-size:clamp(2rem,6vw,4rem);margin:0;letter-spacing:-.06em}.menuTop p{color:#aaa;margin:8px 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sceneBtn{min-height:145px;border:1px solid #ffffff18;background:linear-gradient(145deg,#1b1b1dcc,#0d0d0ecc);border-radius:22px;padding:18px;text-align:left;cursor:pointer;transition:.22s;position:relative;overflow:hidden}
+.sceneBtn:hover{transform:translateY(-3px);border-color:#ffffff55}.sceneBtn.active{border-color:#fff}.sceneBtn .icon{font-size:2.2rem;display:block;margin-bottom:18px}.sceneBtn strong{font-size:1.05rem}.sceneBtn small{display:block;color:#8d8d8d;margin-top:5px}.sceneBtn:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-30px;top:-30px;background:radial-gradient(circle,var(--c,#fff3),transparent 68%)}
+#hud{position:absolute;z-index:12;right:max(18px,env(safe-area-inset-right));top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:10px}
+.track{height:190px;width:5px;border-radius:99px;background:#ffffff1f;overflow:hidden}.fill{height:calc(var(--p)*100%);width:100%;margin-top:calc((1 - var(--p))*190px);background:linear-gradient(#ffe76a,var(--accent));box-shadow:0 0 14px var(--accent)}#pct{font-size:.78rem;color:#ddd;width:38px}
+#cam{position:absolute;z-index:13;left:max(16px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom));width:min(25vw,250px);min-width:150px;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid #ffffff28;background:#111;box-shadow:0 20px 50px #0008;transition:.25s}
+#cam.off{opacity:0;transform:translateY(12px);pointer-events:none}#video,#hand{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.camtag{position:absolute;left:9px;bottom:8px;padding:5px 8px;background:#0008;border-radius:99px;font-size:.68rem}
+#dock{position:absolute;z-index:14;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:65vw}
+.pill{border:1px solid #ffffff20;background:var(--glass);backdrop-filter:blur(18px);border-radius:999px;min-height:42px;padding:0 13px;display:flex;align-items:center;gap:7px;cursor:pointer}.dot{width:8px;height:8px;border-radius:50%;background:#777}.dot.ok{background:#63e66e;box-shadow:0 0 10px #63e66e}
+#start{position:absolute;z-index:50;inset:0;background:#000d;backdrop-filter:blur(18px);display:grid;place-items:center;padding:20px;transition:.3s}#start.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.startCard{width:min(560px,94vw);border:1px solid #ffffff1d;background:#141416d9;border-radius:28px;padding:34px;text-align:center}.startCard h2{font-size:clamp(1.8rem,5vw,3rem);margin:0}.startCard p{color:#aaa;line-height:1.6}.primary{border:0;background:#fff;color:#111;border-radius:999px;padding:14px 22px;font-weight:800;cursor:pointer}
+#gesture{position:absolute;z-index:10;left:50%;bottom:20px;transform:translateX(-50%);font-size:.75rem;color:#ffffff9c;background:#0006;border:1px solid #ffffff18;padding:8px 12px;border-radius:99px;pointer-events:none}
+
+/* FLOWER */
+.flower{width:390px;height:510px;position:relative}.stem{position:absolute;left:50%;top:47%;width:5px;height:53%;background:linear-gradient(#a7c969,#365222);transform:translateX(-50%);border-radius:9px}.petal{position:absolute;left:50%;top:43%;width:88px;height:180px;border-radius:60% 60% 45% 45%;transform-origin:50% 100%;background:radial-gradient(circle at 50% 20%,#ffe76b,#ff9b0a 43%,#e64c00 78%,#7c2100);box-shadow:inset 0 -15px 18px #6c180055}.fc{position:absolute;left:50%;top:43%;width:84px;height:84px;transform:translate(-50%,-50%) scale(calc(.65 + var(--p)*.35));border-radius:50%;background:radial-gradient(circle,#692000,#c23c00 38%,#ff8b00 68%,#6f1c00);z-index:8}
+
+/* MOON */
+.moon{width:min(55vw,440px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffde5,#d9d6c8 50%,#9b998f);box-shadow:0 0 45px #fff2;position:relative;overflow:hidden}.moon:after{content:"";position:absolute;inset:-3%;border-radius:50%;background:#050505;transform:translateX(calc((-1 + var(--p)*2)*105%));transition:transform .04s linear}.crater{position:absolute;border-radius:50%;background:#89877c33;box-shadow:inset 4px 4px 8px #6664}
+
+/* TREE */
+.tree{width:420px;height:560px;position:relative}.trunk{position:absolute;left:50%;bottom:0;width:50px;height:310px;background:linear-gradient(90deg,#4e2c18,#8a5732,#3a2114);transform:translateX(-50%);clip-path:polygon(38% 0,63% 0,70% 75%,100% 100%,55% 93%,0 100%,31% 75%)}.crown{position:absolute;left:50%;top:45px;width:360px;height:330px;transform:translateX(-50%);filter:saturate(calc(.5 + var(--p)*1.2))}.leaf{position:absolute;width:78px;height:78px;border-radius:70% 30% 65% 35%;background:hsl(calc(22 + var(--p)*95) 62% calc(38% + var(--p)*8%));transform:rotate(var(--r)) scale(calc(.45 + var(--p)*.65));opacity:calc(.35 + var(--p)*.65)}
+
+/* BUTTERFLY */
+.butterfly{position:relative;width:440px;height:390px}.body{position:absolute;left:50%;top:35%;width:22px;height:145px;border-radius:50%;background:linear-gradient(#4c3428,#16100d);transform:translateX(-50%);z-index:3}.wing{position:absolute;top:21%;width:185px;height:230px;background:radial-gradient(circle at 55% 45%,#ffdc45 0 12%,#ef6b18 35%,#6226a8 67%,#141414 72%);transition:.04s;filter:saturate(calc(.7 + var(--p)*.7))}.wl{right:50%;border-radius:85% 18% 72% 30%;transform-origin:100% 55%;transform:scaleX(calc(.18 + var(--p)*.82)) rotate(calc((1 - var(--p))*30deg))}.wr{left:50%;border-radius:18% 85% 30% 72%;transform-origin:0 55%;transform:scaleX(calc(.18 + var(--p)*.82)) rotate(calc((1 - var(--p))*-30deg))}.chrysalis{position:absolute;left:50%;top:30%;width:72px;height:190px;transform:translateX(-50%) scale(calc(1 - var(--p)*.75));border-radius:55% 55% 65% 65%;background:linear-gradient(90deg,#314516,#8d9b36,#2a3c15);opacity:calc(1 - var(--p)*1.2);z-index:5}
+
+/* ICE */
+.iceWrap{position:relative;width:430px;height:470px}.ice{position:absolute;left:50%;top:45%;width:260px;height:260px;transform:translate(-50%,-50%) scale(calc(1 - var(--p)*.45)) rotate(calc(var(--p)*8deg));border-radius:22px;background:linear-gradient(135deg,#dffaffdd,#77d8f4aa 55%,#a9efff88);border:1px solid #fff9;box-shadow:inset 15px 15px 35px #fff8,inset -18px -18px 30px #2fa3ca44,0 25px 60px #48c9ff25;opacity:calc(1 - var(--p)*.35)}.puddle{position:absolute;left:50%;bottom:35px;width:330px;height:85px;transform:translateX(-50%) scaleX(calc(.15 + var(--p)*.85));border-radius:50%;background:radial-gradient(ellipse,#b9f2ff99,#3bbfe355 50%,transparent 72%);opacity:var(--p)}
+
+/* CANDLE */
+.candle{position:relative;width:330px;height:520px}.wax{position:absolute;left:50%;bottom:20px;width:130px;height:calc(380px - var(--p)*240px);min-height:140px;transform:translateX(-50%);border-radius:15px 15px 9px 9px;background:linear-gradient(90deg,#d7c9aa,#fff4d5 45%,#cdbd9e);box-shadow:inset 12px 0 18px #8c7c6444}.wick{position:absolute;left:50%;bottom:calc(160px + (1 - var(--p))*240px);width:4px;height:25px;background:#33251b;transform:translateX(-50%)}.flame{position:absolute;left:50%;bottom:calc(180px + (1 - var(--p))*240px);width:55px;height:90px;transform:translateX(-50%) scale(calc(1 - var(--p)*.3));border-radius:50% 50% 45% 45%/65% 65% 35% 35%;background:radial-gradient(circle at 50% 65%,#fff 0 8%,#ffe154 20%,#ff8a00 48%,#e6350022 72%,transparent 73%);filter:drop-shadow(0 0 28px #ff9c22);opacity:calc(1 - var(--p)*.72)}
+
+/* EARTH */
+.earth{width:min(54vw,430px);aspect-ratio:1;border-radius:50%;position:relative;overflow:hidden;background:radial-gradient(circle at 35% 32%,#4bc7ff,#0864a8 58%,#032f56);box-shadow:inset -40px -15px 65px #001a31aa,0 0 45px #2daeff33;transform:rotate(calc(var(--p)*360deg))}.land{position:absolute;background:#55a85c;border-radius:50% 40% 55% 35%;filter:drop-shadow(0 0 3px #175a28)}.night{position:absolute;inset:-5%;background:linear-gradient(90deg,transparent 35%,#000b 65%);transform:rotate(calc(var(--p)*-360deg));border-radius:50%}
+
+/* SKY */
+.sky{width:min(72vw,720px);height:460px;border-radius:30px;position:relative;overflow:hidden;background:hsl(calc(215 + (1 - var(--p))*25) 72% calc(12% + var(--p)*58%));box-shadow:inset 0 -100px 120px hsl(calc(20 + var(--p)*190) 90% 55% / .35)}.sun{position:absolute;width:100px;height:100px;border-radius:50%;background:#ffe875;box-shadow:0 0 45px #ffb72e;left:calc(5% + var(--p)*78%);top:calc(80% - sin(var(--p)*3.14159)*65%);transform:translate(-50%,-50%)}.horizon{position:absolute;left:0;right:0;bottom:0;height:25%;background:linear-gradient(#15180f,#050505)}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.sceneBtn{min-height:125px}.sceneBtn .icon{margin-bottom:10px}.object{transform:scale(.78)}#dock{left:12px;right:12px;max-width:none;justify-content:center}#cam{bottom:75px;width:42vw}#gesture{display:none}.subtitle{display:none}}
+@media(prefers-reduced-motion:reduce){.object.switching{animation:none}}
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="fx"></canvas>
+  <section id="scene"><div id="object" class="object"></div></section>
+  <header><div class="kicker">TIME LAB · HAND TRACKING</div><h1 class="title" id="title">Floración</h1><p class="subtitle" id="subtitle">Junta los dedos para volver atrás. Sepáralos para avanzar.</p></header>
+  <button id="menuBtn" type="button">☰ Experiencias</button>
+
+  <aside id="hud"><div class="track"><div class="fill"></div></div><span id="pct">45%</span></aside>
+
+  <section id="cam">
+    <video id="video" autoplay muted playsinline></video><canvas id="hand"></canvas><span class="camtag">● cámara</span>
+  </section>
+
+  <div id="gesture">🤏 retroceder · 🖐 separar dedos = avanzar</div>
+
+  <nav id="dock">
+    <button class="pill" id="camBtn" type="button">👁 Ocultar cámara</button>
+    <button class="pill" id="particlesBtn" type="button">✦ Partículas</button>
+    <div class="pill"><span class="dot" id="dot"></span><span id="status">Buscando mano…</span></div>
+  </nav>
+
+  <section id="menu">
+    <div class="menuCard">
+      <div class="menuTop"><div class="kicker">ELIGE QUÉ QUIERES CONTROLAR</div><h2>TIME LAB</h2><p>Cada escena responde al mismo gesto, pero transforma el tiempo de una forma distinta.</p></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section id="start" class="hidden">
+    <div class="startCard">
+      <div id="selectedIcon" style="font-size:3rem">🌼</div>
+      <div class="kicker">EXPERIENCIA SELECCIONADA</div>
+      <h2 id="selectedTitle">Floración</h2>
+      <p id="selectedText">Activa la cámara para comenzar. Junta el pulgar y el índice para retroceder y sepáralos para avanzar.</p>
+      <button class="primary" id="startBtn" type="button">ACTIVAR CÁMARA</button>
+      <button class="pill" id="backToMenu" type="button" style="margin:12px auto 0">← Elegir otra experiencia</button>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script>
+(()=>{
+const root=document.documentElement, obj=document.querySelector("#object"),menu=document.querySelector("#menu"),grid=document.querySelector("#grid");
+const title=document.querySelector("#title"),subtitle=document.querySelector("#subtitle"),pct=document.querySelector("#pct");
+const video=document.querySelector("#video"),hand=document.querySelector("#hand"),hctx=hand.getContext("2d");
+const fx=document.querySelector("#fx"),fctx=fx.getContext("2d"),cam=document.querySelector("#cam"),dot=document.querySelector("#dot"),status=document.querySelector("#status");
+let target=.45,smooth=.45,lastSeen=0,camera=null,particlesOn=true,current="flower",transitionBurst=0;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const scenes=[
+ {id:"flower",icon:"🌼",name:"Floración",desc:"Capullo → flor",c:"#ff9d18"},
+ {id:"tree",icon:"🌳",name:"Árbol",desc:"Brote → follaje",c:"#75b84b"},
+ {id:"moon",icon:"🌙",name:"Luna",desc:"Fases lunares",c:"#d9d6c8"},
+ {id:"butterfly",icon:"🦋",name:"Mariposa",desc:"Crisálida → alas",c:"#a46cff"},
+ {id:"ice",icon:"🧊",name:"Hielo",desc:"Sólido → agua",c:"#64d9ff"},
+ {id:"candle",icon:"🕯️",name:"Vela",desc:"Nueva → consumida",c:"#ffc45a"},
+ {id:"earth",icon:"🌎",name:"Tierra",desc:"Rotación temporal",c:"#48baff"},
+ {id:"sky",icon:"🌅",name:"Cielo",desc:"Amanecer → noche",c:"#ff8267"}
+];
+function flowerHTML(){
+ let p="";for(let i=0;i<36;i++){p+=`<i class="petal" style="transform:translate(-50%,-100%) rotate(${i*10}deg) translateY(calc(-8px - var(--p)*44px)) scale(calc(.45 + var(--p)*.55),calc(.45 + var(--p)*.6))"></i>`}
+ return `<div class="flower"><div class="stem"></div>${p}<div class="fc"></div></div>`;
+}
+function treeHTML(){
+ let l="";for(let i=0;i<30;i++){let x=15+(i*37)%70,y=5+(i*53)%68,r=(i*47)%360;l+=`<i class="leaf" style="left:${x}%;top:${y}%;--r:${r}deg"></i>`}
+ return `<div class="tree"><div class="trunk"></div><div class="crown">${l}</div></div>`;
+}
+function moonHTML(){return `<div class="moon">${[[18,28,70],[58,18,42],[67,57,78],[30,67,48],[46,42,30]].map(a=>`<i class="crater" style="left:${a[0]}%;top:${a[1]}%;width:${a[2]}px;height:${a[2]}px"></i>`).join("")}</div>`}
+function butterflyHTML(){return `<div class="butterfly"><div class="wing wl"></div><div class="wing wr"></div><div class="body"></div><div class="chrysalis"></div></div>`}
+function iceHTML(){return `<div class="iceWrap"><div class="puddle"></div><div class="ice"></div></div>`}
+function candleHTML(){return `<div class="candle"><div class="wax"></div><div class="wick"></div><div class="flame"></div></div>`}
+function earthHTML(){return `<div class="earth"><i class="land" style="left:13%;top:22%;width:42%;height:32%;transform:rotate(18deg)"></i><i class="land" style="left:55%;top:48%;width:30%;height:38%;transform:rotate(-18deg)"></i><i class="land" style="left:25%;top:68%;width:22%;height:17%"></i><div class="night"></div></div>`}
+function skyHTML(){return `<div class="sky"><div class="sun"></div><div class="horizon"></div></div>`}
+const makers={flower:flowerHTML,tree:treeHTML,moon:moonHTML,butterfly:butterflyHTML,ice:iceHTML,candle:candleHTML,earth:earthHTML,sky:skyHTML};
+scenes.forEach(s=>{let b=document.createElement("button");b.type="button";b.className="sceneBtn";b.style.setProperty("--c",s.c+"88");b.dataset.id=s.id;b.innerHTML=`<span class="icon">${s.icon}</span><strong>${s.name}</strong><small>${s.desc}</small>`;b.addEventListener("click",()=>selectScene(s.id));grid.appendChild(b)});
+let hasStarted=false;
+function selectScene(id){
+ const s=scenes.find(x=>x.id===id);current=id;obj.classList.add("switching");transitionBurst=1;
+ setTimeout(()=>{obj.innerHTML=makers[id]();title.textContent=s.name;root.style.setProperty("--accent",s.c);document.querySelectorAll(".sceneBtn").forEach(b=>b.classList.toggle("active",b.dataset.id===id));},220);
+ setTimeout(()=>obj.classList.remove("switching"),500);
+ menu.classList.add("hidden");
+ if(!hasStarted){
+   document.querySelector("#selectedIcon").textContent=s.icon;
+   document.querySelector("#selectedTitle").textContent=s.name;
+   document.querySelector("#start").classList.remove("hidden");
+ }
+}
+obj.innerHTML=makers["flower"]();
+document.querySelector("#menuBtn").addEventListener("click",()=>{
+ document.querySelector("#start").classList.add("hidden");
+ menu.classList.remove("hidden");
+});
+menu.addEventListener("click",e=>{if(e.target===menu)menu.classList.add("hidden")});
+document.querySelector("#backToMenu").addEventListener("click",()=>{
+ document.querySelector("#start").classList.add("hidden");
+ menu.classList.remove("hidden");
+});
+document.querySelector("#camBtn").addEventListener("click",e=>{cam.classList.toggle("off");e.currentTarget.textContent=cam.classList.contains("off")?"👁 Mostrar cámara":"👁 Ocultar cámara"});
+document.querySelector("#particlesBtn").addEventListener("click",e=>{particlesOn=!particlesOn;e.currentTarget.textContent=particlesOn?"✦ Partículas":"✧ Partículas OFF"});
+
+function resize(){let d=Math.min(devicePixelRatio||1,2);[fx,hand].forEach(c=>{let r=c.getBoundingClientRect();c.width=r.width*d;c.height=r.height*d;c.getContext("2d").setTransform(d,0,0,d,0,0)})}
+addEventListener("resize",resize);resize();
+
+let particles=[];
+function spawn(n=2,burst=false){if(!particlesOn)return;let s=scenes.find(x=>x.id===current);for(let i=0;i<n;i++)particles.push({x:innerWidth*.5+(Math.random()-.5)*(burst?400:180),y:innerHeight*.48+(Math.random()-.5)*(burst?350:180),vx:(Math.random()-.5)*(burst?5:1.2),vy:(Math.random()-.5)*(burst?5:1.2)-.3,r:1+Math.random()*3,a:.3+Math.random()*.7,c:s.c,life:1})}
+function fxLoop(){
+ fctx.clearRect(0,0,fx.clientWidth,fx.clientHeight);
+ if(particlesOn&&Math.random()<.35)spawn(1);
+ if(transitionBurst>0){spawn(28,true);transitionBurst=0}
+ particles=particles.filter(q=>q.life>.02);
+ for(const q of particles){q.x+=q.vx;q.y+=q.vy;q.life*=.975;fctx.globalAlpha=q.life;fctx.fillStyle=q.c;fctx.beginPath();fctx.arc(q.x,q.y,q.r,0,Math.PI*2);fctx.fill()}
+ fctx.globalAlpha=1;requestAnimationFrame(fxLoop)
+}fxLoop();
+
+function render(){
+ smooth+=(target-smooth)*.12;root.style.setProperty("--p",smooth.toFixed(4));pct.textContent=Math.round(smooth*100)+"%";
+ if(performance.now()-lastSeen>750){dot.classList.remove("ok");status.textContent="Buscando mano…"}
+ requestAnimationFrame(render)
+}render();
+
+const con=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+function drawHand(lm){let w=hand.clientWidth,h=hand.clientHeight;hctx.clearRect(0,0,w,h);hctx.strokeStyle="#fff9";hctx.lineWidth=2;con.forEach(([a,b])=>{hctx.beginPath();hctx.moveTo(lm[a].x*w,lm[a].y*h);hctx.lineTo(lm[b].x*w,lm[b].y*h);hctx.stroke()});lm.forEach((p,i)=>{hctx.fillStyle=(i===4||i===8)?"#ffad2f":"#fff";hctx.beginPath();hctx.arc(p.x*w,p.y*h,(i===4||i===8)?5:2.5,0,Math.PI*2);hctx.fill()})}
+const hands=new Hands({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}`});
+hands.setOptions({maxNumHands:1,modelComplexity:1,minDetectionConfidence:.67,minTrackingConfidence:.62,selfieMode:true});
+hands.onResults(r=>{
+ resize();let lm=r.multiHandLandmarks&&r.multiHandLandmarks[0];
+ if(!lm){hctx.clearRect(0,0,hand.clientWidth,hand.clientHeight);return}
+ lastSeen=performance.now();dot.classList.add("ok");status.textContent="Mano detectada";drawHand(lm);
+ let a=lm[4],b=lm[8],d=Math.hypot(a.x-b.x,a.y-b.y);target=clamp((d-.035)/(.285-.035),0,1);
+});
+document.querySelector("#startBtn").addEventListener("click",async e=>{
+ e.currentTarget.disabled=true;e.currentTarget.textContent="ACTIVANDO…";
+ try{camera=new Camera(video,{onFrame:async()=>hands.send({image:video}),width:1280,height:720});await camera.start();hasStarted=true;document.querySelector("#start").classList.add("hidden");resize()}
+ catch(err){console.error(err);e.currentTarget.disabled=false;e.currentTarget.textContent="REINTENTAR";alert("No se pudo abrir la cámara. Usa HTTPS (por ejemplo GitHub Pages) o localhost y concede permiso de cámara.")}
+});
+addEventListener("keydown",e=>{if(e.key==="ArrowLeft")target=clamp(target-.04,0,1);if(e.key==="ArrowRight")target=clamp(target+.04,0,1)});
+})();
+</script>
+</body>
+</html>
