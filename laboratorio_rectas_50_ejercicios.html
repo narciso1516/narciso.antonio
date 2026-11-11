@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#162d4d" />
+<meta name="description" content="Laboratorio interactivo de 50 ejercicios para comprender pendientes y ecuaciones de la recta." />
+<title>Laboratorio de rectas · 50 retos interactivos</title>
+<style>
+  :root{--navy:#172d4e;--ink:#283a53;--muted:#667993;--bg:#f5f7fd;--panel:#fff;--line:#dde5ef;--orange:#ff9f5c;--orange-dark:#c76724;--teal:#068f88;--blue:#4776dc;--purple:#7452cd;--green:#16805c;--red:#b44747;--soft-blue:#edf4ff;--shadow:0 17px 50px rgba(23,45,78,.09);font-family:ui-rounded,"Avenir Next",Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+  *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#e9f8f7 0,transparent 33%),radial-gradient(ellipse at top right,#fce9db 0,transparent 28%),var(--bg);color:var(--ink);min-height:100vh}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #72bde9;outline-offset:2px}
+  .top{background:var(--navy);color:#fff;padding:14px max(18px,calc((100vw - 1230px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;gap:12px;align-items:center}.mark{width:45px;height:45px;background:#fff1;border:1px solid #fff4;display:grid;place-items:center;border-radius:15px;font-size:23px}.brand-title{font-weight:850;font-size:18px;line-height:1.1}.brand-sub{font-size:11.5px;color:#cfddf6;margin-top:5px}.top-actions{display:flex;align-items:center;gap:10px}.top-actions button{border:1px solid #ffffff54;color:white;background:#ffffff17;border-radius:11px;padding:9px 11px;font-size:12px;font-weight:750}.top-actions button:hover{background:#ffffff28}
+  .wrap{max-width:1270px;margin:auto;padding:23px 22px 45px}.overview{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:14px}.over-title h1{font-size:clamp(23px,3vw,32px);margin:0;color:var(--navy);letter-spacing:-.7px}.over-title p{margin:7px 0 0;color:var(--muted);font-size:13.5px}.scoreline{display:flex;gap:10px}.stat{background:#fff;padding:9px 14px;border:1px solid var(--line);border-radius:13px;min-width:85px;text-align:center}.stat strong{font-size:21px;color:var(--navy);display:block}.stat span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.55px;font-weight:800}
+  .progress-shell{height:10px;border-radius:25px;background:#dce6f3;overflow:hidden;margin:18px 0 12px}.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#2fb6ab,#4d8cd8,#9a76df);transition:width .35s}.level-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:19px}.level-tab{border:1px solid var(--line);border-radius:12px;padding:10px 9px;background:#fff;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;color:#65758b;font-weight:700}.level-tab b{font-size:12px;color:var(--navy)}.level-tab small{font-size:11px;font-weight:500}.level-tab.active{border-color:#74bcb5;background:#eafaF9;box-shadow:inset 0 0 0 1px #74bcb5}.level-tab.unlocked:hover{background:#f1f7fc}.level-tab.locked{opacity:.58;cursor:not-allowed}
+  .workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,1fr);gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:21px;box-shadow:var(--shadow);overflow:hidden}.work-pad{padding:24px}.eyebrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:17px}.numtag{background:var(--navy);color:#fff;padding:7px 10px;border-radius:9px;font-size:12px;font-weight:850}.skilltag{background:#eaf3fe;color:#3268ae;padding:7px 11px;border-radius:9px;font-size:11.5px;font-weight:800}.mode{margin-left:auto;color:var(--teal);background:#e6f8f5;border:1px solid #b9e8e0;border-radius:25px;font-size:11px;padding:6px 10px;font-weight:750}
+  h2{color:var(--navy);letter-spacing:-.65px;line-height:1.17;font-size:clamp(23px,2.3vw,29px);margin:0 0 12px}.instruction{color:var(--muted);font-size:14px;line-height:1.65;margin:0 0 18px}.formula-card{padding:17px 18px;background:linear-gradient(115deg,#f1f5ff,#fbf7f3);border:1px solid #dce5fa;border-radius:15px;margin-bottom:15px}.formula-label{display:block;text-transform:uppercase;font-size:10px;color:#647c9f;font-weight:900;letter-spacing:1.1px;margin-bottom:8px}.formula{font-size:clamp(23px,2.75vw,34px);font-family:ui-serif,Georgia,"Times New Roman",serif;font-weight:750;color:var(--navy);letter-spacing:.45px;overflow-wrap:anywhere}.formula-sub{font-size:12px;color:var(--muted);margin-top:8px}
+  .little-tip{background:#fff9e9;border:1px solid #ffe7ad;color:#7f6437;padding:12px 14px;border-radius:12px;font-size:12.5px;line-height:1.52;margin:13px 0 16px}.learn-card{border:1px solid #dfe6f1;border-radius:13px;padding:13px 14px;margin-bottom:13px}.learn-card summary{font-size:12px;font-weight:800;cursor:pointer;color:#315b8b}.learn-card p{font-size:13px;line-height:1.65;color:#50657d;margin:10px 0 0}
+  .equation-input{width:100%;padding:15px 16px;border:2px solid #cddbed;border-radius:13px;font-size:21px;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--navy);background:#fcfdff}.equation-input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px #4776dc20}.keypad{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 16px}.keypad button{border:1px solid #d4e2ee;border-radius:9px;background:#f4f8ff;min-width:37px;padding:8px 10px;font-weight:750;color:var(--navy)}.keypad button:hover{background:#e4f0ff}.keypad .del{background:#fff4ec;color:#9e572d}.keypad .clear{background:#fceef0;color:#a43f4a}
+  .point-status{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 15px}.coordinate{padding:11px 12px;background:#f5f8fd;border:1px solid #e1eaf2;border-radius:11px;font-size:12px;color:#607089}.coordinate strong{font-size:14px;color:var(--navy)}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:5px}.dot.a{background:#7452cd}.dot.b{background:#ff9f5c}
+  .graph-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.graph-controls button{border-radius:9px;border:1px solid #d1ddec;background:white;padding:8px 10px;color:#425879;font-weight:750;font-size:12px}.graph-controls button.selected{background:#f2ebff;border-color:#967add;color:#6543a2}.graph-controls button.reset{margin-left:auto}.live-slope{padding:10px 12px;color:#456075;background:#edf7fa;border-radius:10px;font-size:12px;margin-bottom:7px;min-height:38px;line-height:1.5}
+  .action-strip{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.primary{background:var(--navy);color:white;border:none;border-radius:12px;padding:12px 18px;font-weight:850;font-size:13px;box-shadow:0 4px 12px #1b3b5f18}.primary:hover{background:#244773}.primary:disabled{background:#a6b2c2;cursor:not-allowed;box-shadow:none}.secondary{background:#f5f8fc;color:#355270;border:1px solid #d8e3ef;border-radius:12px;padding:11px 13px;font-size:12px;font-weight:760}.secondary:disabled{opacity:.4;cursor:not-allowed}.answer-feedback{border-radius:13px;padding:15px 16px;margin-top:16px;line-height:1.56;font-size:13px;border:1px solid transparent}.answer-feedback.good{background:#eafaef;border-color:#b7e7c5;color:#215d43}.answer-feedback.bad{background:#fff0ed;border-color:#ffc7bc;color:#8c4337}.answer-feedback.neutral{background:#edf5ff;border-color:#c3d8ff;color:#385a84}.answer-feedback strong{display:block;font-size:14px;margin-bottom:5px}.answer-feedback p{margin:5px 0}.answer-feedback .answer-text{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:16px}
+  .graph-panel{padding:17px}.graph-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin:3px 4px 13px}.graph-head h3{color:var(--navy);margin:0;font-size:16px}.graph-head p{margin:5px 0 0;font-size:12px;color:var(--muted);line-height:1.45}.graph-status{background:#ebf4ff;padding:7px 10px;border-radius:20px;color:#426399;font-size:11px;white-space:nowrap;font-weight:800}.svg-shell{background:white;border:1px solid #d7e3ed;border-radius:15px;overflow:hidden;box-shadow:0 1px 5px #193a5810;touch-action:none}.grid-svg{display:block;width:100%;height:auto;aspect-ratio:1;user-select:none;-webkit-user-select:none;touch-action:none;cursor:crosshair}.grid-svg text{font-family:ui-rounded,system-ui,sans-serif;pointer-events:none}.svg-shell.is-draw{border-color:#adbddd}.grid-foot{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;padding:11px 5px 1px;color:#62758b;font-size:11px}.legend{display:inline-flex;gap:5px;align-items:center}.pill-dot{height:9px;width:9px;border-radius:4px;display:inline-block}.footnote{font-size:11px;color:#71869f;text-align:center;line-height:1.6;margin-top:15px}.hidden{display:none!important}.completion{padding:30px;text-align:center}.completion h2{font-size:32px}.completion .big-emoji{font-size:62px}.completion p{line-height:1.7;color:#566d85}.chapter-guide{padding:15px 18px;margin-top:17px;background:#fff;border:1px solid var(--line);border-radius:15px}.chapter-guide strong{font-size:13px;color:var(--navy)}.chapter-guide p{font-size:12.5px;color:#64788c;line-height:1.65;margin:7px 0 0}
+  @media(max-width:930px){.workspace{grid-template-columns:1fr}.graph-panel{max-width:610px;margin:auto;width:100%}.overview{align-items:flex-start}.scoreline{flex-shrink:0}.wrap{max-width:740px}.work-pad{padding:23px}.level-tab small{display:none}}
+  @media(max-width:560px){.top{padding:11px 15px}.mark{width:38px;height:38px}.brand-title{font-size:14px}.brand-sub{font-size:10px}.top-actions button{font-size:11px;padding:7px 8px}.wrap{padding:17px 12px 34px}.overview{display:block}.scoreline{margin-top:14px}.stat{flex:1}.stat strong{font-size:18px}.stat span{font-size:9px}.level-nav{gap:5px}.level-tab{padding:8px 5px;border-radius:9px;align-items:center;text-align:center}.level-tab b{font-size:10px}.work-pad{padding:18px}.eyebrow{gap:5px}.mode{margin-left:0}.graph-panel{padding:10px}.graph-head{margin:9px 9px 12px}.graph-head h3{font-size:14px}.graph-head p{font-size:11px}.graph-status{font-size:9px}.action-strip button{flex:1}.coordinate{padding:9px}.formula{font-size:27px}.grid-foot{font-size:10px}}
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand"><div class="mark" aria-hidden="true">📐</div><div><div class="brand-title">LABORATORIO DE RECTAS</div><div class="brand-sub">Aprende construyendo · 50 retos</div></div></div><div class="top-actions"><button id="howBtn" type="button">¿Cómo jugar?</button><button id="restartBtn" type="button" title="Borrar todo el progreso">Reiniciar</button></div></header>
+<main class="wrap">
+  <section class="overview"><div class="over-title"><h1>La aventura de las pendientes</h1><p>Observa, toca, arrastra, construye y comprueba.</p></div><div class="scoreline"><div class="stat"><strong id="doneStat">0/50</strong><span>Completados</span></div><div class="stat"><strong id="starStat">0</strong><span>Estrellas ★</span></div></div></section>
+  <div class="progress-shell" role="progressbar" aria-label="Avance de ejercicios" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" id="progressShell"><div class="progress-bar" id="progressBar"></div></div>
+  <nav id="levelNav" class="level-nav" aria-label="Niveles"></nav>
+  <div id="mainContent" class="workspace">
+    <article class="panel"><div class="work-pad" id="questionPanel"></div></article>
+    <section class="panel graph-panel" aria-label="Plano cartesiano interactivo"><div class="graph-head"><div><h3 id="graphTitle">Tu plano cartesiano</h3><p id="graphDescription">Toca dos puntos y crea una recta.</p></div><span id="graphStatus" class="graph-status">X · Y</span></div><div id="svgShell" class="svg-shell is-draw"><svg id="graphSvg" class="grid-svg" viewBox="0 0 520 520" role="img" aria-label="Plano cartesiano entre menos seis y seis en ambos ejes"></svg></div><div class="grid-foot" id="graphFooter"></div></section>
+  </div>
+  <div id="completionPanel" class="panel completion hidden"></div>
+  <aside class="chapter-guide"><strong>🧠 Guía de aprendizaje</strong><p>Una recta queda determinada por dos puntos distintos. Si avanzas hacia la derecha y subes, la pendiente es positiva; si bajas, negativa. Una recta horizontal tiene pendiente 0. Una vertical tiene pendiente indefinida. En los retos de ecuaciones puedes usar fracciones como <strong>1/2</strong> y multiplicación implícita como <strong>2x</strong>. No necesitas conexión a internet.</p></aside>
+  <p class="footnote">Tus avances se guardan únicamente en este navegador. Los dibujos se ajustan a las intersecciones de la cuadrícula para ayudarte a trazar con precisión.</p>
+</main>
+<script>
+'use strict';
+// Matemática exacta para los retos. Los puntos del dibujo se ajustan a la cuadrícula.
+const EPS = 1e-7;
+const gcd = (a,b)=> {a=Math.abs(Math.round(a)); b=Math.abs(Math.round(b)); while(b){const t=a%b;a=b;b=t;}return a||1;};
+const gcd3 = (a,b,c)=>gcd(gcd(a,b),c);
+const lineSlope=(p,q,b)=>[p,-q,q*b];
+const lineVertical=x=>[1,0,-x];
+const linePoints=(P,Q)=>[P[1]-Q[1],Q[0]-P[0],P[0]*Q[1]-Q[0]*P[1]];
+const lineAtPoint=(p,q,P)=>[p,-q,q*P[1]-p*P[0]];
+const reduced=(p,q)=>{let s=q<0?-1:1;const g=gcd(p,q);return [s*p/g,s*q/g];};
+const rstr=(p,q=1)=>{const [n,d]=reduced(p,q);return d===1?String(n):`${n}/${d}`;};
+const stripZero=n=> Math.abs(n)<EPS?0:n;
+const formatSlope=coeff=>{const [A,B,C]=coeff;if(!B)return `x = ${rstr(-C,A)}`;const [mn,md]=reduced(-A,B),[bn,bd]=reduced(-C,B);let main=mn===0?'0':(mn===md?'x':mn===-md?'-x':`${rstr(mn,md)}x`);if(bn===0)return `y = ${main}`;const b=`${rstr(Math.abs(bn),bd)}`;return `y = ${main==='0'?'':main+(bn>0?' + ':' − ')}${main==='0'?(bn<0?'-':'')+b:b}`;};
+const formatGeneral=coeff=>{let [A,B,C]=coeff;let g=gcd3(A,B,C);A/=g;B/=g;C/=g;if([A,B,C].find(n=>n!==0)<0){A=-A;B=-B;C=-C;}const terms=[];for(const [n,v] of [[A,'x'],[B,'y'],[C,'']]){if(n===0)continue;const val=v?(Math.abs(n)===1?'':Math.abs(n))+v:String(Math.abs(n));terms.push((terms.length?(n<0?' − ':' + '):(n<0?'−':''))+val);}return (terms.join('')||'0')+' = 0';};
+const fmtOffset=(v,axis)=>v===0?axis:v<0?`${axis} + ${Math.abs(v)}`:`${axis} − ${v}`;
+const formatPoint=(p,q,P)=>`y ${P[1]<0?'+':'−'} ${Math.abs(P[1])} = ${rstr(p,q)}(${fmtOffset(P[0],'x')})`;
+const Q=[];
+const add=(level,mode,title,instruction,coeff,more={})=>Q.push({id:Q.length+1,level,mode,title,instruction,coeff,...more});
+const drawSlope=(level,title,p,q,b,tip)=>add(level,'draw',title,'Construye en el plano la recta de esta ecuación. Marca dos puntos diferentes.',lineSlope(p,q,b),{display:formatSlope(lineSlope(p,q,b)),tip});
+const writeSlope=(level,title,p,q,b,tip)=>add(level,'write',title,'Observa la recta azul y escribe su ecuación en forma pendiente–intersección.',lineSlope(p,q,b),{form:'slope',tip,source:'graph'});
+const drawPoints=(level,title,P,R,tip)=>add(level,'draw',title,'Los puntos naranjas son el objetivo. Ubica A y B sobre ellos (o sobre otros puntos de la misma recta).',linePoints(P,R),{points:[P,R],source:'points',display:`P = (${P.join(', ')}), Q = (${R.join(', ')})`,tip});
+const writePoints=(level,title,P,R,form,tip)=>add(level,'write',title,`Usa los puntos P y Q para escribir la ecuación en forma ${form==='general'?'general':'pendiente–intersección'}.`,linePoints(P,R),{points:[P,R],source:'points',form,display:`P = (${P.join(', ')}), Q = (${R.join(', ')})`,tip});
+const drawH=(level,title,y,tip)=>add(level,'draw',title,'Construye una recta horizontal. Toca dos puntos de la misma altura.',[0,1,-y],{display:`y = ${y}`,tip});
+const drawV=(level,title,x,tip)=>add(level,'draw',title,'Construye una recta vertical. Toca dos puntos con la misma coordenada x.',lineVertical(x),{display:`x = ${x}`,tip});
+const writeH=(level,title,y,form,tip)=>add(level,'write',title,`Identifica la línea horizontal y escribe su ecuación en forma ${form==='general'?'general':'pendiente–intersección'}.`,[0,1,-y],{form,source:'graph',tip});
+const writeV=(level,title,x,tip)=>add(level,'write',title,'La línea es vertical. Escribe su ecuación en forma general: Ax + By + C = 0.',lineVertical(x),{form:'general',source:'graph',tip});
+const drawPointSlope=(level,title,p,q,P,tip)=>add(level,'draw',title,'Grafica esta ecuación punto–pendiente. Usa el punto indicado como punto de partida.',lineAtPoint(p,q,P),{display:formatPoint(p,q,P),point:P,source:'point',tip});
+const writePointSlope=(level,title,p,q,P,tip)=>add(level,'write',title,'Con el punto P y la pendiente m, escribe una ecuación en forma punto–pendiente: y − y₁ = m(x − x₁).',lineAtPoint(p,q,P),{form:'point',source:'point',point:P,slope:[p,q],display:`P = (${P.join(', ')})     m = ${rstr(p,q)}`,tip});
+const drawGeneral=(level,title,coeff,tip)=>add(level,'draw',title,'Esta vez la ecuación está en forma general. Descubre su trazo y construye la recta.',coeff,{display:formatGeneral(coeff),tip});
+const writeGeneralGraph=(level,title,coeff,tip)=>add(level,'write',title,'Observa la línea y exprésala en la forma general Ax + By + C = 0.',coeff,{form:'general',source:'graph',tip});
+
+// NIVEL 1 · Subida, bajada y expresión y = mx + b.
+drawSlope(1,'Una recta que sube',1,1,1,'Empieza por (0, 1). Avanza una casilla a la derecha y una hacia arriba.');
+drawSlope(1,'Sube de dos en dos',2,1,-1,'Busca dónde cruza el eje y; por cada paso a la derecha, sube dos.');
+writeSlope(1,'Lee la gráfica',1,1,-2,'Mira dónde cruza el eje vertical: eso es b. Después calcula cuánto sube.');
+drawSlope(1,'Una recta que baja',-1,1,2,'Pendiente negativa: a la derecha se baja, no se sube.');
+writeSlope(1,'Bajada más rápida',-2,1,1,'Usa dos puntos marcados: m = (cambio en y) / (cambio en x).');
+drawSlope(1,'Tres pisos arriba',3,1,-2,'Comienza en y = −2. Sube tres por cada una a la derecha.');
+writeSlope(1,'Encuentra m y b',2,1,1,'La b se ve donde x = 0; m es subida dividida entre avance.');
+drawSlope(1,'Descenso empinado',-3,1,2,'Desde (0, 2), avanza 1 y baja 3.');
+writeSlope(1,'Otra pendiente negativa',-1,1,-1,'Observa qué pasa cuando x aumenta: la recta desciende.');
+drawSlope(1,'Medio paso de altura',1,2,1,'Para subir 1, avanza 2 unidades a la derecha.');
+// NIVEL 2 · Dos puntos.
+drawPoints(2,'Une P con Q',[-4,-2],[2,1],'La pendiente es subida entre avance. Marca dos puntos de la recta.');
+writePoints(2,'De puntos a ecuación',[-2,-1],[2,3],'slope','Obtén m con la resta de coordenadas y busca b usando uno de los puntos.');
+drawPoints(2,'Conecta una bajada',[-3,3],[1,-1],'Si el segundo punto está más abajo, la pendiente es negativa.');
+writePoints(2,'Dos puntos, una regla',[-2,3],[2,-1],'slope','Calcula (−1−3)/(2−(−2)) y luego determina la intersección.');
+drawPoints(2,'Crecimiento veloz',[-2,-3],[1,3],'Hay una diferencia de 6 en y y de 3 en x.');
+writePoints(2,'Una pendiente fraccionaria',[-4,-1],[2,2],'slope','Es válido escribir m como fracción: por ejemplo (1/2)x.');
+drawPoints(2,'Pendiente suave y negativa',[-2,1],[2,-1],'La bajada es de 2 mientras el avance es de 4.');
+writePoints(2,'Calcula el cruce',[-4,-1],[0,-3],'slope','El punto cuya x vale 0 muestra directamente el valor b.');
+drawPoints(2,'Construye con coordenadas',[-1,-2],[2,1],'No basta tocar puntos cercanos: cada coordenada importa.');
+writePoints(2,'Gran pendiente negativa',[-1,3],[1,-3],'slope','m = (−3−3)/(1−(−1)).');
+// NIVEL 3 · Pendiente cero e indefinida.
+drawH(3,'Una altura constante',3,'Todas las y valen 3. La pendiente es 0.');
+writeH(3,'Descubre la horizontal',-2,'slope','En una horizontal, y se mantiene fija aunque x cambie.');
+drawV(3,'Una columna en x = −3',-3,'Todas las x valen −3. La pendiente no está definida.');
+writeV(3,'Convierte la vertical',2,'Pasa todos los términos al mismo lado: x − 2 = 0.');
+drawH(3,'Bajo el eje horizontal',-4,'Una recta horizontal puede quedar debajo del eje x.');
+writeH(3,'General de una horizontal',1,'general','Para y = 1, lleva el número al lado izquierdo.');
+drawV(3,'Al lado derecho del eje',4,'Una vertical no es y = mx + b. Su x no cambia.');
+writeV(3,'Vertical negativa',-1,'En una vertical escribe x + 1 = 0.');
+drawH(3,'El propio eje x',0,'Todos los puntos con y = 0 pertenecen al eje horizontal.');
+writeV(3,'El propio eje y',0,'El eje vertical cumple x = 0.');
+// NIVEL 4 · y − y1 = m(x − x1).
+drawPointSlope(4,'Desde un punto conocido',2,1,[1,1],'Desde (1,1) avanza 1 y sube 2.');
+writePointSlope(4,'Sustituye los valores',1,1,[2,3],'En y − y₁ = m(x − x₁), reemplaza y₁ = 3, x₁ = 2 y m = 1.');
+drawPointSlope(4,'Con un signo negativo',-1,1,[-2,2],'Empieza en (−2, 2) y baja una por cada unidad a la derecha.');
+writePointSlope(4,'Signos dentro del paréntesis',-2,1,[-1,1],'Si x₁ es negativo, x − (−1) se escribe x + 1.');
+drawPointSlope(4,'Media pendiente desde P',1,2,[2,1],'Con pendiente 1/2, desde P avanza 2 y sube 1.');
+writePointSlope(4,'Fracción y altura negativa',-1,2,[1,-1],'Si y₁ = −1, entonces y − (−1) se convierte en y + 1.');
+drawPointSlope(4,'Comienza en el eje y',3,1,[0,-2],'Puedes partir de (0,−2) y subir 3 por cada paso.');
+writePointSlope(4,'Coordenadas negativas',2,1,[-2,-1],'Los signos se invierten al restar coordenadas negativas.');
+drawPointSlope(4,'Bajada desde un punto',-3,1,[2,-2],'Con m = −3, por cada paso a la derecha baja 3.');
+writePointSlope(4,'Último reto de la forma',1,2,[2,0],'Sustituye y₁ = 0, x₁ = 2 y m = 1/2.');
+// NIVEL 5 · Forma general y transformaciones.
+drawGeneral(5,'De general a gráfica',[2,1,-3],'Despeja: y = −2x + 3.');
+writeGeneralGraph(5,'General desde la gráfica',[3,-1,2],'Encuentra m y b; después lleva todo al mismo lado del signo igual.');
+drawGeneral(5,'Una pendiente de un medio',[1,-2,2],'De x − 2y + 2 = 0 sale y = (1/2)x + 1.');
+writePoints(5,'General desde dos puntos',[-2,-1],[2,1],'general','La pendiente es 1/2. Elimina la fracción y pasa todo a la izquierda.');
+drawGeneral(5,'Coeficientes diferentes',[2,3,-6],'Puedes obtener y = −(2/3)x + 2; busca dos puntos enteros.');
+writeGeneralGraph(5,'Convierte una subida fuerte',[3,1,-1],'Si y = −3x + 1, traslada todo al primer miembro.');
+drawGeneral(5,'La recta más empinada',[4,-1,-4],'Despejando: y = 4x − 4.');
+writePoints(5,'La diagonal en forma general',[-2,3],[2,-1],'general','Empieza con una pendiente −1 y encuentra la intersección vertical.');
+drawGeneral(5,'Cae medio cuadro',[1,2,2],'Despejando: y = −(1/2)x − 1.');
+writeGeneralGraph(5,'Reto final de transformación',[2,-3,-3],'Encuentra una ecuación sin fracciones: Ax + By + C = 0.');
+if(Q.length!==50)throw new Error(`El banco contiene ${Q.length} y no 50 preguntas`);
+
+const levelNames=['Sube y baja','Dos puntos','Horizontales y verticales','Punto–pendiente','Forma general'];
+const levelFocus=['Comprender m y b','Calcular con coordenadas','Distinguir m = 0 e indefinida','Usar un punto y la pendiente','Transformar expresiones'];
+const storageKey='laboratorio_rectas_50_v1';
+const blank=()=>({current:0,solved:Array(50).fill(null),attempts:Array(50).fill(0),hinted:Array(50).fill(false)});
+function load(){try{const d=JSON.parse(localStorage.getItem(storageKey));if(d&&Array.isArray(d.solved)&&d.solved.length===50&&Array.isArray(d.attempts)&&d.attempts.length===50){return {...blank(),...d,current:Math.max(0,Math.min(49,Number(d.current)||0))};}}catch(_e){}return blank();}
+let state=load();let drawing=[null,null];let activePoint=0;let dragging=null;let shownSolution=false;let lastFeedback=null;
+const $=id=>document.getElementById(id);
+const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch(_e){}};
+const qNow=()=>Q[state.current];
+const completed=()=>state.solved.filter(Boolean).length;
+const stars=()=>state.solved.reduce((a,s)=>a+(s?.stars||0),0);
+function normalizeLine(v){let [A,B,C]=v;const norm=Math.hypot(A,B);if(norm<EPS||![A,B,C].every(Number.isFinite))return null;return [A/norm,B/norm,C/norm];}
+function equivalent(u,v){const a=normalizeLine(u),b=normalizeLine(v);if(!a||!b)return false;const dot=a[0]*b[0]+a[1]*b[1];const sign=dot<0?-1:1;return Math.abs(a[0]-sign*b[0])<1e-6&&Math.abs(a[1]-sign*b[1])<1e-6&&Math.abs(a[2]-sign*b[2])<1e-6;}
+function solveString(q){if(q.form==='general')return formatGeneral(q.coeff);if(q.form==='point')return formatPoint(q.slope[0],q.slope[1],q.point);return formatSlope(q.coeff);}
+function answerString(q){return q.mode==='write'?solveString(q):q.display;}
+function displayHint(q){if(q.tip)return q.tip;return 'Busca dos puntos que satisfagan la misma ecuación.';}
+function explanation(q){const [A,B,C]=q.coeff;const m=B===0?'indefinida':rstr(-A,B);let intro='';if(q.points){const [P,R]=q.points;const dx=R[0]-P[0],dy=R[1]-P[1];intro=`Con P = (${P.join(', ')}) y Q = (${R.join(', ')}), el avance es ${dx} y la subida es ${dy}. ${dx===0?'Como el avance es cero, no se puede dividir para calcular m.':`La pendiente es m = ${dy}/${dx} = ${m}.`} `;}else if(B===0){intro='En una recta vertical la coordenada x es constante y la pendiente no está definida. ';}else if(A===0){intro='En una recta horizontal la coordenada y no cambia, por eso m = 0. ';}else if(q.point){intro=`Utiliza el punto (${q.point.join(', ')}) y la pendiente ${m}. `;}else{intro=`La pendiente de esta recta es m = ${m}. `;}const end=q.mode==='write'?`Una ecuación correcta en la forma solicitada es: ${solveString(q)}.`:`La recta objetivo se puede expresar como ${formatSlope(q.coeff)}. Recuerda que dos puntos diferentes bastan para determinarla.`;return intro+end;}
+function miniGraphIcon(){return '<span aria-hidden="true">↗</span>';}
+function renderLevels(){const maxUnlocked=Math.min(4,Math.floor(completed()/10));$('levelNav').innerHTML=levelNames.map((name,i)=>`<button class="level-tab ${Math.floor(state.current/10)===i?'active':''} ${i>maxUnlocked?'locked':'unlocked'}" ${i>maxUnlocked?'disabled':''} data-level="${i}"><b>${i+1}. ${name}</b><small>${i>maxUnlocked?'🔒 Nivel bloqueado':`${state.solved.slice(i*10,i*10+10).filter(Boolean).length}/10 retos`}</small></button>`).join('');$('levelNav').querySelectorAll('[data-level]:not(:disabled)').forEach(b=>b.addEventListener('click',()=>navigate(Number(b.dataset.level)*10)));}
+function renderTop(){const done=completed();$('doneStat').textContent=done+'/50';$('starStat').textContent=String(stars());$('progressBar').style.width=`${done*2}%`;$('progressShell').setAttribute('aria-valuenow',String(done));renderLevels();}
+function introFor(q){if(q.mode==='draw')return q.points?'Toca primero P y después Q. También puedes mover tus puntos A y B hasta dejarlos en la recta correcta.':'Toca una intersección de la cuadrícula para A y otra para B; después arrastra los puntos para ajustar la recta.';if(q.form==='point')return 'Escribe el punto y la pendiente en la plantilla y − y₁ = m(x − x₁).';return 'Escribe tu respuesta en el recuadro. Puedes usar el teclado o los botones de símbolos.';}
+function renderQuestion(){const q=qNow();const locked=!!state.solved[state.current];drawing=[null,null];activePoint=0;dragging=null;shownSolution=false;lastFeedback=null;
+  const questionBox=`<div class="eyebrow"><span class="numtag">RETO ${q.id} DE 50</span><span class="skilltag">NIVEL ${q.level}: ${levelNames[q.level-1]}</span><span class="mode">${q.mode==='draw'?'✍️ DIBUJAR':'⌨️ ESCRIBIR'}</span></div><h2>${q.title}</h2><p class="instruction">${q.instruction}</p>${q.display?`<div class="formula-card"><span class="formula-label">${q.mode==='draw'?'El desafío':'Datos para construir la ecuación'}</span><div class="formula">${q.display}</div><div class="formula-sub">${q.source==='points'?'Los puntos naranjas también aparecerán en el plano.':q.source==='point'?'Utiliza estas coordenadas y el valor de m.':'Convierte la expresión en una recta sobre el plano.'}</div></div>`:''}<div class="little-tip">💡 <strong>Tu misión:</strong> ${introFor(q)}</div>`;
+  const formPart=q.mode==='write'?`<label for="equationInput" style="font-size:12px;font-weight:850;color:#385776;display:block;margin-bottom:8px">MI ECUACIÓN</label><input id="equationInput" class="equation-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ejemplo: y = 2x + 1" aria-label="Escribe la ecuación de la recta" ${locked?'disabled':''}/><div class="keypad" aria-label="Teclado de símbolos"><button data-key="x">x</button><button data-key="y">y</button><button data-key="+">+</button><button data-key="-">−</button><button data-key="=">=</button><button data-key="(">(</button><button data-key=")">)</button><button data-key="/">/</button><button data-key="⌫" class="del" title="Borrar último carácter">⌫</button><button data-key="limpiar" class="clear">Limpiar</button></div>`:
+  `<div class="point-status" id="pointStatus"><div class="coordinate"><span class="dot a"></span><b>PUNTO A</b><br/><strong id="coordA">Sin marcar</strong></div><div class="coordinate"><span class="dot b"></span><b>PUNTO B</b><br/><strong id="coordB">Sin marcar</strong></div></div><div class="graph-controls"><button id="moveA" class="selected" type="button">Colocar A</button><button id="moveB" type="button">Colocar B</button><button id="eraseDraw" class="reset" type="button">↺ Borrar puntos</button></div><div class="live-slope" id="liveSlope" aria-live="polite">Marca dos puntos diferentes para ver su pendiente.</div>`;
+  const stateMessage=locked?`<div class="answer-feedback ${state.solved[state.current].assisted?'neutral':'good'}" role="status"><strong>${state.solved[state.current].assisted?'Solución estudiada':'¡Reto resuelto!'}</strong><p>${explanation(q)}</p></div>`:'';
+  const controls=`<div class="action-strip"><button id="checkBtn" class="primary" type="button" ${locked?'disabled':''}>${q.mode==='draw'?'Comprobar recta':'Comprobar ecuación'}</button><button id="hintBtn" class="secondary" type="button">💡 Ver pista</button>${!locked?'<button id="solutionBtn" class="secondary" type="button" disabled title="Disponible después de dos intentos">Ver solución (2 intentos)</button>':''}</div><div id="hintArea" class="answer-feedback neutral hidden"><strong>Una pista para pensar</strong><p>${displayHint(q)}</p></div><div id="feedbackArea" aria-live="polite">${stateMessage}</div><div class="action-strip"><button id="prevBtn" class="secondary" type="button" ${state.current===0?'disabled':''}>← Anterior</button><button id="nextBtn" class="primary" type="button" ${!locked?'disabled':''}>${state.current===49?'Ver resultado final':'Siguiente reto →'}</button></div>`;
+  $('questionPanel').innerHTML=questionBox+formPart+controls;
+  $('graphTitle').textContent=q.mode==='draw'?'Dibuja aquí con el dedo':'Lee el plano cartesiano';
+  $('graphDescription').textContent=q.mode==='draw'?'Toca dos intersecciones; arrastra A y B para cambiar la recta.':q.source==='point'?'El punto naranja es tu dato inicial.':'Observa la recta azul y sus puntos de referencia.';
+  $('graphStatus').textContent=q.mode==='draw'?'INTERACTIVO':'OBSERVAR';
+  $('svgShell').classList.toggle('is-draw',q.mode==='draw');
+  $('graphFooter').innerHTML=q.mode==='draw'?'<span class="legend"><i class="pill-dot" style="background:#7452cd"></i>A · primer punto</span><span class="legend"><i class="pill-dot" style="background:#ff9f5c"></i>B · segundo punto</span>':'<span class="legend"><i class="pill-dot" style="background:#274e9d"></i>Recta de referencia</span><span class="legend"><i class="pill-dot" style="background:#079f97"></i>Tu propuesta (si es válida)</span>';
+  $('hintBtn').onclick=()=>{$('hintArea').classList.toggle('hidden');if(!$('hintArea').classList.contains('hidden')){state.hinted[state.current]=true;save();}};
+  $('prevBtn').onclick=()=>navigate(state.current-1);
+  $('nextBtn').onclick=()=>{if(state.current===49){renderCompletion();}else navigate(state.current+1);};
+  $('checkBtn').onclick=checkAnswer;
+  if(!locked&&$('solutionBtn')){$('solutionBtn').onclick=()=>{shownSolution=true;state.solved[state.current]={assisted:true,stars:0};save();$('checkBtn').disabled=true;$('solutionBtn').disabled=true;$('nextBtn').disabled=false;feedback('neutral','Solución paso a paso',explanation(q));renderTop();renderGraph();};}
+  if(q.mode==='draw'){
+    $('moveA').onclick=()=>{activePoint=0;setActivePointButtons();};
+    $('moveB').onclick=()=>{activePoint=1;setActivePointButtons();};
+    $('eraseDraw').onclick=()=>{drawing=[null,null];activePoint=0;setActivePointButtons();updatePointStatus();renderGraph();};
+  }else{
+    const input=$('equationInput');
+    input.addEventListener('input',()=>renderGraph());
+    input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!state.solved[state.current])checkAnswer();});
+    $('questionPanel').querySelectorAll('[data-key]').forEach(button=>{button.disabled=locked;button.onclick=()=>{const val=button.dataset.key;const start=input.selectionStart??input.value.length,end=input.selectionEnd??start;let text=input.value,caret=start;if(val==='limpiar'){text='';caret=0;}else if(val==='⌫'){if(start===end&&start>0){text=text.slice(0,start-1)+text.slice(end);caret=start-1;}else{text=text.slice(0,start)+text.slice(end);caret=start;}}else{text=text.slice(0,start)+val+text.slice(end);caret=start+val.length;}input.value=text;input.focus();input.setSelectionRange(caret,caret);renderGraph();};});
+  }
+  if(!locked&&state.attempts[state.current]>=2&&$('solutionBtn'))$('solutionBtn').disabled=false;
+  renderGraph();
+}
+function setActivePointButtons(){const a=$('moveA'),b=$('moveB');if(a&&b){a.classList.toggle('selected',activePoint===0);b.classList.toggle('selected',activePoint===1);}}
+function updatePointStatus(){const c=$('coordA'),d=$('coordB');if(c)c.textContent=drawing[0]?`(${drawing[0].join(', ')})`:'Sin marcar';if(d)d.textContent=drawing[1]?`(${drawing[1].join(', ')})`:'Sin marcar';const live=$('liveSlope');if(!live)return;if(!drawing[0]||!drawing[1]){live.textContent='Marca dos puntos diferentes para ver su pendiente.';return;}const [P,R]=drawing;const dx=R[0]-P[0],dy=R[1]-P[1];if(dx===0&&dy===0){live.textContent='Los puntos están juntos. Muévelos: necesitas dos puntos diferentes.';}else if(dx===0){live.textContent=`Avance = 0. Tu recta es vertical y su pendiente está indefinida.`;}else{live.textContent=`Avance = ${dx} · Subida = ${dy} · Pendiente m = ${rstr(dy,dx)} (${dy/dx>0?'positiva':dy/dx<0?'negativa':'cero'})`;}}
+function feedback(kind,title,msg){const box=$('feedbackArea');box.innerHTML=`<div class="answer-feedback ${kind}" role="status"><strong>${title}</strong><p>${escapeHtml(msg)}</p></div>`;}
+const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function resolve(){state.solved[state.current]={assisted:false,stars:state.hinted[state.current]?Math.max(1,3-state.attempts[state.current]-1):Math.max(1,3-state.attempts[state.current])};save();$('checkBtn').disabled=true;if($('solutionBtn'))$('solutionBtn').disabled=true;$('nextBtn').disabled=false;feedback('good',`¡Excelente! +${state.solved[state.current].stars} ★`,explanation(qNow()));renderTop();renderGraph();}
+function wrong(reason){state.attempts[state.current]++;save();feedback('bad','Todavía no. ¡Puedes corregirlo!',reason);if(state.attempts[state.current]>=2&&$('solutionBtn')){$('solutionBtn').disabled=false;$('solutionBtn').title='Consulta el procedimiento y avanza sin estrellas';}}
+function checkAnswer(){const q=qNow();if(state.solved[state.current])return;
+  if(q.mode==='draw'){
+    if(!drawing[0]||!drawing[1]){feedback('neutral','Te faltan puntos','Necesitas marcar dos puntos diferentes para formar una recta.');return;}
+    if(drawing[0][0]===drawing[1][0]&&drawing[0][1]===drawing[1][1]){feedback('neutral','Separa los puntos','A y B no pueden estar exactamente en la misma intersección.');return;}
+    const [A,B,C]=q.coeff;const valid=drawing.every(([x,y])=>Math.abs(A*x+B*y+C)<EPS);
+    if(valid){resolve();return;}
+    const v1=A*drawing[0][0]+B*drawing[0][1]+C;const v2=A*drawing[1][0]+B*drawing[1][1]+C;
+    wrong(v1===0||v2===0?'Uno de tus puntos está bien colocado. Ajusta el otro sobre la misma recta.':'Los puntos aún no pertenecen a la recta pedida. Revisa la pendiente, el sentido de subida/bajada y dónde cruza los ejes.');return;
+  }
+  const raw=$('equationInput').value.trim();if(!raw){feedback('neutral','Escribe algo primero','Introduce una ecuación con x, y y el signo igual.');return;}
+  let parsed;try{parsed=parseEquation(raw);}catch(e){feedback('neutral','Revisa la escritura',e.message+' Prueba por ejemplo: y=2x+1 o 2x-y+1=0.');return;}
+  if(!equivalent(parsed,q.coeff)){wrong('La ecuación dibujaría una recta distinta de la azul. Revisa los signos y comprueba dónde corta los ejes.');return;}
+  if(!matchesForm(raw,q.form)){
+    wrong(q.form==='general'?'La recta es equivalente, pero escribe la forma general: Ax + By + C = 0.':q.form==='point'?'¡Has encontrado la recta! Ahora expresa la respuesta como y − y₁ = m(x − x₁), usando paréntesis.':'¡La recta coincide! Ahora deja y sola a la izquierda: y = mx + b.');return;
+  }
+  resolve();
+}
+function matchesForm(raw,form){const s=cleanExpression(raw).replace(/\s+/g,'');const parts=s.split('=');if(parts.length!==2)return false;if(form==='general')return /^\+?0(?:\.0+)?$/.test(parts[1]);if(form==='slope')return parts[0]==='y'&&!parts[1].includes('y');if(form==='point')return /^y(?:[+-]\d+(?:\.\d+)?)?$/.test(parts[0])&&/\(x(?:[+-]\d+(?:\.\d+)?)?\)$/.test(parts[1])&&!parts[1].includes('y');return true;}
+function cleanExpression(s){return String(s).toLowerCase().replace(/[−–—]/g,'-').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/,/g,'.');}
+// Analizador seguro de expresiones lineales: nunca utiliza eval().
+function parseEquation(expression){const s=cleanExpression(expression).replace(/\s+/g,'');if((s.match(/=/g)||[]).length!==1)throw new Error('Debe haber exactamente un signo =.');if(!/^[0-9.xy+\-*/()=]+$/.test(s))throw new Error('Hay un símbolo que no se reconoce.');let raw=s.match(/(?:\d+(?:\.\d+)?|\.\d+|[xy()+\-*/=])/g)||[];if(raw.join('')!==s)throw new Error('La ecuación tiene una expresión incompleta.');let tok=[];for(let i=0;i<raw.length;i++){const u=raw[i],prev=raw[i-1];const atomPrev=prev&&(isNumber(prev)||prev==='x'||prev==='y'||prev===')');const atomNext=isNumber(u)||u==='x'||u==='y'||u==='(';
+  if(atomPrev&&atomNext&&(u==='x'||u==='y'||u==='('||prev===')'))tok.push('*');tok.push(u);
+}
+let k=0;const peek=()=>tok[k];const take=()=>tok[k++];const expr=(x=0,y=0,c=0)=>({x,y,c});const addv=(a,b,s=1)=>expr(a.x+s*b.x,a.y+s*b.y,a.c+s*b.c);const mulv=(a,b)=>{if((Math.abs(a.x)>EPS||Math.abs(a.y)>EPS)&&(Math.abs(b.x)>EPS||Math.abs(b.y)>EPS))throw new Error('Sólo se aceptan ecuaciones de primer grado.');return expr(a.x*b.c+a.c*b.x,a.y*b.c+a.c*b.y,a.c*b.c);};
+function primary(){const t=take();if(t==='-'){const a=primary();return mulv(expr(0,0,-1),a);}if(t==='+')return primary();if(t==='('){const v=sum();if(take()!==')')throw new Error('Falta cerrar un paréntesis.');return v;}if(t==='x')return expr(1,0,0);if(t==='y')return expr(0,1,0);if(t&&isNumber(t))return expr(0,0,Number(t));throw new Error('Falta un número o variable.');}
+function term(){let out=primary();while(peek()==='*'||peek()==='/'){const o=take(),v=primary();if(o==='*')out=mulv(out,v);else{if(Math.abs(v.x)>EPS||Math.abs(v.y)>EPS||Math.abs(v.c)<EPS)throw new Error('El divisor debe ser un número distinto de cero.');out=mulv(out,expr(0,0,1/v.c));}}return out;}
+function sum(){let out=term();while(peek()==='+'||peek()==='-'){const op=take(),v=term();out=addv(out,v,op==='+'?1:-1);}return out;}
+const left=sum();if(take()!=='=')throw new Error('La ecuación debe tener un signo =.');const right=sum();if(k!==tok.length)throw new Error('Revisa los paréntesis o símbolos.');const line=[left.x-right.x,left.y-right.y,left.c-right.c];if(!normalizeLine(line))throw new Error('La expresión no representa una sola recta.');return line;
+}
+function isNumber(t){return typeof t==='string'&&/^(?:\d+(?:\.\d+)?|\.\d+)$/.test(t);}
+
+// Sistema de coordenadas del SVG: [-6,6] para ambos ejes.
+const SIZE=520,MID=260,UNIT=35.5,MIN=-6,MAX=6;
+const sx=x=>MID+x*UNIT,sy=y=>MID-y*UNIT;
+const fmt=n=>String(Math.round(n*100)/100);
+const svgNS='http://www.w3.org/2000/svg';
+function svgLine(coeff){const [A,B,C]=coeff;let pts=[];if(Math.abs(B)>EPS)for(const x of [MIN,MAX]){const y=(-A*x-C)/B;if(y>=MIN-EPS&&y<=MAX+EPS)pts.push([x,Math.max(MIN,Math.min(MAX,y))]);}if(Math.abs(A)>EPS)for(const y of [MIN,MAX]){const x=(-B*y-C)/A;if(x>=MIN-EPS&&x<=MAX+EPS)pts.push([Math.max(MIN,Math.min(MAX,x)),y]);}let best=null,dist=-1;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i][0]-pts[j][0],pts[i][1]-pts[j][1]);if(d>dist){dist=d;best=[pts[i],pts[j]];}}return best;}
+function polylineFor(coeff,color,width,dash=''){const p=svgLine(coeff);return p?`<line x1="${sx(p[0][0])}" y1="${sy(p[0][1])}" x2="${sx(p[1][0])}" y2="${sy(p[1][1])}" stroke="${color}" stroke-width="${width}" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''}/>`:'';}
+function marker(p,label,color,active=false,ref=false){return `<g><circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="${active?17:14}" fill="${color}" opacity=".12"/><circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="${ref?6.5:8.5}" fill="${color}" stroke="white" stroke-width="2.5"/><text x="${sx(p[0])+12}" y="${sy(p[1])-12}" font-weight="850" fill="${color}" font-size="15" paint-order="stroke" stroke="white" stroke-width="3">${label}</text></g>`;}
+function chooseSample(coeff){let pts=[];for(let x=-5;x<=5;x++)for(let y=-5;y<=5;y++)if(Math.abs(coeff[0]*x+coeff[1]*y+coeff[2])<EPS)pts.push([x,y]);let best=null,bestScore=Infinity;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dist=Math.hypot(a[0]-b[0],a[1]-b[1]);if(dist<2.2||dist>8.3)continue;const score=Math.abs(dist-4.2)+.09*(Math.abs(a[0])+Math.abs(a[1])+Math.abs(b[0])+Math.abs(b[1]));if(score<bestScore){bestScore=score;best=[a,b];}}return best||[pts[0],pts[pts.length-1]].filter(Boolean);}
+function slopeGuides(P,R){const x=sx(R[0]),y=sy(P[1]),dx=R[0]-P[0],dy=R[1]-P[1];let s='';if(dx!==0)s+=`<line x1="${sx(P[0])}" y1="${sy(P[1])}" x2="${x}" y2="${y}" stroke="#4d8ada" stroke-width="3.2" stroke-dasharray="8 7"/><text x="${(sx(P[0])+x)/2}" y="${y+18}" font-size="12" text-anchor="middle" fill="#2363aa" font-weight="850">Δx=${dx}</text>`;if(dy!==0)s+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${sy(R[1])}" stroke="#e38d46" stroke-width="3.2" stroke-dasharray="8 7"/><text x="${x+11}" y="${(y+sy(R[1]))/2-4}" font-size="12" fill="#b3642b" font-weight="850">Δy=${dy}</text>`;return s;}
+function buildGrid(){let lines='<rect width="520" height="520" fill="#fff"/>';for(let i=MIN;i<=MAX;i++){const xx=sx(i),yy=sy(i);lines+=`<line x1="${xx}" y1="${sy(MIN)}" x2="${xx}" y2="${sy(MAX)}" stroke="${i===0?'#7187a4':'#e6edf4'}" stroke-width="${i===0?2.5:1.2}"/>`;lines+=`<line x1="${sx(MIN)}" y1="${yy}" x2="${sx(MAX)}" y2="${yy}" stroke="${i===0?'#7187a4':'#e6edf4'}" stroke-width="${i===0?2.5:1.2}"/>`;if(i!==0){lines+=`<text x="${xx}" y="${MID+19}" fill="#8394a6" font-size="10.5" text-anchor="middle">${i}</text>`;lines+=`<text x="${MID-13}" y="${yy+3.5}" fill="#8394a6" font-size="10.5" text-anchor="end">${i}</text>`;}}lines+=`<text x="${sx(MAX)+17}" y="${MID-10}" font-size="17" font-weight="900" fill="#345c86">x</text><text x="${MID+11}" y="${sy(MAX)-12}" font-size="17" font-weight="900" fill="#345c86">y</text><text x="${MID-11}" y="${MID+16}" font-size="11" fill="#8394a6">0</text>`;return lines;}
+const BASE_GRID=buildGrid();
+function renderGraph(){const q=qNow();let layer='';if(q.mode==='draw'){
+  if(q.points)q.points.forEach((p,i)=>{layer+=marker(p,i===0?'P':'Q','#da832b',false,true);});
+  if(q.source==='point'&&q.point)layer+=marker(q.point,'P','#da832b',false,true);
+  if(drawing[0]&&drawing[1]&&(drawing[0][0]!==drawing[1][0]||drawing[0][1]!==drawing[1][1])){layer+=polylineFor(linePoints(...drawing),'#6655c7',4.8);layer+=slopeGuides(...drawing);}
+  drawing.forEach((p,i)=>{if(p)layer+=marker(p,i?'B':'A',i?'#f09653':'#7452cd',activePoint===i,false);});
+  updatePointStatus();
+}else{
+  if(q.source!=='point'){
+    layer+=polylineFor(q.coeff,'#274e9d',5);
+    const refs=q.points||chooseSample(q.coeff);if(refs&&refs.length===2)refs.forEach((p,i)=>layer+=marker(p,q.source==='points'?(i===0?'P':'Q'):(i===0?'A':'B'),'#da832b',false,true));
+  }else{layer+=marker(q.point,'P','#da832b',false,true);}
+  const input=$('equationInput');if(input&&input.value.trim()){try{const cand=parseEquation(input.value);layer+=polylineFor(cand,'#079f97',3.5,'9 7');}catch(_e){}}
+}
+  $('graphSvg').innerHTML=BASE_GRID+layer;
+}
+function svgEventCoord(e){const bounds=$('graphSvg').getBoundingClientRect();const px=(e.clientX-bounds.left)*SIZE/bounds.width;const py=(e.clientY-bounds.top)*SIZE/bounds.height;return [Math.max(MIN,Math.min(MAX,Math.round((px-MID)/UNIT))),Math.max(MIN,Math.min(MAX,Math.round((MID-py)/UNIT)))];}
+const svg=$('graphSvg');
+svg.addEventListener('pointerdown',e=>{if(qNow().mode!=='draw'||state.solved[state.current])return;e.preventDefault();const pos=svgEventCoord(e);const bounds=svg.getBoundingClientRect();const px=(e.clientX-bounds.left)*SIZE/bounds.width,py=(e.clientY-bounds.top)*SIZE/bounds.height;let idx=-1,near=23;drawing.forEach((p,i)=>{if(p){const d=Math.hypot(sx(p[0])-px,sy(p[1])-py);if(d<near){near=d;idx=i;}}});if(idx<0){idx=drawing[0]===null?0:drawing[1]===null?1:activePoint;}drawing[idx]=pos;dragging={pointer:e.pointerId,idx};activePoint=1-idx;setActivePointButtons();try{svg.setPointerCapture(e.pointerId);}catch(_e){}renderGraph();});
+svg.addEventListener('pointermove',e=>{if(!dragging||dragging.pointer!==e.pointerId||qNow().mode!=='draw')return;e.preventDefault();const pos=svgEventCoord(e);if(drawing[dragging.idx]?.[0]!==pos[0]||drawing[dragging.idx]?.[1]!==pos[1]){drawing[dragging.idx]=pos;renderGraph();}});
+const endDrag=e=>{if(dragging&&dragging.pointer===e.pointerId){dragging=null;try{svg.releasePointerCapture(e.pointerId);}catch(_e){}}};svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',endDrag);
+function navigate(to){if(to<0||to>=50)return;const firstUnsolved=state.solved.findIndex(x=>!x);if(firstUnsolved>=0&&to>firstUnsolved)return;state.current=to;save();render();window.scrollTo?.({top:0,behavior:'smooth'});}
+function renderCompletion(){if(completed()<50)return;const assisted=state.solved.filter(s=>s&&s.assisted).length;$('mainContent').classList.add('hidden');$('completionPanel').classList.remove('hidden');$('completionPanel').innerHTML=`<div class="big-emoji">🏆</div><h2>¡Completaste los 50 retos!</h2><p>Has practicado pendientes positivas, negativas, cero e indefinidas; aprendiste a construir rectas y expresarlas con distintas ecuaciones.</p><div class="scoreline" style="justify-content:center"><div class="stat"><strong>50</strong><span>Retos vistos</span></div><div class="stat"><strong>${stars()} ★</strong><span>Estrellas</span></div><div class="stat"><strong>${assisted}</strong><span>Con ayuda</span></div></div><p>Un reto extra: explica en voz alta por qué una recta vertical no tiene pendiente definida.</p><button class="primary" id="doneReset" type="button">Empezar otra vez</button>`;$('doneReset').onclick=restart;}
+function render(){renderTop();$('mainContent').classList.remove('hidden');$('completionPanel').classList.add('hidden');renderQuestion();}
+function restart(){if(!window.confirm('¿Quieres borrar el progreso de los 50 ejercicios y comenzar desde cero?'))return;state=blank();save();render();}
+$('restartBtn').onclick=restart;
+$('howBtn').onclick=()=>window.alert('CÓMO JUGAR\n\n1. Para dibujar: toca una intersección de la cuadrícula para colocar A. Toca otra para B. Puedes arrastrarlos con el dedo o mouse.\n2. Observa la línea morada y los segmentos de avance (Δx) y subida (Δy).\n3. Pulsa «Comprobar recta». No importa qué dos puntos elijas, siempre que estén sobre la recta pedida.\n4. Para escribir: mira la gráfica, escribe una ecuación y presiona «Comprobar ecuación». La línea verde muestra la vista previa de tu ecuación.\n5. Cada nivel trae nuevas maneras de pensar la pendiente. Puedes pedir pistas y estudiar la solución después de dos intentos.\n6. Tu avance queda guardado en este navegador.\n\nTIP: La forma y = mx + b no describe una recta vertical.');
+render();
+// Expone únicamente utilidades para pruebas matemáticas y de interfaz, sin acceso a redes.
+window.__LineLab={Q,parseEquation,equivalent,formatSlope,formatGeneral,formatPoint,chooseSample,svgLine,renderGraph};
+</script>
+</body>
+</html>
