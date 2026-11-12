@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+PRODID:-//Amy Sofia//Invitacion de Cumpleanos//ES
+BEGIN:VEVENT
+UID:amy-sofia-3-20261219-milwaukee@narciso1516.github.io
+DTSTAMP:20261112T041500Z
+DTSTART:20261219T220000Z
+DTEND:20261219T230000Z
+SUMMARY:Cumpleaños de Amy Sofía (3 años)
+LOCATION:Casa de Bluey\, 1000 S Layton Blvd\, Milwaukee\, WI 53215\, Estado
+ s Unidos
+DESCRIPTION:¡Te esperamos para celebrar los 3 añitos de Amy Sofía!\nSáb
+ ado 19 de diciembre de 2026\, 4:00 p. m. (hora local de Milwaukee).\nLa du
+ ración de una hora es provisional: no indica el final de la fiesta.
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
