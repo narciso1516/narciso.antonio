@@ -57,16 +57,17 @@
 /* Use the actual artwork "Abramos la invitación" as the first screen. */
 /* Portada cinematográfica: anticipación, destellos, revelación ascendente. */
 .gate.gate-photo{padding:0;display:block;overflow:hidden;background:#8dd2ff;isolation:isolate;backface-visibility:hidden;transform:translate3d(0,0,0);will-change:transform,opacity}
-.gate.gate-photo.is-opening{pointer-events:none;animation:magicCoverExit 1.12s cubic-bezier(.52,.03,.24,.99) both}
+.gate.gate-photo.is-opening{pointer-events:none;animation:magicCoverExit 2.08s cubic-bezier(.51,.03,.18,.99) both}
 @keyframes magicCoverExit{
   0%{transform:translate3d(0,0,0) scale(1);opacity:1}
-  24%{transform:translate3d(0,0,0) scale(1.018);opacity:1}
-  46%{transform:translate3d(0,-2%,0) scale(1.018);opacity:1}
-  100%{transform:translate3d(0,-106%,0) scale(1.015);opacity:.95}
+  15%{transform:translate3d(0,0,0) scale(1.024);opacity:1}
+  36%{transform:translate3d(0,-3%,0) scale(1.034);opacity:1}
+  64%{transform:translate3d(0,-39%,0) scale(1.022);opacity:1}
+  100%{transform:translate3d(0,-107%,0) scale(1);opacity:.99}
 }
 /* La primera página acompaña el movimiento de la portada, como un cuento que aparece. */
-.phone.revealing #stage{animation:magicStoryArrive 1.23s cubic-bezier(.18,.76,.2,1) both;transform-origin:50% 60%}
-.phone.revealing .header{animation:magicHeaderArrive .55s ease-out .57s both}
+.phone.revealing #stage{animation:magicStoryArrive 2.55s cubic-bezier(.17,.77,.19,1) .45s both;transform-origin:50% 60%}
+.phone.revealing .header{animation:magicHeaderArrive .9s ease-out 1.85s both}
 @keyframes magicStoryArrive{
   0%{opacity:.58;transform:translate3d(0,28px,0) scale(.965);filter:blur(3px) saturate(.9)}
   60%{opacity:.96;filter:blur(0) saturate(1.04)}
@@ -75,19 +76,19 @@
 @keyframes magicHeaderArrive{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 .gate.gate-photo .opening-flourish{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
 .opening-flourish .magic-halo{position:absolute;left:50%;top:51%;width:250px;height:250px;border-radius:50%;opacity:0;transform:translate(-50%,-50%) scale(.4);background:radial-gradient(circle,#fff4bfa8 0%,#fff5bb6b 25%,#fff8f700 69%);filter:blur(8px)}
-.gate.opening-envelope .magic-halo{animation:magicHalo 1.0s ease-out both}
+.gate.opening-envelope .magic-halo{animation:magicHalo 2.12s ease-out both}
 @keyframes magicHalo{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}28%{opacity:.8}100%{opacity:0;transform:translate(-50%,-50%) scale(3.6)}}
 .opening-flourish .magic-star{position:absolute;left:50%;top:52%;opacity:0;font-size:var(--sz,22px);color:var(--color,#fff5a8);text-shadow:0 0 10px #fff,0 2px 3px #ffbd7499;line-height:1;transform:translate(-50%,-50%) scale(.15);filter:drop-shadow(0 2px 2px #ffcc8877)}
-.gate.opening-envelope .magic-star{animation:magicStarFly 1.00s cubic-bezier(.16,.73,.25,1) var(--lag,0ms) both}
+.gate.opening-envelope .magic-star{animation:magicStarFly 2.18s cubic-bezier(.15,.65,.24,1) var(--lag,0ms) both}
 @keyframes magicStarFly{
   0%{opacity:0;transform:translate(-50%,-50%) translate(0,0) rotate(-45deg) scale(.1)}
   22%{opacity:1}
   65%{opacity:.98}
   100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx,0px),var(--dy,0px)) rotate(130deg) scale(1.15)}
 }
-.gate.opening-envelope .cover-tap{animation:magicTapExit .22s ease-in both;pointer-events:none}
+.gate.opening-envelope .cover-tap{animation:magicTapExit .48s ease-in both;pointer-events:none}
 @keyframes magicTapExit{to{opacity:0;transform:translateX(-50%) translateY(12px) scale(.93)}}
-.gate.opening-envelope .cover-shimmer{animation:magicLightPass .7s ease-out both}
+.gate.opening-envelope .cover-shimmer{animation:magicLightPass 1.65s ease-out both}
 @keyframes magicLightPass{from{transform:translateX(-130%);opacity:.6}to{transform:translateX(140%);opacity:0}}
 /* Una única frase, con jerarquía y espacio visual, sin subtítulos. */
 .caption-card.invite-only{max-width:390px;margin:clamp(16px,3.5vh,27px) auto 8px;padding:24px 14px 22px;border-radius:30px;border:3px solid #fff;background:linear-gradient(135deg,#fff 20%,#fff8df 100%);box-shadow:0 8px 0 #a8c7ee84,0 16px 36px #557cac30;overflow:hidden}
@@ -141,6 +142,38 @@
 .calendar-note{margin:12px auto 0;max-width:340px;font:700 11px/1.42 var(--font);color:#52678f}
 @media(max-width:354px){.save-date-card{padding:15px 10px}.rsvp-primary{font-size:16px}.calendar-button{font-size:13px;gap:3px}}
 @media(prefers-reduced-motion:reduce){.save-date-card:before,.save-date-card:after{animation:none}}
+
+
+/* Mobile UX polish: direction -> map -> actions -> confirmations. */
+.mapPage .location-simple{padding:16px 16px 17px;margin:15px auto 8px;background:linear-gradient(155deg,#fffefd,#f2faff);box-shadow:0 6px 0 #aacff0,0 12px 24px #4b88b72c}
+.mapPage .location-simple .tag{display:inline-block;margin-bottom:9px}
+.mapPage .location-simple h3{font-size:clamp(25px,6vw,32px);color:#324d82;margin-bottom:8px}
+.mapPage .location-simple p{font-size:clamp(14px,3.7vw,16px);line-height:1.5;font-weight:850}
+.map-close-wrap{max-width:392px;margin:0 auto 25px}
+.map-close-wrap .map-frame{height:clamp(235px,38dvh,350px);margin:11px auto 13px;border-radius:24px;box-shadow:0 8px 0 #b2dcf1,0 15px 32px #4f83b128}
+.map-actions{display:flex;justify-content:center;align-items:stretch;gap:10px;max-width:390px;margin:13px auto 15px}
+.map-actions .action-link{display:flex;align-items:center;justify-content:center;flex:1;text-align:center;min-height:49px;font-size:clamp(12px,3.25vw,14px)}
+.mapPage .save-date-card{margin-top:20px}
+@media(max-width:350px){.map-actions{gap:6px}.map-actions .action-link{padding:9px 6px}}
+/* Finger gesture tutorial appears only after opening, never before. */
+.swipe-coach{position:absolute;z-index:38;pointer-events:none;bottom:calc(53px + var(--safeBottom));left:50%;width:min(335px,calc(100% - 40px));transform:translate(-50%,0);text-align:center;padding:11px 18px 14px;border:3px solid #fff;border-radius:25px;background:linear-gradient(135deg,#fffefaef 10%,#e7f8ffef 95%);box-shadow:0 8px 0 #91bbe0,0 18px 42px #28598b5a;backdrop-filter:blur(14px);color:#314e83;animation:coachAppear .75s cubic-bezier(.15,.9,.25,1) both}
+.swipe-coach.hiding{animation:coachLeave .42s ease-in both}
+.coach-art{display:flex;justify-content:center;align-items:center;gap:10px;height:52px;margin-bottom:0}
+.coach-arrow{font:900 29px var(--display);color:#328be5;filter:drop-shadow(0 2px #fff)}
+.coach-finger{display:inline-block;font-size:32px;line-height:1;animation:coachSwipe 1.9s cubic-bezier(.42,.04,.32,.99) infinite}
+.coach-arrow.up{animation:coachArrowUp 1.9s ease-in-out infinite}.coach-arrow.down{color:#f074b0;animation:coachArrowDown 1.9s ease-in-out infinite}
+.coach-title{font:900 19px/1.05 var(--display);color:#315a9c}
+.coach-desc{font:800 12px/1.32 var(--font);margin:5px auto 0;max-width:265px}
+.coach-desc strong{color:#ec65a3}
+@keyframes coachAppear{from{opacity:0;transform:translate(-50%,28px) scale(.86)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes coachLeave{to{opacity:0;transform:translate(-50%,22px) scale(.94)}}
+@keyframes coachSwipe{0%,12%,100%{transform:translateY(8px) rotate(-10deg)}42%{transform:translateY(-12px) rotate(4deg)}72%{transform:translateY(7px) rotate(-7deg)}}
+@keyframes coachArrowUp{0%,100%{transform:translateY(4px);opacity:.6}40%{transform:translateY(-6px);opacity:1}}
+@keyframes coachArrowDown{0%,100%{transform:translateY(-4px);opacity:.7}70%{transform:translateY(6px);opacity:1}}
+.phone.coaching .swipe-hint{display:none!important}
+.swipe-hint{font-size:clamp(10px,2.8vw,12px);padding:9px 13px;max-width:calc(100% - 18px);gap:5px}
+.swipe-hint b{font-size:16px}
+@media(prefers-reduced-motion:reduce){.swipe-coach,.swipe-coach.hiding{animation:none}.coach-finger,.coach-arrow,.swipe-hand{animation:none!important}}
 
 </style>
 </head>
@@ -205,14 +238,24 @@
  <div class="caption-card pop-in delay2"><h2>¡Falta poquito! 🌈</h2><p>Cuenta regresiva para el sábado 19 de diciembre de 2026 a las 4:00 p. m. (Milwaukee).</p><div class="countbox" id="countdown" aria-live="off"><div class="time-unit"><b id="dd">00</b><span>Días</span></div><div class="time-unit"><b id="hh">00</b><span>Horas</span></div><div class="time-unit"><b id="mm">00</b><span>Minutos</span></div><div class="time-unit"><b id="ss">00</b><span>Segundos</span></div></div></div>
 </section>
 <section class="page last mapPage" data-name="¡Te esperamos!" aria-label="Capítulo 8: Ubicación y despedida">
-<h2 class="pageTitle pop-in">¡Te esperamos! 💙</h2>
- <p class="pageSub pop-in delay1">Con mucho cariño, <strong>Amy Sofía y su familia</strong> te invitan a celebrar este día tan especial.</p>
- <div class="address-card pop-in delay1"><span class="tag">🎈 Datos de la fiesta</span><h3>Casa de Bluey</h3><div class="detail">📅 Sábado 19 de diciembre de 2026</div><div class="detail">🕓 4:00 p. m. · hora local de Milwaukee</div><p>1000 S Layton Blvd<br>Milwaukee, WI 53215, Estados Unidos</p><div class="linkRow"><a href="https://www.google.com/maps/search/?api=1&amp;query=1000%20S%20Layton%20Blvd%2C%20Milwaukee%2C%20WI%2053215%2C%20USA" class="action-link" target="_blank" rel="noopener noreferrer">📍 Cómo llegar</a><button class="action-link secondary" type="button" id="share">💌 Compartir datos</button></div></div>
+<h2 class="pageTitle pop-in">¿Cómo llegar a la fiesta? 🏡</h2>
+ <div class="address-card location-simple pop-in delay1" aria-label="Dirección de la fiesta">
+  <span class="tag">📍 Aquí nos vemos</span>
+  <h3>Casa de Bluey</h3>
+  <p>1000 S Layton Blvd<br>Milwaukee, WI 53215<br>Estados Unidos</p>
+ </div>
+ <div class="map-close-wrap">
+ <div class="map-frame pop-in delay1"><iframe id="googleMap" title="Ubicación de la fiesta en Google Maps: 1000 S Layton Blvd, Milwaukee" data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2916.9818407447206!2d-87.94994382365819!3d43.02076939310459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88051a3df6ec8a19%3A0xe246f9eacf40d3fd!2s1000%20S%20Layton%20Blvd%2C%20Milwaukee%2C%20WI%2053215%2C%20EE.%20UU.!5e0!3m2!1ses-419!2smx!4v1794444760396!5m2!1ses-419!2smx" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  <div class="map-actions pop-in delay2">
+   <a href="https://www.google.com/maps/search/?api=1&amp;query=1000%20S%20Layton%20Blvd%2C%20Milwaukee%2C%20WI%2053215%2C%20USA" class="action-link" target="_blank" rel="noopener noreferrer" aria-label="Abrir la dirección de la fiesta en Google Maps">🧭 Ver ruta en Maps</a>
+   <button class="action-link secondary" type="button" id="share">💌 Compartir dirección</button>
+  </div>
+ </div>
 
  <aside class="save-date-card pop-in delay2" aria-labelledby="saveDateTitle">
    <div class="save-date-top"><span class="save-date-star" aria-hidden="true">✨</span><span class="tag">¡GUARDA ESTE MOMENTO!</span><span class="save-date-star" aria-hidden="true">✨</span></div>
    <h3 id="saveDateTitle">¿Vienes a mi fiesta? 🎂</h3>
-   <p class="save-date-intro">¡Nos encantará celebrar contigo! Confirma por WhatsApp y guarda la fecha para que no se te olvide.</p>
+   <p class="save-date-intro">Confirma tu asistencia y guarda el día para que celebremos juntos.</p>
    <a id="rsvpWhatsapp" class="rsvp-primary" href="https://wa.me/?text=%C2%A1Hola%21%20%F0%9F%8E%88%20Quiero%20confirmar%20mi%20asistencia%20al%20cumplea%C3%B1os%20de%20Amy%20Sof%C3%ADa%20%F0%9F%8E%82%20el%20s%C3%A1bado%2019%20de%20diciembre%20de%202026%20a%20las%204%3A00%20p.%20m.%20en%20Casa%20de%20Bluey.%20Mi%20nombre%20es%3A%20___%3B%20asistir%C3%A1n%3A%20___%20personas.%20%C2%A1Nos%20vemos%21%20%F0%9F%92%99" target="_blank" rel="noopener noreferrer" aria-label="Confirmar asistencia por WhatsApp; se abrirá un mensaje listo para enviar">
      <span class="rsvp-emoji" aria-hidden="true">💬</span><span>¡Confirmar asistencia!</span><span aria-hidden="true">↗</span>
    </a>
@@ -228,13 +271,19 @@
    </div>
    <p class="calendar-note">🕓 19 dic 2026 · 4:00 p. m. (Milwaukee)<br>El calendario reservará una hora <em>provisional</em>; puedes ajustar la duración. En iPhone, abre el enlace con <strong>Safari</strong> si estás dentro de WhatsApp u otra app. Después toca el archivo .ics y elige añadirlo a tu calendario.</p>
  </aside>
- <div class="map-frame pop-in delay2"><iframe id="googleMap" title="Ubicación de la fiesta en Google Maps: 1000 S Layton Blvd, Milwaukee" data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2916.9818407447206!2d-87.94994382365819!3d43.02076939310459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88051a3df6ec8a19%3A0xe246f9eacf40d3fd!2s1000%20S%20Layton%20Blvd%2C%20Milwaukee%2C%20WI%2053215%2C%20EE.%20UU.!5e0!3m2!1ses-419!2smx!4v1794444760396!5m2!1ses-419!2smx" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
- <div class="fam-note pop-in delay3">💗 ¡Lo más mágico de esta fiesta será compartirla contigo!</div>
+ <div class="fam-note pop-in delay3">💙 Con cariño, Amy Sofía y su familia. ¡Te esperamos!</div>
  <div class="rainbow-band" aria-hidden="true"></div>
  <footer class="sales-footer"><strong style="font:800 18px var(--display)">¿Te gustaría una invitación así? ✨</strong><p>Creo invitaciones digitales llenas de magia, efectos y detalles personalizados.</p><a class="whatsapp" href="https://wa.me/525584577590?text=%C2%A1Hola%21%20Vi%20la%20invitaci%C3%B3n%20interactiva%20de%20Amy%20Sof%C3%ADa%20y%20me%20gustar%C3%ADa%20una%20invitaci%C3%B3n%20como%20esta%20para%20mi%20evento.%20%C2%BFMe%20das%20informaci%C3%B3n%3F" target="_blank" rel="noopener noreferrer">💬 Quiero mi invitación · WhatsApp</a></footer>
 </section>
 </div>
-<div class="swipe-hint" id="swipeHint" hidden aria-hidden="true"><span class="swipe-hand">☝️</span><span>Desliza hacia arriba <b>para descubrir</b></span><span class="swipe-arrow">⌃</span></div>
+<div class="swipe-hint" id="swipeHint" hidden aria-hidden="true"><span class="swipe-hand">☝️</span><span>Desliza <b>↑</b> para avanzar · <b>↓</b> para volver</span></div>
+<div class="swipe-coach" id="swipeCoach" hidden aria-hidden="true">
+ <div class="coach-art" aria-hidden="true">
+  <span class="coach-arrow up">↑</span><span class="coach-finger">👆</span><span class="coach-arrow down">↓</span>
+ </div>
+ <div class="coach-title">¡Sigue la aventura!</div>
+ <div class="coach-desc">Desliza <strong>hacia arriba</strong> para descubrir y <strong>hacia abajo</strong> para regresar.</div>
+</div>
 <div class="transition-veil" id="veil" aria-hidden="true"></div><canvas class="confetti-canvas" id="confetti" aria-hidden="true"></canvas><span id="liveAnnounce" aria-live="polite"></span>
 <div class="gate gate-photo" id="gate" role="dialog" aria-modal="true" aria-label="Portada: abre la invitación de Amy Sofía">
  <button type="button" id="openCover" class="cover-button" aria-label="Abrir invitación: toca la portada para comenzar el cuento y la música">
@@ -264,6 +313,24 @@
  const phone=document.getElementById('phone'),stage=document.getElementById('stage'),pages=[...document.querySelectorAll('.page')],n=pages.length,progress=document.getElementById('progress'),gate=document.getElementById('gate'),header=document.getElementById('header'),stepName=document.getElementById('stepName'),music=document.getElementById('music'),soundToggle=document.getElementById('soundToggle'),canvas=document.getElementById('confetti'),ctx=canvas.getContext('2d'),veil=document.getElementById('veil'),live=document.getElementById('liveAnnounce'),swipeHint=document.getElementById('swipeHint');
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  let current=0,started=false,musicFailed=false,musicWanted=true,particles=[],raf=0,lastFrame=0,scrollRaf=0,veilTimer=null;
+ const swipeCoach=document.getElementById('swipeCoach');
+ let coachDismissTimer=null,coachActive=false;
+ function dismissSwipeCoach(){
+   if(!coachActive)return;
+   coachActive=false;
+   phone.classList.remove('coaching');
+   swipeCoach.classList.add('hiding');
+   clearTimeout(coachDismissTimer);
+   setTimeout(()=>{swipeCoach.hidden=true;swipeCoach.classList.remove('hiding')},440);
+ }
+ function showSwipeCoach(){
+   if(reduceMotion)return;
+   swipeCoach.classList.remove('hiding');
+   swipeCoach.hidden=false;
+   coachActive=true;
+   phone.classList.add('coaching');
+   coachDismissTimer=setTimeout(dismissSwipeCoach,6700);
+ }
  pages.forEach((p,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Ir al capítulo '+(i+1)+': '+p.dataset.name);b.addEventListener('click',()=>go(i));progress.appendChild(b)});
  const tracks=[...progress.children];
  function updateUI(){
@@ -281,6 +348,7 @@
   let index=0;
   for(let i=0;i<n;i++)if(pageTop(pages[i])<=midpoint)index=i;
   if(index!==current){
+   dismissSwipeCoach();
    current=index;updateUI();
    if(started){blast(145);if(!reduceMotion){veil.classList.remove('burst');void veil.offsetWidth;veil.classList.add('burst');clearTimeout(veilTimer);veilTimer=setTimeout(()=>veil.classList.remove('burst'),420)}}
   }
@@ -313,15 +381,17 @@
    setTimeout(()=>{gate.hidden=true;stage.focus({preventScroll:true});phone.classList.remove('revealing');},90);
    return;
   }
-  // Primero: brillo y pequeñas estrellas. Después: revelación hacia arriba.
-  blast(100);
-  setTimeout(()=>{gate.classList.add('is-opening');blast(125);},330);
-  setTimeout(()=>blast(75),770);
+  // Secuencia pausada: destello, estrellas, portada que asciende y guía táctil.
+  blast(65);
+  setTimeout(()=>blast(100),550);
+  setTimeout(()=>{gate.classList.add('is-opening');blast(90);},960);
+  setTimeout(()=>blast(55),1790);
   setTimeout(()=>{
    gate.hidden=true;
    stage.focus({preventScroll:true});
    phone.classList.remove('revealing');
-  },1530);
+   showSwipeCoach();
+  },3250);
  }
  document.getElementById('openCover').addEventListener('click',openInvitation);
  // Gift boxes: each reveals essential details, including venue.
