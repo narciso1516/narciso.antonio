@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123B55">
+  <meta name="author" content="Luis Alberto Antonio Narcizo">
+  <meta name="description" content="25 retos interactivos de proporcionalidad y distancia entre dos puntos para primero de telesecundaria. Optimizado para celulares.">
+  <title>Misión Matemática · 25 retos · Primero de telesecundaria</title>
+  <style>
+    :root{color-scheme:light;--ink:#17334a;--muted:#5f7281;--teal:#087f83;--teal-bg:#e5f6f2;--peach:#f4a65e;--gold:#efb43c;--card:#fff;--bg:#f4f7f8;--edge:#d9e3e8;--soft:#f0f6f6;--danger:#a93739;--red-bg:#fff0ef;--purple:#6c58a5;--shadow:0 12px 38px rgba(21,62,80,.075)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:290px;background:var(--bg);color:var(--ink);font-family:ui-rounded,"Trebuchet MS",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+    button,input,select{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button:disabled{opacity:.54;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #faac55;outline-offset:3px}a{color:var(--teal)}
+    .app{max-width:920px;margin:0 auto;padding:0 14px 50px}.mast{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:19px 2px 14px}.logo{display:flex;align-items:center;gap:10px}.logo-mark{width:44px;height:44px;display:grid;place-items:center;border-radius:15px;background:#123b55;color:#fff;font-size:23px;box-shadow:0 5px 14px #123b5520}.logo h1{font-size:18px;line-height:1.1;letter-spacing:-.035em;margin:0}.logo p{font-size:11px;color:var(--muted);font-weight:700;margin:5px 0 0}.top-action{padding:9px 11px;border-radius:12px;border:1px solid var(--edge);background:#fff;color:var(--ink);font-size:12px;font-weight:800;min-height:42px}
+    .panel{background:var(--card);border:1px solid var(--edge);border-radius:23px;padding:23px;box-shadow:var(--shadow)}.hero{padding:26px 22px;background:linear-gradient(135deg,#123b55 0%,#12636d 100%);border:0;color:#fff;position:relative;overflow:hidden}.hero::after{content:"";position:absolute;right:-60px;bottom:-90px;width:220px;height:220px;border:28px solid #ffffff15;border-radius:50%;pointer-events:none}.eyebrow{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:900;opacity:.9}.hero h2{font-size:clamp(29px,6vw,42px);line-height:1.12;letter-spacing:-.045em;margin:12px 0}.hero p{font-size:15px;max-width:600px;opacity:.94;margin:0}.hero-highlights{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}.hero-highlights span{padding:8px 11px;background:#ffffff20;border:1px solid #ffffff20;border-radius:999px;font-size:12px;font-weight:800}
+    .intro-title{font-size:19px;line-height:1.3;margin:26px 1px 12px;letter-spacing:-.02em}.modes{display:grid;gap:11px}.mode-card{display:flex;gap:15px;padding:19px;border-radius:19px;background:#fff;border:1px solid var(--edge);box-shadow:var(--shadow);text-align:left;width:100%;color:var(--ink);align-items:center}.mode-card:hover{border-color:#9fb5bc;background:#fbfefe}.mode-icon{font-size:29px;display:grid;place-items:center;width:53px;min-width:53px;height:53px;border-radius:15px;background:var(--teal-bg)}.mode-card:last-child .mode-icon{background:#fff3e3}.mode-content{flex:1}.mode-content strong{display:block;font-size:17px}.mode-content small{display:block;margin-top:4px;font-size:13px;color:var(--muted);line-height:1.5}.mode-arrow{font-size:19px;color:var(--teal);font-weight:900}.features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:17px}.feature{background:#fff;border:1px solid var(--edge);padding:13px 10px;border-radius:15px;text-align:center}.feature span{display:block;font-size:22px}.feature strong{display:block;font-size:12px;margin-top:7px}.footer-note{text-align:center;color:var(--muted);font-size:12px;margin:23px auto 0;max-width:680px}
+    .progress-card{background:#fff;border:1px solid var(--edge);border-radius:20px;padding:17px 18px;margin-bottom:13px}.progress-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.progress-meta strong{font-size:14px}.progress-meta span{color:var(--muted);font-size:12px;font-weight:800}.bar{height:11px;border-radius:20px;background:#e5eef0;overflow:hidden}.bar>div{height:100%;background:linear-gradient(90deg,#0c908d,#52bca6);border-radius:20px;transition:width .25s ease}.milestones{display:flex;justify-content:space-between;margin:10px 0 0;font-size:10px;color:var(--muted);font-weight:800;gap:5px}.milestones .active{color:var(--teal)}
+    .question-card{padding:18px}.tags{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:13px}.tag{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900}.tag.basic{background:#e1f6ed;color:#17624b}.tag.middle{background:#fff2db;color:#855315}.tag.final{background:#f3eaf8;color:#744a91}.topic{font-size:11px;color:var(--muted);font-weight:900}.qtitle{font-size:clamp(22px,5vw,28px);line-height:1.22;margin:3px 0 12px;letter-spacing:-.035em}.statement{color:#304a5c;font-size:16px;line-height:1.65;margin:0 0 17px;white-space:pre-line}.visual{background:#f6faf9;border:1px solid #e0eae9;border-radius:17px;padding:13px 10px;margin:17px 0;overflow:hidden}.visual-header{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#58727c;font-weight:800;gap:8px;margin:0 5px 5px}.viz-svg{width:100%;max-width:610px;max-height:340px;display:block;margin:auto}.numline-svg{max-height:152px}.mini-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.mini-product{background:#fff;border-radius:11px;border:1px solid #dce9e7;padding:12px 6px;text-align:center}.mini-product strong{display:block;font-size:14px;margin-top:6px}.mini-product div{font-size:24px}.data-table{width:100%;border-spacing:0;border-collapse:separate;border-radius:12px;overflow:hidden;background:#fff;font-size:14px}.data-table th,.data-table td{padding:10px 8px;border-bottom:1px solid #e6eded;text-align:center}.data-table th{background:#dcefeb;color:#14545b;font-size:12px}.data-table tr:last-child td{border-bottom:0}.tables-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.table-title{font-size:12px;font-weight:900;text-align:center;padding:4px 0 8px}.price-pills{display:flex;justify-content:center;flex-wrap:wrap;gap:7px}.price-pills>div{font-size:13px;font-weight:800;background:#fff;padding:8px 10px;border:1px solid #dce9e7;border-radius:11px}
+    .answer-label{font-size:13px;font-weight:900;margin:18px 0 10px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.choice{background:#fff;min-height:58px;border:2px solid #dbe6e9;border-radius:14px;padding:11px 10px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--ink);font-weight:800;font-size:15px;line-height:1.35}.choice.selected{border-color:var(--teal);background:var(--teal-bg)}.choice:hover:not(:disabled){border-color:#82a9af}.choices.vertical{grid-template-columns:1fr}.choices.vertical .choice{justify-content:flex-start;text-align:left;padding:13px 16px}.number-wrap{display:flex;align-items:stretch;gap:9px;max-width:400px}.number-field,.field-select{border-radius:13px;border:2px solid #dbe6e9;min-height:56px;background:#fff;padding:11px 13px;color:var(--ink);font-weight:850;font-size:20px;min-width:0;width:100%}.number-field:focus,.field-select:focus{border-color:var(--teal);outline:3px solid #087f8325}.input-unit{display:grid;place-items:center;min-width:60px;padding:0 11px;border-radius:13px;background:#eef5f6;color:#536d78;font-weight:850}.fields{display:grid;gap:12px}.field-group{padding:13px;border:1px solid #dde8ea;background:#fafdfc;border-radius:14px}.field-group label{display:block;font-size:13px;font-weight:800;margin-bottom:9px}.field-group .field-select{font-size:15px}.measure-value{text-align:center;font-size:26px;font-weight:900;color:var(--teal);margin:6px 0}.measure-slider{width:100%;accent-color:var(--teal);height:37px;cursor:pointer}.measure-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:800;margin:0 4px}.measure-note{font-size:12px;color:var(--muted);margin:10px 0 0}.hint-btn{background:transparent;border:1px solid #cfdfe0;color:#3b676b;font-size:13px;font-weight:850;padding:11px 13px;border-radius:12px;margin-top:18px;min-height:45px}.hint-box{background:#f4fbf9;border-left:4px solid #38a9a5;border-radius:10px;padding:13px;margin-top:10px;font-size:14px}.feedback{margin-top:17px;border-radius:15px;padding:14px 15px;font-size:14px;line-height:1.6}.feedback.ok{background:#e8f7ed;color:#17583b;border:1px solid #b9e2c9}.feedback.bad{background:var(--red-bg);color:#8d3538;border:1px solid #f2cecb}.feedback.neutral{background:#eef3ff;color:#284f76;border:1px solid #d4e0f7}.feedback strong{display:block;font-size:16px;margin-bottom:4px}.feedback p{margin:5px 0 0}.feedback small{font-size:12px}.attempt-note{font-size:12px;color:var(--muted);margin:9px 0 0}.actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:14px;min-height:51px;padding:11px 18px;font-size:15px;font-weight:900}.btn.primary{background:#0b8185;color:#fff;box-shadow:0 4px 10px #0a818526}.btn.primary:hover:not(:disabled){background:#096f74}.btn.secondary{background:#e9f0f2;color:#315262}.btn.ghost{background:#fff;border:1px solid #d6e2e6;color:#365667}.btn.wide{flex:1;min-width:155px}.btn.small{min-height:40px;padding:8px 11px;font-size:12px}.bottom-actions{padding:13px 0 0}.locked-answer{margin-top:15px;color:#456273;font-size:13px;font-weight:700}.answer-review{background:#f2f7f6;border-radius:13px;padding:12px;margin:12px 0 0;font-size:14px}.side-helper{font-size:13px;color:var(--muted);margin:15px 0 0}
+    .result-hero{padding:24px;text-align:center;background:linear-gradient(145deg,#0e5865,#163b57);color:#fff;border:0}.result-hero .score{font-size:66px;line-height:1.1;font-weight:900;letter-spacing:-.07em;margin:12px 0 3px}.result-hero .percent{font-size:17px;font-weight:850;margin:0 0 15px}.result-hero h2{font-size:25px;margin:0}.result-hero p{opacity:.93;margin:10px auto 0;max-width:480px}.results-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:13px 0}.stat{border:1px solid var(--edge);background:#fff;border-radius:17px;padding:15px}.stat .stat-number{font-size:24px;font-weight:900}.stat .stat-label{font-size:12px;color:var(--muted);font-weight:800}.result-section{margin:17px 0}.result-section h3{font-size:17px}.result-line{display:flex;justify-content:space-between;gap:10px;margin:10px 0;font-size:14px;font-weight:800}.result-line span:last-child{color:var(--teal)}.review-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.review-number{display:grid;place-items:center;min-height:45px;border-radius:11px;border:1px solid transparent;font-size:14px;font-weight:900}.review-number.good{background:#e5f6eb;color:#1e6946}.review-number.no{background:#fff0eb;color:#a5433a}.review-number:focus-visible{outline:3px solid var(--peach)}.result-buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}.result-buttons .btn{flex:1}.notice{font-size:13px;color:var(--muted);line-height:1.55;padding:14px 2px;text-align:center}.review-head{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:15px}.review-head h2{font-size:20px;margin:0}.review-answer{padding:14px;background:#f1f8f5;border:1px solid #d1eae0;border-radius:14px;margin-top:14px;font-size:14px;line-height:1.6}.review-answer strong{display:block;margin-bottom:4px}.review-answer p{margin:5px 0}.tiny{font-size:12px;color:var(--muted)}
+    .live-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0 3px}.live-stats span{padding:8px 5px;text-align:center;border:1px solid #d8e7e7;background:#f6fbfa;color:#264e5a;border-radius:11px;font-weight:750;font-size:12px}.live-stats b{color:#096f74}.identity-panel{margin-top:16px}.identity-panel .field-group{padding:10px 12px}.identity-input{font-size:16px}.field-error{color:#a93739;font-size:13px;font-weight:850;margin:10px 0 0}.report-capture{background:#fff;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--edge)}.report-head{background:#123b55;color:white;display:flex;align-items:center;justify-content:space-between;gap:9px;padding:16px 20px;font-size:11px;font-weight:900}.report-hero{text-align:center;padding:22px 18px}.report-hero.passed{background:#e8f7ed;color:#195a3b}.report-hero.not-passed{background:#fff0e8;color:#86432f}.report-hero h2{font-size:clamp(21px,5vw,28px);margin:8px 0}.report-kicker{font-size:11px;letter-spacing:.07em;font-weight:900}.report-grade{font-size:clamp(66px,15vw,96px);font-weight:950;line-height:1;letter-spacing:-.065em;margin:12px 0}.report-grade span{font-size:25px;font-weight:700;letter-spacing:0}.report-hero p{font-size:13px;margin:5px auto;max-width:440px}.report-person{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px}.report-person div{min-width:0}.report-person span{display:block;color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.06em}.report-person strong{display:block;font-size:13px;overflow-wrap:anywhere}.report-numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0 15px}.report-numbers>div{background:#eef7f6;border-radius:13px;padding:11px 5px;text-align:center}.report-numbers span{font-size:19px;display:block}.report-numbers strong{font-size:20px;display:block;color:#0a6d6e;line-height:1.2}.report-numbers small{display:block;font-size:10px;color:var(--muted);font-weight:800}.report-topics{display:grid;gap:5px;padding:18px 20px 6px}.report-topics>div{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:800}.report-topics strong{color:var(--teal)}.report-foot{color:var(--muted);font-size:11px;padding:5px 20px 17px;margin:0}.report-help{margin-top:14px}.report-help h3{font-size:18px;margin:0 0 6px}.report-help p{font-size:14px}.report-help .result-buttons{margin:10px 0}.report-help .btn{min-width:160px}.report-help .tiny{font-size:12px}.result-section{margin-top:15px}.report-capture .report-person{margin-bottom:2px}
+    @media (min-width:700px){.app{padding:0 23px 60px}.mast{padding-top:27px}.logo h1{font-size:23px}.logo p{font-size:12px}.question-card{padding:30px 33px}.modes{grid-template-columns:1fr 1fr}.hero{padding:36px}.features{gap:12px}.feature{padding:20px}.qtitle{font-size:29px}.statement{font-size:17px}.progress-card{padding:19px 25px}}
+    @media (max-width:365px){.app{padding:0 10px 40px}.logo h1{font-size:16px}.question-card{padding:15px}.choices{gap:7px}.choice{font-size:13px;min-height:56px}.tags{gap:4px}.tag,.topic{font-size:10px}.panel{border-radius:18px}.data-table{font-size:12px}.data-table th,.data-table td{padding:8px 3px}}
+    @media (prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+    @media print{.mast,.actions,.hint-btn,.modes,.result-buttons,.bottom-actions,.report-help,.result-section,.notice,.footer-note,.author-footer{display:none!important}body{background:#fff}.panel,.progress-card{box-shadow:none}.app{max-width:640px}.report-capture{break-inside:avoid;border:1px solid #ddd}}
+
+    /* Créditos y contacto: footer visible en todas las pantallas, pensado para móviles */
+    .author-footer{margin:19px auto 0;padding:19px 17px 17px;background:#fff;border:1px solid var(--edge);border-radius:21px;box-shadow:var(--shadow);max-width:920px}
+    .author-top{display:flex;align-items:flex-start;gap:11px}
+    .author-emblem{flex:0 0 43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#e5f6f2;color:#087f83;font-size:20px;font-weight:950}
+    .author-tag{font-size:10px;letter-spacing:.065em;text-transform:uppercase;font-weight:900;color:var(--teal);margin:1px 0 4px}
+    .author-name{font-size:17px;line-height:1.3;font-weight:950;letter-spacing:-.018em;margin:0;overflow-wrap:anywhere}
+    .author-caption{color:var(--muted);font-size:13px;line-height:1.5;margin:7px 0 0}
+    .author-links{display:grid;grid-template-columns:1fr;gap:9px;margin-top:16px}
+    .author-link{display:flex;gap:8px;align-items:center;justify-content:center;text-align:center;text-decoration:none;line-height:1.3;font-size:13px;font-weight:900;min-height:49px;border-radius:13px;padding:12px 10px;border:1px solid #c9dfde;color:#0c666c;background:#f2fbf9;overflow-wrap:anywhere}
+    .author-link:hover{background:#e3f5f0;border-color:#91cac2}
+    .author-link.whatsapp{background:#168b62;color:#fff;border-color:#168b62}
+    .author-link.whatsapp:hover{background:#10794f}
+    .author-copyright{font-size:11px;color:var(--muted);text-align:center;margin:15px 0 0;line-height:1.5}
+    @media (min-width:590px){.author-footer{padding:21px 23px}.author-links{grid-template-columns:repeat(3,minmax(0,1fr))}.author-link{font-size:12px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="mast">
+      <div class="logo"><div class="logo-mark" aria-hidden="true">∑</div><div><h1>Misión Matemática</h1><p>25 RETOS · 1.º DE TELESECUNDARIA</p></div></div>
+      <button type="button" class="top-action" id="home-button" aria-label="Ir a la pantalla de inicio">⌂ Inicio</button>
+    </header>
+    <main id="main-content" aria-live="off"></main>
+    <div class="footer-note">Material educativo gratuito · Si descargas el archivo, puedes usarlo sin conexión · El progreso se guarda únicamente en este dispositivo y navegador.</div>
+    <footer class="author-footer" aria-label="Créditos y contacto del autor">
+      <div class="author-top">
+        <div class="author-emblem" aria-hidden="true">✦</div>
+        <div>
+          <p class="author-tag">Autor y creador del material</p>
+          <p class="author-name">Luis Alberto Antonio Narcizo</p>
+          <p class="author-caption">Misión Matemática es un recurso educativo interactivo gratuito. ¿Te interesan más materiales digitales como este? Puedes conocer mi trabajo o escribirme directamente.</p>
+        </div>
+      </div>
+      <nav class="author-links" aria-label="Enlaces del autor">
+        <a class="author-link" href="https://narciso1516.github.io/narcisotesting.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el sitio personal del autor en GitHub Pages">🌐 Mi sitio web</a>
+        <a class="author-link" href="https://github.com/narciso1516" target="_blank" rel="noopener noreferrer" aria-label="Ver los proyectos del autor en GitHub">💻 Mis proyectos en GitHub</a>
+        <a class="author-link whatsapp" href="https://wa.me/525584577590?text=Hola%2C%20me%20gustar%C3%ADa%20conocer%20m%C3%A1s%20materiales%20educativos%20interactivos%20como%20Misi%C3%B3n%20Matem%C3%A1tica." target="_blank" rel="noopener noreferrer" aria-label="Solicitar materiales por WhatsApp al 55 8457 7590">💬 WhatsApp: 55 8457 7590</a>
+      </nav>
+      <p class="author-copyright">© 2026 Luis Alberto Antonio Narcizo · Material educativo de autoría propia.</p>
+    </footer>
+  </div>
+  <script>
+  'use strict';
+  const QUESTIONS = [
+    {id:1,topic:'p',title:'Los lápices de colores ✏️',prompt:'Un lápiz cuesta $6. Si compras 2 lápices del mismo precio, ¿cuánto pagarás en total?',kind:'choice',options:[['10','$10'],['12','$12'],['14','$14'],['16','$16']],correct:'12',visual:{type:'items',emoji:'✏️',counts:[1,2],prices:['$6','?']},hint:'Imagina dos grupos con el mismo precio.',tip:'Suma dos veces el precio de un lápiz.',explanation:'Cada lápiz cuesta $6. Entonces 6 + 6 = $12.'},
+    {id:2,topic:'d',title:'El salto del conejo 🐰',prompt:'Un conejo está en el número 1 de una recta numérica y salta hasta el número 5. ¿Cuántas unidades avanzó?',kind:'choice',options:[['3','3 unidades'],['4','4 unidades'],['5','5 unidades'],['6','6 unidades']],correct:'4',visual:{type:'line',from:1,to:5,emoji:'🐰'},hint:'Cuenta espacios entre las marcas, no la cantidad de números escritos.',tip:'Parte del 1 y cuenta cada intervalo hasta llegar a 5.',explanation:'Los saltos son 1→2, 2→3, 3→4 y 4→5: son 4 unidades.'},
+    {id:3,topic:'p',title:'Las botellas de agua 💧',prompt:'Una botella cuesta $4 y dos cuestan $8. Si todas cuestan lo mismo, ¿cuánto pagarás por 3 botellas?',kind:'choice',options:[['10','$10'],['11','$11'],['12','$12'],['14','$14']],correct:'12',visual:{type:'items',emoji:'💧',counts:[1,2,3],prices:['$4','$8','?']},hint:'El precio aumenta la misma cantidad por cada botella.',tip:'Piensa cuánto hay que añadir a los $8 de dos botellas.',explanation:'El precio unitario es $4. Tres botellas cuestan 3 × 4 = $12.'},
+    {id:4,topic:'d',title:'El camino de la hormiga 🐜',prompt:'Una hormiga comienza en el número 0 de una regla y camina en línea recta hasta el número 7. ¿Cuántas unidades recorrió?',kind:'choice',options:[['6','6 unidades'],['7','7 unidades'],['8','8 unidades'],['9','9 unidades']],correct:'7',visual:{type:'line',from:0,to:7,emoji:'🐜'},hint:'La hormiga parte del cero; cuenta las separaciones entre las marcas.',tip:'No cuentes las ocho marcas: cuenta los intervalos.',explanation:'Desde la marca 0 hasta la 7 hay exactamente 7 unidades.'},
+    {id:5,topic:'p',title:'Las naranjas del mercado 🍊',prompt:'Un kilogramo de naranjas cuesta $10 y dos kilogramos cuestan $20. Si el precio por kilogramo no cambia, ¿cuánto cuestan 4 kilogramos?',kind:'number',correct:40,unit:'pesos',visual:{type:'table',headers:['Kilogramos','Precio'],rows:[[1,'$10'],[2,'$20'],[4,'?']]},hint:'Primero identifica el precio de un kilogramo.',tip:'Multiplica el costo de 1 kilogramo por 4.',explanation:'Si 1 kg cuesta $10, entonces 4 kg cuestan 4 × 10 = $40.'},
+    {id:6,topic:'d',title:'Dos puntos en la cuadrícula 📍',prompt:'El punto A está en (2, 1) y el punto B en (2, 5). Si cada cuadro mide una unidad, ¿cuántas unidades separan ambos puntos?',kind:'number',correct:4,unit:'unidades',visual:{type:'grid',points:[{x:2,y:1,label:'A'},{x:2,y:5,label:'B'}]},hint:'Los puntos tienen la misma coordenada horizontal.',tip:'Mira cuánto cambia la coordenada vertical desde 1 hasta 5.',explanation:'Los puntos están sobre una línea vertical. La distancia es 5 − 1 = 4 unidades.'},
+    {id:7,topic:'p',title:'Encuentra el precio incorrecto 🛒',prompt:'Una tienda vende cuadernos iguales a $10 cada uno: 1 cuaderno cuesta $10, 2 cuestan $20 y 3 cuestan $35. ¿Qué precio no corresponde y cuál debería ser?',kind:'choice',options:[['a','1 cuaderno: $15'],['b','2 cuadernos: $25'],['c','3 cuadernos: $30'],['d','3 cuadernos: $40']],correct:'c',visual:{type:'table',headers:['Cuadernos','Precio indicado'],rows:[[1,'$10'],[2,'$20'],[3,'$35']]},hint:'Comprueba el precio que corresponde a cada cantidad de cuadernos.',tip:'El precio aumenta $10 por cuaderno.',explanation:'Tres cuadernos a $10 cada uno deben costar $30, no $35.'},
+    {id:8,topic:'d',title:'La línea entre dos puntos 📏',prompt:'En una cuadrícula, el punto A está en (1, 3) y el punto B en (6, 3). ¿Cuántas unidades mide el segmento horizontal que los une?',kind:'number',correct:5,unit:'unidades',visual:{type:'grid',points:[{x:1,y:3,label:'A'},{x:6,y:3,label:'B'}]},hint:'Ambos puntos están a la misma altura. Observa sus posiciones horizontales.',tip:'Cuenta los intervalos entre x = 1 y x = 6.',explanation:'Como el segmento es horizontal, su longitud es 6 − 1 = 5 unidades.'},
+    {id:9,topic:'p',title:'¿Cuál tabla es proporcional? 🔎',prompt:'Observa las dos tablas. ¿Cuál representa una relación de proporcionalidad directa entre cantidad y precio?',kind:'choice',options:[['A','Tabla A'],['B','Tabla B'],['AB','Las dos tablas'],['N','Ninguna tabla']],correct:'A',visual:{type:'twotables',tables:[{name:'Tabla A',headers:['Cantidad','Precio'],rows:[[1,'$3'],[2,'$6'],[3,'$9']]},{name:'Tabla B',headers:['Cantidad','Precio'],rows:[[1,'$4'],[2,'$7'],[3,'$10']]}]},hint:'Comprueba si el precio por unidad es el mismo en las tres filas.',tip:'Que una tabla aumente siempre $3 no basta: revisa el precio por unidad.',explanation:'En A, cada unidad cuesta $3: 3/1 = 6/2 = 9/3 = 3. En B los cocientes son diferentes.'},
+    {id:10,topic:'d',title:'El robot y los números negativos 🤖',prompt:'Un robot inicia en −2 de una recta numérica y avanza hasta el número 4. ¿Cuántas unidades recorrió?',kind:'choice',options:[['2','2 unidades'],['4','4 unidades'],['6','6 unidades'],['8','8 unidades']],correct:'6',visual:{type:'line',from:-2,to:4,emoji:'🤖'},hint:'El recorrido cruza el cero: considera los dos tramos.',tip:'Cuenta primero de −2 a 0 y luego de 0 a 4.',explanation:'Del −2 al 0 hay 2 unidades y del 0 al 4 hay 4: en total 6 unidades.'},
+    {id:11,topic:'p',title:'Completa el patrón 🔢',prompt:'Observa la tabla. Si la relación continúa siendo directamente proporcional, ¿qué precio corresponde a 4 unidades?',kind:'number',correct:28,unit:'pesos',visual:{type:'table',headers:['Cantidad','Precio'],rows:[[1,'$7'],[2,'$14'],[3,'$21'],[4,'?']]},hint:'Compara el costo cuando la cantidad aumenta de una unidad a la siguiente.',tip:'La cantidad se multiplica siempre por un mismo precio unitario.',explanation:'Cada unidad cuesta $7. Para cuatro unidades, 4 × 7 = $28.'},
+    {id:12,topic:'d',title:'Distancia entre números negativos 📍',prompt:'En una recta numérica, el punto A está en −5 y el punto B está en −1. ¿Qué distancia existe entre ambos?',kind:'number',correct:4,unit:'unidades',visual:{type:'line',from:-5,to:-1},hint:'Ambos números están a la izquierda del cero.',tip:'Cuenta saltos de −5 a −4, de −4 a −3, y así sucesivamente.',explanation:'La distancia es |−1 − (−5)| = |4| = 4 unidades.'},
+    {id:13,topic:'p',title:'El precio del frijol 🫘',prompt:'En un mercado, 3 kilogramos de frijol cuestan $42. Si el precio por kilogramo es constante, ¿cuánto costarán 5 kilogramos?',kind:'number',correct:70,unit:'pesos',visual:{type:'table',headers:['Kilogramos','Precio'],rows:[[3,'$42'],[5,'?']]},hint:'Primero calcula cuánto cuesta un solo kilogramo.',tip:'Divide $42 entre 3 y usa el resultado para cinco kilogramos.',explanation:'Cada kilogramo cuesta 42 ÷ 3 = $14. Cinco cuestan 5 × 14 = $70.'},
+    {id:14,topic:'d',title:'Dos puntos a cada lado del cero 📏',prompt:'En un plano cartesiano, A está en (−3, 1) y B en (4, 1). ¿Cuántas unidades mide el segmento horizontal que los une?',kind:'number',correct:7,unit:'unidades',visual:{type:'grid',points:[{x:-3,y:1,label:'A'},{x:4,y:1,label:'B'}]},hint:'El segmento pasa de valores negativos a positivos sobre el eje horizontal.',tip:'Cuenta desde −3 hasta el cero y después del cero hasta 4.',explanation:'De −3 a 0 son 3 unidades y de 0 a 4 son 4; en total 7.'},
+    {id:15,topic:'p',title:'Descubre el error en la tabla 🔎',prompt:'Si los valores de x e y deben ser directamente proporcionales, ¿qué fila contiene el dato equivocado y qué valor de y debería aparecer?',kind:'choice',options:[['a','x = 1; y debería ser 6'],['b','x = 2; y debería ser 12'],['c','x = 3; y debería ser 15'],['d','x = 4; y debería ser 24']],correct:'c',visual:{type:'table',headers:['x','y'],rows:[[1,5],[2,10],[3,16],[4,20]]},hint:'Determina la constante usando las filas que muestran un mismo patrón.',tip:'Si cada incremento de x de 1 añade 5 a y, revisa la tercera fila.',explanation:'La regla correcta es y = 5x. Cuando x = 3, y debería ser 15, no 16.'},
+    {id:16,topic:'d',title:'El recorrido en la cuadrícula 🚶',prompt:'Una persona sale de A(1, 1), camina hasta B(6, 1) y después hasta C(6, 5), siguiendo los segmentos marcados. ¿Cuántas unidades recorre en total?',kind:'number',correct:9,unit:'unidades',visual:{type:'grid',points:[{x:1,y:1,label:'A'},{x:6,y:1,label:'B'},{x:6,y:5,label:'C'}]},hint:'Hay dos tramos: uno horizontal y otro vertical.',tip:'Calcula cada tramo por separado y después suma ambos.',explanation:'De A a B son 6 − 1 = 5 unidades; de B a C son 5 − 1 = 4. Total: 9.'},
+    {id:17,topic:'p',title:'El taxi y la tarifa inicial 🚕',prompt:'Un taxi cobra $18 de tarifa inicial más $7 por cada kilómetro. ¿El costo total es directamente proporcional al número de kilómetros? Elige la explicación correcta.',kind:'choice',options:[['a','Sí, porque el costo aumenta por cada kilómetro.'],['b','Sí, porque $7 es siempre el mismo precio por kilómetro.'],['c','No, porque se cobra $18 aunque la distancia sea cero.'],['d','No, porque el costo cambia cuando avanza el taxi.']],correct:'c',vertical:true,visual:{type:'table',headers:['Kilómetros','Costo'],rows:[[0,'$18'],[1,'$25'],[2,'$32']]},hint:'Piensa en el costo cuando la distancia recorrida es cero.',tip:'En una proporcionalidad directa, cero unidades de la primera cantidad corresponden a cero de la segunda.',explanation:'No es proporcionalidad directa: hay una tarifa inicial de $18. La expresión es costo = 18 + 7 × kilómetros.'},
+    {id:18,topic:'d',title:'Distancias en el plano cartesiano 📐',prompt:'Dos puntos se ubican en A(−4, 2) y B(3, 2). ¿Cuál es la distancia horizontal entre ellos?',kind:'number',correct:7,unit:'unidades',visual:{type:'grid',points:[{x:-4,y:2,label:'A'},{x:3,y:2,label:'B'}]},hint:'Los puntos están a la misma altura y en lados opuestos del cero.',tip:'Cuenta cuatro unidades a la izquierda del cero y tres a la derecha.',explanation:'La longitud del segmento horizontal es 3 − (−4) = 7 unidades.'},
+    {id:19,topic:'p',title:'Las dos gráficas 📈',prompt:'La gráfica A pasa por (0, 0), (1, 3), (2, 6). La B pasa por (0, 2), (1, 5), (2, 8). Si ambas son rectas, ¿cuál representa proporcionalidad directa?',kind:'choice',options:[['A','Gráfica A'],['B','Gráfica B'],['AB','Ambas gráficas'],['N','Ninguna gráfica']],correct:'A',visual:{type:'graphs'},hint:'Observa qué gráfica pasa por el origen (0, 0).',tip:'Una proporcionalidad directa se representa con una recta que pasa por el origen.',explanation:'La gráfica A sigue y = 3x, con razón constante 3 y pasa por el origen. B sigue y = 3x + 2.'},
+    {id:20,topic:'d',title:'La distancia vertical 📍',prompt:'El punto A está en (2, −1) y B en (2, 5). ¿Cuántas unidades los separan y cuál es la orientación del segmento?',kind:'choice',options:[['a','4 unidades, vertical'],['b','6 unidades, vertical'],['c','6 unidades, horizontal'],['d','7 unidades, vertical']],correct:'b',visual:{type:'grid',points:[{x:2,y:-1,label:'A'},{x:2,y:5,label:'B'}]},hint:'La primera coordenada es igual en ambos puntos.',tip:'Observa la diferencia entre −1 y 5 y qué coordenada permanece fija.',explanation:'El segmento es vertical porque x = 2 en ambos puntos; la distancia es 5 − (−1) = 6 unidades.'},
+    {id:21,topic:'p',title:'La constante de proporcionalidad 🧩',prompt:'En la tabla, ¿por qué número debes multiplicar cada valor de x para obtener y? Escribe la constante de proporcionalidad.',kind:'number',correct:4,unit:'constante',visual:{type:'table',headers:['x','y'],rows:[[2,8],[4,16],[6,24]]},hint:'Divide un valor de y entre el valor correspondiente de x.',tip:'Comprueba el mismo cociente en las tres filas.',explanation:'8 ÷ 2 = 4, 16 ÷ 4 = 4 y 24 ÷ 6 = 4. La constante es 4.'},
+    {id:22,topic:'d',title:'Una caminata por la escuela 🏫',prompt:'Una alumna parte de A(−2, −1), camina horizontalmente hasta B(3, −1) y después verticalmente hasta C(3, 3). Calcula cada tramo y la distancia total.',kind:'multi',fields:[{key:'ab',label:'a) Distancia de A a B',kind:'number',unit:'unidades',correct:5},{key:'bc',label:'b) Distancia de B a C',kind:'number',unit:'unidades',correct:4},{key:'total',label:'c) Distancia total',kind:'number',unit:'unidades',correct:9}],visual:{type:'grid',points:[{x:-2,y:-1,label:'A'},{x:3,y:-1,label:'B'},{x:3,y:3,label:'C'}]},hint:'La caminata tiene un trayecto horizontal y otro vertical.',tip:'Mide ambos segmentos por separado, incluyendo el paso por el cero, y suma.',explanation:'A→B mide 3 − (−2) = 5 unidades; B→C mide 3 − (−1) = 4; total = 9 unidades.'},
+    {id:23,topic:'p',title:'Dos servicios de transporte 🚐',prompt:'El transporte A cobra $12 por kilómetro, sin tarifa inicial. El B cobra $8 iniciales más $10 por kilómetro. Para 5 km, calcula ambos costos, identifica el más económico y el directamente proporcional.',kind:'multi',fields:[{key:'a',label:'a) Total del transporte A para 5 km',kind:'number',unit:'pesos',correct:60},{key:'b',label:'b) Total del transporte B para 5 km',kind:'number',unit:'pesos',correct:58},{key:'cheap',label:'c) ¿Cuál resulta más económico?',kind:'select',options:[['','Elige uno'],['A','Transporte A'],['B','Transporte B']],correct:'B'},{key:'direct',label:'d) ¿Cuál tiene proporcionalidad directa?',kind:'select',options:[['','Elige uno'],['A','Transporte A'],['B','Transporte B']],correct:'A'}],visual:{type:'table',headers:['Transporte','Regla de cobro'],rows:[['A','$12 × km'],['B','$8 + $10 × km']]},hint:'Calcula los dos totales con 5 kilómetros. Luego distingue qué servicio comienza en cero.',tip:'Evalúa las dos tarifas con 5 km y observa cuál tiene una cuota fija.',explanation:'A: 12 × 5 = $60. B: 8 + 10 × 5 = $58. B es más barato para 5 km; solo A es directamente proporcional.'},
+    {id:24,topic:'d',title:'La distancia en línea recta 📐',prompt:'En una cuadrícula donde cada cuadro mide 1 centímetro, A está en (0, 0) y B en (3, 4). ¿Cuántos centímetros mide aproximadamente el segmento recto que une los puntos? Usa la regla virtual.',kind:'slider',correct:5,min:0,max:7,step:.5,unit:'cm',visual:{type:'grid',points:[{x:0,y:0,label:'A'},{x:3,y:4,label:'B'}],diagonal:true,scaleLabel:'1 cuadro = 1 cm'},hint:'El segmento directo es más corto que caminar primero en horizontal y luego en vertical.',tip:'Mide la línea inclinada completa; la suma de los tramos horizontal y vertical no es esa distancia.',explanation:'El segmento recto mide 5 cm. Puede medirse con una regla o verificarse con el triángulo de lados 3, 4 y 5.'},
+    {id:25,topic:'m',title:'Desafío final: Un recorrido por la comunidad 🏘️',prompt:'En el mapa, cada unidad representa 20 metros. La escuela está en A(1, 2), la tienda en B(6, 2) y la cancha en C(6, 5). Un estudiante camina de A a B y después de B a C. Responde las cinco partes.',kind:'multi',fields:[{key:'ab',label:'a) Escuela → tienda',kind:'number',unit:'metros',correct:100},{key:'bc',label:'b) Tienda → cancha',kind:'number',unit:'metros',correct:60},{key:'total',label:'c) Distancia total del recorrido',kind:'number',unit:'metros',correct:160},{key:'triple',label:'d) Distancia si repite el recorrido 3 veces',kind:'number',unit:'metros',correct:480},{key:'prop',label:'e) ¿Recorridos completos y distancia total son directamente proporcionales?',kind:'select',options:[['','Elige uno'],['si','Sí'],['no','No']],correct:'si'}],visual:{type:'grid',points:[{x:1,y:2,label:'A',name:'Escuela'},{x:6,y:2,label:'B',name:'Tienda'},{x:6,y:5,label:'C',name:'Cancha'}],scaleLabel:'1 cuadro = 20 m'},hint:'Cuenta primero los cuadros de cada tramo. Después conviértelos a metros usando la escala.',tip:'Suma el camino de los dos tramos y multiplica por la escala. Para tres recorridos idénticos, triplica la longitud.',explanation:'A→B: 5 cuadros × 20 = 100 m; B→C: 3 × 20 = 60 m. Un recorrido mide 160 m y tres miden 480 m. Sí hay proporcionalidad directa.'}
+  ];
+  const KEY='mision-matematica-25-mobile-2026-v2';
+  const $=s=>document.querySelector(s);
+  const main=$('#main-content');
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const newSession=()=>({started:false,completed:false,index:0,answers:{},draft:{},attempts:{},hints:{},hintSeen:{},completedAt:null,attemptNumber:1});
+  const initialState=()=>({practice:newSession(),exam:newSession(),student:'',group:'',attemptCounts:{practice:0,exam:0}});
+  function load(){try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&data.practice&&data.exam&&data.practice.answers&&data.exam.answers)return {...initialState(),...data};}catch(err){}return initialState();}
+  let store=load(),mode='practice',screen='home',feedback=null,reviewQuestion=1;
+  const current=()=>store[mode];
+  function persist(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(err){}}
+  function level(q){return q.id<=9?{name:'Exploradores',class:'basic',n:1}:q.id<=21?{name:'Descubridores',class:'middle',n:2}:{name:'Estrategas',class:'final',n:3};}
+  const topicName=t=>t==='p'?'Proporcionalidad':t==='d'?'Distancia entre puntos':'Reto integrador';
+  function numberText(v){return Number(v).toLocaleString('es-MX',{maximumFractionDigits:2});}
+  function answered(s){return Object.keys(s.answers||{}).length;}
+  function countCorrect(s,filter){return QUESTIONS.filter(q=>!filter||filter(q)).filter(q=>s.answers[q.id]?.correct===true).length;}
+  function grade(s){return +(countCorrect(s)*10/25).toFixed(1);}
+  function streaks(s){let now=0,best=0;for(const q of QUESTIONS){const r=s.answers[q.id];if(!r)break;now=r.correct?now+1:0;best=Math.max(best,now);}return {now,best};}
+  function escapeFilename(x){return String(x||'estudiante').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]+/gi,'_').slice(0,50);}
+  function formattedDate(s){return new Date(s.completedAt||Date.now()).toLocaleString('es-MX',{dateStyle:'medium',timeStyle:'short'});}
+  function svgWrap(body,label,cls='viz-svg'){return `<svg class="${cls}" viewBox="0 0 590 320" role="img" aria-label="${esc(label)}" xmlns="http://www.w3.org/2000/svg"><title>${esc(label)}</title>${body}</svg>`;}
+  function tableHtml(headers,rows){return `<table class="data-table"><thead><tr>${headers.map(h=>`<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;}
+  function drawLine(v){
+    const min=Math.min(0,v.from,v.to)-1,max=Math.max(0,v.from,v.to)+1;
+    const W=590,L=30,R=560,Y=97,step=(R-L)/(max-min),px=x=>L+(x-min)*step;
+    let svg=`<svg class="viz-svg numline-svg" viewBox="0 0 590 148" role="img" aria-label="Recta numérica desde ${esc(v.from)} hasta ${esc(v.to)}" xmlns="http://www.w3.org/2000/svg"><title>Recta numérica con puntos de inicio y destino</title>`;
+    svg+=`<line x1="24" y1="${Y}" x2="566" y2="${Y}" stroke="#648b93" stroke-width="2.2"/><path d="M560 92l8 5-8 5" fill="none" stroke="#648b93" stroke-width="2"/>`;
+    for(let i=min;i<=max;i++)svg+=`<line x1="${px(i)}" y1="90" x2="${px(i)}" y2="105" stroke="${i===0?'#24465a':'#73949b'}" stroke-width="${i===0?2.3:1.7}"/><text x="${px(i)}" y="128" text-anchor="middle" fill="#304b5c" font-size="${(max-min)>12?13:16}" font-weight="700">${i}</text>`;
+    const x1=px(v.from),x2=px(v.to),dir=x2>=x1?1:-1;
+    svg+=`<path d="M ${x1} ${Y-10} Q ${(x1+x2)/2} ${Math.max(13,68-Math.abs(x2-x1)*.12)} ${x2} ${Y-10}" fill="none" stroke="#0b8a87" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 6" opacity=".75"/>`;
+    svg+=`<circle cx="${x1}" cy="${Y}" r="7.5" fill="#e6a23e" stroke="#fff" stroke-width="3"/><circle cx="${x2}" cy="${Y}" r="7.5" fill="#098781" stroke="#fff" stroke-width="3"/>`;
+    svg+=`<text x="${x1}" y="39" text-anchor="middle" font-size="21">${v.emoji||'📍'}</text><text x="${x2}" y="78" text-anchor="middle" fill="#0b6665" font-size="14" font-weight="850">B</text>`;
+    return `<div class="visual"><div class="visual-header"><span>🔢 Recta numérica</span><span>Inicio → Destino</span></div>${svg}</svg></div>`;
+  }
+  function drawGrid(v){
+    const points=v.points;
+    let minX=Math.min(0,...points.map(p=>p.x))-1,maxX=Math.max(0,...points.map(p=>p.x))+1;
+    let minY=Math.min(0,...points.map(p=>p.y))-1,maxY=Math.max(0,...points.map(p=>p.y))+1;
+    const W=590,H=320,P=35;
+    const scale=Math.min((W-2*P)/(maxX-minX),(H-2*P)/(maxY-minY));
+    const offX=(W-(maxX-minX)*scale)/2,offY=(H-(maxY-minY)*scale)/2;
+    const x=c=>offX+(c-minX)*scale,y=c=>H-offY-(c-minY)*scale;
+    let s='';
+    for(let n=minX;n<=maxX;n++)s+=`<line x1="${x(n)}" x2="${x(n)}" y1="${y(minY)}" y2="${y(maxY)}" stroke="${n===0?'#91adb3':'#d8e6e5'}" stroke-width="${n===0?2.3:1.1}"/>`;
+    for(let n=minY;n<=maxY;n++)s+=`<line x1="${x(minX)}" x2="${x(maxX)}" y1="${y(n)}" y2="${y(n)}" stroke="${n===0?'#91adb3':'#d8e6e5'}" stroke-width="${n===0?2.3:1.1}"/>`;
+    const labelY=Math.min(H-5,y(0)+17),labelX=Math.max(13,x(0)-12);
+    for(let n=minX;n<=maxX;n++)s+=`<text x="${x(n)}" y="${labelY}" text-anchor="middle" fill="#58727a" font-size="${scale<29?12:14}" font-weight="700">${n}</text>`;
+    for(let n=minY;n<=maxY;n++)if(n!==0)s+=`<text x="${labelX}" y="${y(n)+5}" text-anchor="end" fill="#58727a" font-size="${scale<29?12:14}" font-weight="700">${n}</text>`;
+    if(points.length>1){
+      const pp=points.map(p=>`${x(p.x)},${y(p.y)}`).join(' ');
+      s+=`<polyline points="${pp}" fill="none" stroke="#138d88" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+    }
+    if(v.diagonal&&points.length===2){const [a,b]=points;s+=`<path d="M${x(a.x)} ${y(a.y)}L${x(b.x)} ${y(a.y)}L${x(b.x)} ${y(b.y)}" fill="none" stroke="#e0a354" stroke-width="2" stroke-dasharray="5 6" opacity=".8"/>`}
+    for(let i=0;i<points.length;i++){
+      const p=points[i],X=x(p.x),Y=y(p.y);
+      s+=`<circle cx="${X}" cy="${Y}" r="8" fill="${i===0?'#dc8a31':'#087f83'}" stroke="#fff" stroke-width="3"/>`;
+      const tx=Math.max(18,Math.min(W-18,X+14));const ty=Math.max(16,Math.min(H-14,Y-11));
+      s+=`<text x="${tx}" y="${ty}" fill="#17374b" font-size="16" font-weight="900">${esc(p.label)}</text>`;
+    }
+    const title=points.map(p=>`${p.label}: (${p.x},${p.y})`).join(', ');
+    return `<div class="visual"><div class="visual-header"><span>📍 Plano cartesiano</span><span>${esc(v.scaleLabel||'1 cuadro = 1 unidad')}</span></div>${svgWrap(s,title)}<div class="price-pills">${points.map(p=>`<div>${esc(p.name?p.name+' · ':'')}${esc(p.label)} (${p.x}, ${p.y})</div>`).join('')}</div></div>`;
+  }
+  function drawGraphs(){
+    const plots=[{name:'A',data:[[0,0],[1,3],[2,6]]},{name:'B',data:[[0,2],[1,5],[2,8]]}];
+    let s='';
+    for(let i=0;i<2;i++){
+      const x0=i===0?58:343,y0=253,W=190,H=191,scx=W/2.6,scy=H/9.2;
+      s+=`<rect x="${x0-33}" y="17" width="252" height="288" rx="14" fill="#fff" stroke="#deeaeb"/>`;
+      s+=`<text x="${x0+95}" y="44" text-anchor="middle" font-size="19" fill="#19495c" font-weight="900">Gráfica ${plots[i].name}</text>`;
+      for(let n=0;n<=2;n++)s+=`<line x1="${x0+n*scx}" y1="${y0-H}" x2="${x0+n*scx}" y2="${y0}" stroke="#e3edec"/><text x="${x0+n*scx}" y="${y0+20}" font-size="13" text-anchor="middle" fill="#60757c">${n}</text>`;
+      for(let n=0;n<=8;n+=2)s+=`<line x1="${x0}" y1="${y0-n*scy}" x2="${x0+W}" y2="${y0-n*scy}" stroke="#e3edec"/><text x="${x0-10}" y="${y0-n*scy+4}" font-size="12" text-anchor="end" fill="#60757c">${n}</text>`;
+      const d=plots[i].data,fx=t=>x0+t*scx,fy=t=>y0-t*scy;
+      const k=i===0?0:2;
+      s+=`<path d="M${fx(0)} ${fy(k)}L${fx(2.2)} ${fy(3*2.2+k)}" stroke="#0b8584" fill="none" stroke-width="4" stroke-linecap="round"/>`;
+      for(let p of d)s+=`<circle cx="${fx(p[0])}" cy="${fy(p[1])}" r="5.5" fill="#e19c41" stroke="white" stroke-width="2"/>`;
+      s+=`<text x="${x0+W+7}" y="${y0+7}" fill="#55737c" font-size="13">x</text><text x="${x0-13}" y="${y0-H-5}" fill="#55737c" font-size="13">y</text>`;
+    }
+    return `<div class="visual"><div class="visual-header"><span>📈 Compara las gráficas</span><span>Origen: (0, 0)</span></div>${svgWrap(s,'Gráficas A y B dibujadas con los puntos dados')}</div>`;
+  }
+  function renderVisual(q){
+    const v=q.visual;if(!v)return'';
+    if(v.type==='line')return drawLine(v);
+    if(v.type==='grid')return drawGrid(v);
+    if(v.type==='graphs')return drawGraphs();
+    if(v.type==='table')return `<div class="visual"><div class="visual-header"><span>📊 Observa la tabla</span></div>${tableHtml(v.headers,v.rows)}</div>`;
+    if(v.type==='twotables')return `<div class="visual"><div class="visual-header"><span>📊 Compara los valores</span></div><div class="tables-two">${v.tables.map(t=>`<div><div class="table-title">${esc(t.name)}</div>${tableHtml(t.headers,t.rows)}</div>`).join('')}</div></div>`;
+    if(v.type==='items')return `<div class="visual"><div class="visual-header"><span>🛍️ Observa las cantidades</span></div><div class="mini-products">${v.counts.map((n,i)=>`<div class="mini-product"><div>${esc(v.emoji)} × ${n}</div><strong>${esc(v.prices[i])}</strong></div>`).join('')}</div></div>`;
+    return'';
+  }
+  function getDraft(q){return current().draft[q.id]||{};}
+  function renderNumInput(key,val,unit,locked,inputId='',ariaLabel='Respuesta numérica'){return `<div class="number-wrap"><input ${inputId?`id="${esc(inputId)}"`:''} class="number-field" aria-label="${esc(ariaLabel)}" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" maxlength="16" data-field="${esc(key)}" value="${esc(val??'')}" placeholder="Escribe un número" ${locked?'disabled':''}><span class="input-unit">${esc(unit==='pesos'?'$':unit)}</span></div>`;}
+  function renderField(field,draft,locked,qid){
+    if(field.kind==='number')return renderNumInput(field.key,draft[field.key],field.unit,locked,`f-${qid}-${field.key}`,field.label);
+    return `<select id="f-${qid}-${field.key}" class="field-select" aria-label="${esc(field.label)}" data-field="${esc(field.key)}" ${locked?'disabled':''}>${field.options.map(([v,l])=>`<option value="${esc(v)}" ${String(draft[field.key]||'')===String(v)?'selected':''}>${esc(l)}</option>`).join('')}</select>`;
+  }
+  function renderAnswerInput(q,locked){
+    const draft=getDraft(q);
+    if(q.kind==='choice')return `<div class="answer-label" id="answer-label">Elige una respuesta</div><div role="group" aria-labelledby="answer-label" class="choices ${q.vertical?'vertical':''}">${q.options.map(([v,l])=>`<button type="button" class="choice ${draft.main===v?'selected':''}" data-choice="${esc(v)}" aria-pressed="${draft.main===v}" ${locked?'disabled':''}>${esc(l)}</button>`).join('')}</div>`;
+    if(q.kind==='number')return `<div class="answer-label" id="answer-label">Escribe tu respuesta</div>${renderNumInput('main',draft.main,q.unit,locked)}`;
+    if(q.kind==='multi')return `<div class="answer-label" id="answer-label">Responde cada apartado</div><div class="fields">${q.fields.map(f=>`<div class="field-group"><label for="f-${q.id}-${f.key}">${esc(f.label)}</label><div>${renderField(f,draft,locked,q.id)}</div></div>`).join('')}</div>`;
+    if(q.kind==='slider'){
+      const value=draft.main===undefined?0:Number(draft.main);
+      return `<div class="answer-label">Mueve la regla virtual hasta la longitud que consideres correcta</div><div class="visual"><div class="measure-value" id="measure-readout" aria-live="polite">${numberText(value)} ${esc(q.unit)}</div><input class="measure-slider" aria-label="Longitud medida con regla virtual" data-field="main" type="range" min="${q.min}" max="${q.max}" step="${q.step}" value="${value}" ${locked?'disabled':''}><div class="measure-labels"><span>${q.min} cm</span><span>${q.max} cm</span></div><p class="measure-note">Mueve el control con tu dedo; el número cambia de medio en medio centímetro.</p></div>`;
+    }
+    return'';
+  }
+  function isComplete(q,draft){
+    if(q.kind==='multi')return q.fields.every(f=>String(draft[f.key]??'').trim()!=='');
+    if(q.kind==='slider')return draft.main!==undefined;
+    return String(draft.main??'').trim()!=='';
+  }
+  function parseNum(n){const s=String(n).trim().replace(/\s/g,'').replace(',','.').replace(/^\$/,'');if(!/^-?\d+(\.\d+)?$/.test(s))return NaN;return Number(s);}
+  function valueMatches(a,b){return typeof b==='number'?Number.isFinite(parseNum(a))&&Math.abs(parseNum(a)-b)<.001:String(a)===String(b);}
+  function checkCorrect(q,draft){if(!isComplete(q,draft))return false;return q.kind==='multi'?q.fields.every(f=>valueMatches(draft[f.key],f.correct)):valueMatches(draft.main,q.correct);}
+  function correctResponse(q){
+    if(q.kind==='multi')return q.fields.map(f=>`${f.label}: ${f.kind==='select'?f.options.find(a=>a[0]===f.correct)?.[1]||f.correct:((f.unit==='pesos'?'$':'')+numberText(f.correct)+(f.unit!=='pesos'?' '+f.unit:''))}`).join(' · ');
+    if(q.kind==='choice')return q.options.find(o=>o[0]===q.correct)?.[1]||q.correct;
+    return (q.unit==='pesos'?'$':'')+numberText(q.correct)+(q.unit!=='pesos'?' '+q.unit:'');
+  }
+  function home(){
+    const practice=store.practice,exam=store.exam;
+    return `<section class="panel hero"><div class="eyebrow">Aprender · Practicar · Comprender</div><h2>¡Las matemáticas se aprenden resolviendo!</h2><p>25 desafíos interactivos sobre proporcionalidad, no proporcionalidad y distancia entre dos puntos. Diseñados especialmente para celulares.</p><div class="hero-highlights"><span>📱 Para tu celular</span><span>🔥 Rachas</span><span>🏆 Aprueba con 7</span></div></section>
+      <section class="panel identity-panel"><h2 class="intro-title" style="margin:0 0 12px">Antes de comenzar</h2><p class="tiny">Escribe tus datos para que tu profesor identifique el reporte final. Se guardarán solamente en este navegador.</p><div class="fields"><div class="field-group"><label for="student-name">Nombre completo del estudiante <span aria-label="obligatorio">*</span></label><input id="student-name" class="number-field identity-input" type="text" autocomplete="name" maxlength="80" placeholder="Tu nombre y apellido" value="${esc(store.student||'')}"></div><div class="field-group"><label for="student-group">Grupo o salón (opcional)</label><input id="student-group" class="number-field identity-input" type="text" maxlength="40" placeholder="Ejemplo: 1.º A" value="${esc(store.group||'')}"></div></div><p class="field-error" id="identity-error" role="alert" hidden>Escribe tu nombre para comenzar.</p></section>
+      <h2 class="intro-title">Elige tu modalidad</h2><div class="modes">
+      <button type="button" class="mode-card" data-action="start" data-mode="practice"><span class="mode-icon" aria-hidden="true">🎯</span><span class="mode-content"><strong>${practice.started&&!practice.completed?'Continuar práctica':practice.completed?'Ver reporte de práctica':'Aprender y practicar'}</strong><small>Pistas antes de responder. Una sola respuesta por pregunta.${practice.started&&!practice.completed?' Avance: '+answered(practice)+'/25.':''}</small></span><span class="mode-arrow">›</span></button>
+      <button type="button" class="mode-card" data-action="start" data-mode="exam"><span class="mode-icon" aria-hidden="true">📝</span><span class="mode-content"><strong>${exam.started&&!exam.completed?'Continuar evaluación':exam.completed?'Ver reporte de evaluación':'Modo evaluación'}</strong><small>Sin pistas y sin repetir preguntas. Aprobación desde 7.0/10.${exam.started&&!exam.completed?' Avance: '+answered(exam)+'/25.':''}</small></span><span class="mode-arrow">›</span></button></div>
+      <div class="features"><div class="feature"><span>🌱</span><strong>9 básicos</strong></div><div class="feature"><span>🔍</span><strong>12 intermedios</strong></div><div class="feature"><span>🏅</span><strong>4 retos finales</strong></div></div><p class="footer-note">Se responde una sola vez por pregunta. Al terminar podrás tomar una captura, compartir el reporte y comenzar de nuevo.</p>`;
+  }
+  function progressHtml(q){
+    const s=current(),done=answered(s),pct=done/25*100,score=countCorrect(s),st=streaks(s);
+    return `<section class="progress-card"><div class="progress-meta"><strong>${mode==='practice'?'🎯 Práctica':'📝 Evaluación'}</strong><span>${done} de 25 respondidas</span></div><div class="bar" role="progressbar" aria-label="Preguntas completadas" aria-valuemin="0" aria-valuemax="25" aria-valuenow="${done}"><div style="width:${pct}%"></div></div><div class="live-stats" aria-label="Resultados parciales"><span>✅ <b>${score}</b> buenas</span><span>🔥 <b>${st.now}</b> de racha</span><span>⭐ <b>${grade(s).toFixed(1)}</b> / 10</span></div><div class="milestones"><span class="${q.id<=9?'active':''}">🌱 Básico · 1–9</span><span class="${q.id>9&&q.id<=21?'active':''}">🔍 Intermedio · 10–21</span><span class="${q.id>=22?'active':''}">🏅 Final · 22–25</span></div></section>`;
+  }
+  function feedbackHtml(q,r){
+    if(!r)return'';
+    if(r.kind==='error')return `<div class="feedback bad" role="alert"><strong>Falta completar la respuesta</strong><p>${esc(r.text)}</p></div>`;
+    if(r.kind==='recorded')return `<div class="feedback ${r.correct?'ok':'neutral'}" role="status"><strong>${r.correct?'✅ ¡Respuesta correcta!':'📝 Respuesta registrada'}</strong><p>${r.correct?'¡Muy bien! Tu racha ha crecido.':'Puedes seguir adelante. Cada respuesta cuenta y no necesitas repetirla.'}</p></div>`;
+    return'';
+  }
+  function questionPage(){
+    const s=current(),q=QUESTIONS[s.index],l=level(q),r=s.answers[q.id],locked=!!r;
+    return `${progressHtml(q)}<article class="panel question-card"><div class="tags"><span class="tag ${l.class}">Nivel ${l.n} · ${l.name}</span><span class="topic">${esc(topicName(q.topic))} · ${q.id} de 25</span></div>
+      <h2 class="qtitle">${esc(q.title)}</h2><p class="statement">${esc(q.prompt)}</p>${renderVisual(q)}${renderAnswerInput(q,locked)}
+      ${mode==='practice'&&!locked?`<button class="hint-btn" type="button" data-action="hint" aria-expanded="${!!s.hints[q.id]}">💡 ${s.hints[q.id]?'Ocultar pista':'Necesito una pista'}</button>${s.hints[q.id]?`<div class="hint-box"><strong>Pista:</strong> ${esc(q.hint)}</div>`:''}`:''}
+      ${feedbackHtml(q,locked?{kind:'recorded',correct:r.correct}:feedback)}
+      <div class="actions">
+      ${locked?`<button type="button" class="btn primary wide" data-action="next">${q.id===25?'Ver mi reporte final':'Siguiente pregunta →'}</button>`:
+      q.kind==='choice'?`<p class="side-helper">Toca una respuesta para registrarla. Después podrás avanzar; no es necesario volver a elegir.</p>`:
+      `<button type="button" class="btn primary wide" data-action="check">Registrar respuesta</button>`}
+      </div>
+      </article><div class="actions bottom-actions"><button type="button" class="btn ghost" data-action="go-home">⌂ Guardar y salir</button></div>`;
+  }
+  function renderResults(){
+    const s=current(),total=countCorrect(s),g=grade(s),passed=g>=7,st=streaks(s),missed=25-total;
+    const pCount=countCorrect(s,q=>q.topic==='p'||q.topic==='m');
+    const dCount=countCorrect(s,q=>q.topic==='d'||q.topic==='m');
+    const byLevel=[[1,9],[10,21],[22,25]].map(([a,b])=>({name:a===1?'Básico':a===10?'Intermedio':'Retos finales',score:QUESTIONS.filter(q=>q.id>=a&&q.id<=b&&s.answers[q.id]?.correct).length,den:b-a+1}));
+    return `<section class="report-capture" id="report-capture"><div class="report-head"><span>∑ MISIÓN MATEMÁTICA</span><span>1.º de telesecundaria</span></div><div class="report-hero ${passed?'passed':'not-passed'}"><div class="report-kicker">REPORTE PARA EL PROFESOR</div><h2>${passed?'🏆 APROBADO':'📚 NECESITA REFORZAR'}</h2><div class="report-grade">${g.toFixed(1)}<span> / 10</span></div><p>${passed?'¡Has alcanzado la calificación mínima de 7.0!':'Aún no alcanzas el mínimo de 7.0. Puedes intentarlo nuevamente.'}</p></div>
+      <div class="report-person"><div><span>ESTUDIANTE</span><strong>${esc(store.student||'Sin nombre')}</strong></div><div><span>GRUPO</span><strong>${esc(store.group||'No indicado')}</strong></div><div><span>FECHA</span><strong>${esc(formattedDate(s))}</strong></div><div><span>MODALIDAD · INTENTO</span><strong>${mode==='practice'?'Práctica':'Evaluación'} · ${s.attemptNumber||1}</strong></div></div>
+      <div class="report-numbers"><div><span>✅</span><strong>${total} / 25</strong><small>Respuestas correctas</small></div><div><span>🔥</span><strong>${st.best}</strong><small>Racha máxima</small></div><div><span>📘</span><strong>${missed}</strong><small>Por reforzar</small></div></div>
+      <div class="report-topics"><div><span>Proporcionalidad</span><strong>${pCount} / 13</strong></div><div><span>Distancia entre puntos</span><strong>${dCount} / 13</strong></div></div><p class="report-foot">Calificación = aciertos ÷ 25 × 10. Aprueba con 7.0 o más (18 aciertos). El reto 25 integra ambos temas y aparece en los dos desgloses, pero cuenta una sola vez en la calificación global.</p></section>
+      <section class="report-help panel"><h3>📸 Envía este reporte a tu profesor</h3><p>Haz una <strong>captura de pantalla</strong> de la tarjeta del reporte y envíala por WhatsApp o el medio que te haya indicado tu profesor. También puedes guardar el reporte como imagen o usar la opción Compartir desde tu celular.</p><div class="result-buttons"><button type="button" class="btn primary" data-action="share-report">📤 Compartir reporte</button><button type="button" class="btn secondary" data-action="save-image">🖼️ Guardar imagen</button></div><p class="tiny">No enviamos ningún dato automáticamente. Tú eliges a quién compartirlo.</p></section>
+      <section class="panel result-section"><h3>Tu avance por nivel</h3>${byLevel.map(l=>`<div class="result-line"><span>${l.name}</span><span>${l.score} de ${l.den}</span></div><div class="bar"><div style="width:${l.score/l.den*100}%"></div></div>`).join('')}<div class="result-line" style="margin-top:18px"><span>Racha al finalizar</span><span>${st.now} consecutivas</span></div></section>
+      <section class="panel result-section"><h3>Revisar mis respuestas</h3><p class="tiny">Al terminar puedes consultar cuáles necesitas reforzar y comprender los procedimientos.</p><div class="review-grid">${QUESTIONS.map(q=>`<button type="button" class="review-number ${s.answers[q.id]?.correct?'good':'no'}" aria-label="Revisar pregunta ${q.id}: ${s.answers[q.id]?.correct?'correcta':'por reforzar'}" data-action="review" data-id="${q.id}">${q.id}${s.answers[q.id]?.correct?' ✓':' ·'}</button>`).join('')}</div></section>
+      <div class="result-buttons"><button type="button" class="btn primary" data-action="restart">🔄 Volver a intentar</button><button type="button" class="btn secondary" data-action="copy">📋 Copiar reporte</button><button type="button" class="btn ghost" data-action="go-home">⌂ Inicio</button></div><p class="notice">El resultado es formativo y puede ser revisado por el profesor. El registro se guarda solamente en este dispositivo.</p>`;
+  }
+  function showStudentAnswer(q,draft){
+    if(!draft||Object.keys(draft).length===0)return'No respondió.';
+    if(q.kind==='choice')return q.options.find(o=>o[0]===draft.main)?.[1]||'Sin respuesta';
+    if(q.kind==='multi')return q.fields.map(f=>`${f.label}: ${f.kind==='select'?(f.options.find(o=>o[0]===draft[f.key])||[])[1]||'Sin respuesta':draft[f.key]||'Sin respuesta'}`).join(' · ');
+    return String(draft.main??'Sin respuesta')+(q.unit==='pesos'?' pesos':' '+q.unit);
+  }
+  function renderReview(){
+    const q=QUESTIONS[reviewQuestion-1],r=current().answers[q.id],l=level(q),n=reviewQuestion;
+    return `<div class="review-head"><h2>Repaso de la pregunta ${n}</h2><button class="btn secondary small" type="button" data-action="back-results">← Resultados</button></div><article class="panel question-card"><div class="tags"><span class="tag ${l.class}">${l.name}</span><span class="topic">${esc(topicName(q.topic))}</span></div><h2 class="qtitle">${esc(q.title)}</h2><p class="statement">${esc(q.prompt)}</p>${renderVisual(q)}<div class="review-answer"><strong>${r?.correct?'✓ Resuelta correctamente':'↻ Para seguir practicando'}</strong><p><b>Tu respuesta:</b> ${esc(showStudentAnswer(q,r?.draft))}</p><p><b>Respuesta esperada:</b> ${esc(correctResponse(q))}</p><p><b>Explicación:</b> ${esc(q.explanation)}</p></div></article><div class="actions bottom-actions">${n>1?`<button class="btn secondary" type="button" data-action="review-prev">← Anterior</button>`:''}${n<25?`<button class="btn primary wide" type="button" data-action="review-next">Siguiente →</button>`:''}</div>`;
+  }
+  function render(scroll=false){
+    if(screen==='home')main.innerHTML=home();
+    else if(screen==='question')main.innerHTML=questionPage();
+    else if(screen==='results')main.innerHTML=renderResults();
+    else if(screen==='review')main.innerHTML=renderReview();
+    if(scroll)window.scrollTo({top:0,behavior:'instant'});
+  }
+  function startMode(m){
+    const name=($('#student-name')?.value||store.student||'').trim();
+    if(!name){const err=$('#identity-error');if(err)err.hidden=false;$('#student-name')?.focus();return;}
+    store.student=name;store.group=($('#student-group')?.value||'').trim();
+    mode=m;const s=current();
+    if(!s.started){store.attemptCounts=store.attemptCounts||{practice:0,exam:0};store.attemptCounts[m]=(store.attemptCounts[m]||0)+1;s.attemptNumber=store.attemptCounts[m];}
+    s.started=true;screen=s.completed?'results':'question';feedback=null;persist();render(true);
+  }
+  function nextQuestion(){
+    const s=current();
+    if(!s.answers[QUESTIONS[s.index].id])return;
+    if(s.index>=24){s.completed=true;s.completedAt=s.completedAt||new Date().toISOString();screen='results';}else{s.index++;screen='question';}
+    feedback=null;persist();render(true);
+  }
+  function markAnswer(q,correct,extra={}){
+    const s=current(),draft=structuredClone(s.draft[q.id]||{});
+    const attempts=s.attempts[q.id]||0;
+    s.answers[q.id]={correct,firstTry:correct&&attempts===1&&!s.hintSeen?.[q.id],attempts,usedHint:!!s.hintSeen?.[q.id],draft,...extra};
+    persist();
+  }
+  function evaluate(){
+    const s=current(),q=QUESTIONS[s.index];if(s.answers[q.id])return;
+    const draft=s.draft[q.id]||{};
+    if(!isComplete(q,draft)){feedback={kind:'error',text:'Completa todos los apartados antes de continuar.'};render();return;}
+    const valid=q.kind==='multi'?q.fields.filter(f=>f.kind==='number').every(f=>Number.isFinite(parseNum(draft[f.key]))):q.kind==='number'?Number.isFinite(parseNum(draft.main)):true;
+    if(!valid){feedback={kind:'error',text:'Escribe solo números en los apartados numéricos (se acepta coma o punto decimal).'};render();return;}
+    s.attempts[q.id]=1;
+    markAnswer(q,checkCorrect(q,draft));
+    feedback=null;render();
+    const button=main.querySelector('[data-action="next"]');if(button)button.focus({preventScroll:true});
+  }
+  function reportLines(){
+    const s=current(),st=streaks(s),total=countCorrect(s),g=grade(s);
+    return [
+      'MISIÓN MATEMÁTICA — REPORTE PARA EL PROFESOR',
+      `Estudiante: ${store.student||'Sin nombre'}`,
+      `Grupo: ${store.group||'No indicado'}`,
+      `Fecha: ${formattedDate(s)}`,
+      `Modalidad: ${mode==='practice'?'Práctica':'Evaluación'} | Intento: ${s.attemptNumber||1}`,
+      `Calificación: ${g.toFixed(1)}/10 — ${g>=7?'APROBADO':'NECESITA REFORZAR'}`,
+      `Aciertos: ${total}/25 | Por reforzar: ${25-total}`,
+      `Racha máxima: ${st.best} | Racha final: ${st.now}`,
+      `Proporcionalidad: ${countCorrect(s,q=>q.topic==='p'||q.topic==='m')}/13`,
+      `Distancia entre puntos: ${countCorrect(s,q=>q.topic==='d'||q.topic==='m')}/13`,
+      'Aprobación: 7.0/10 (18 de 25 aciertos).',
+      'Reto 25 integrado en los dos temas; solo una vez en el total.'
+    ];
+  }
+  function copyResults(){
+    const txt=reportLines().join('\n');
+    if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>toast('Reporte copiado.')).catch(()=>fallbackCopy(txt));}
+    else fallbackCopy(txt);
+  }
+  function createReportCanvas(){
+    const lines=reportLines(),canvas=document.createElement('canvas'),w=1080,h=1450;
+    canvas.width=w;canvas.height=h;
+    const c=canvas.getContext('2d'),s=current(),g=grade(s),passed=g>=7;
+    c.fillStyle='#f4f7f8';c.fillRect(0,0,w,h);
+    c.fillStyle='#123b55';c.fillRect(0,0,w,184);
+    c.fillStyle='white';c.font='bold 44px Arial, sans-serif';c.fillText('MISIÓN MATEMÁTICA',66,86);
+    c.font='25px Arial, sans-serif';c.fillText('REPORTE PARA EL PROFESOR · 1.º TELESECUNDARIA',66,135);
+    c.fillStyle='white';roundRect(c,54,222,972,1115,28);c.fill();
+    c.fillStyle=passed?'#e2f5e9':'#fff0e6';roundRect(c,84,256,912,248,24);c.fill();
+    c.fillStyle=passed?'#236642':'#a74e2b';c.font='bold 43px Arial, sans-serif';c.fillText(passed?'APROBADO':'NECESITA REFORZAR',117,330);
+    c.font='bold 112px Arial, sans-serif';c.fillText(g.toFixed(1),116,455);
+    c.font='bold 36px Arial, sans-serif';c.fillText('/ 10',c.measureText(g.toFixed(1)).width+134,450);
+    c.fillStyle='#17334a';let y=563;
+    const fields=[['ESTUDIANTE',store.student||'Sin nombre'],['GRUPO',store.group||'No indicado'],['FECHA',formattedDate(s)],['MODALIDAD E INTENTO',(mode==='practice'?'Práctica':'Evaluación')+' · '+(s.attemptNumber||1)]];
+    for(const [label,value] of fields){c.fillStyle='#5f7281';c.font='bold 22px Arial, sans-serif';c.fillText(label,99,y);c.fillStyle='#17334a';c.font='bold 31px Arial, sans-serif';writeWrapped(c,value,99,y+39,840,36,2);y+=105;}
+    c.fillStyle='#d7e5e8';c.fillRect(99,980,875,2);
+    const stats=[['ACIERTOS',`${countCorrect(s)} de 25`],['RACHA MÁX.',`${streaks(s).best}`],['ERRORES',`${25-countCorrect(s)}`]];
+    let x=100;for(const [label,val] of stats){c.fillStyle='#5f7281';c.font='bold 21px Arial, sans-serif';c.fillText(label,x,1031);c.fillStyle='#087f83';c.font='bold 38px Arial, sans-serif';c.fillText(val,x,1079);x+=303;}
+    c.fillStyle='#17334a';c.font='bold 25px Arial, sans-serif';c.fillText(`Proporcionalidad: ${countCorrect(s,q=>q.topic==='p'||q.topic==='m')}/13`,100,1150);c.fillText(`Distancia entre puntos: ${countCorrect(s,q=>q.topic==='d'||q.topic==='m')}/13`,100,1195);
+    c.fillStyle='#5f7281';c.font='21px Arial, sans-serif';c.fillText('Aprobación desde 7.0/10 (18 aciertos).',100,1262);
+    c.fillStyle='#5f7281';c.font='22px Arial, sans-serif';c.fillText('Reporte generado en el dispositivo del estudiante',66,1400);
+    return canvas;
+  }
+  function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);}
+  function writeWrapped(ctx,txt,x,y,maxW,lineH,maxLines){
+    let words=String(txt).split(/\s+/),line='',lines=[];
+    for(const word of words){const t=line?line+' '+word:word;if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=word;}else line=t;}if(line)lines.push(line);
+    lines.slice(0,maxLines).forEach((part,i)=>ctx.fillText(part,x,y+i*lineH));
+  }
+  function reportFileName(){return `Reporte_Mision_Matematica_${escapeFilename(store.student)}_intento${current().attemptNumber||1}.png`;}
+  function saveImage(){
+    const a=document.createElement('a');a.href=createReportCanvas().toDataURL('image/png');a.download=reportFileName();document.body.appendChild(a);a.click();a.remove();toast('Imagen preparada. Puedes enviarla a tu profesor.');
+  }
+  async function shareReport(){
+    try{
+      if(navigator.share){
+        const blob=await new Promise(resolve=>createReportCanvas().toBlob(resolve,'image/png'));
+        if(blob){const file=new File([blob],reportFileName(),{type:'image/png'});
+          if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({title:'Reporte Misión Matemática',text:`Mi reporte de matemáticas: ${grade(current()).toFixed(1)}/10.`,files:[file]});return;}}
+        await navigator.share({title:'Reporte Misión Matemática',text:reportLines().join('\n')});return;
+      }
+      saveImage();toast('Guarda la imagen y compártela con tu profesor.');
+    }catch(err){if(err.name!=='AbortError'){saveImage();toast('Puedes compartir la imagen guardada o tomar una captura.');}}
+  }
+  function fallbackCopy(txt){
+    try{const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();toast(ok?'Resultados copiados.':'No se pudo copiar el texto.');}catch(err){toast('No se pudo copiar el texto.');}
+  }
+  function toast(message){
+    const old=document.getElementById('copy-toast');if(old)old.remove();
+    const el=document.createElement('div');el.id='copy-toast';el.setAttribute('role','status');el.textContent=message;
+    Object.assign(el.style,{position:'fixed',bottom:'max(18px,env(safe-area-inset-bottom))',left:'50%',transform:'translateX(-50%)',width:'max-content',maxWidth:'90vw',background:'#123b55',color:'#fff',borderRadius:'13px',padding:'13px 18px',zIndex:'50',boxShadow:'0 8px 22px #123b553c',fontSize:'14px',fontWeight:'700'});
+    document.body.appendChild(el);setTimeout(()=>el.remove(),2900);
+  }
+  main.addEventListener('click',event=>{
+    const choice=event.target.closest('[data-choice]');
+    if(choice&&screen==='question'){
+      const q=QUESTIONS[current().index];if(current().answers[q.id])return;
+      const d=current().draft[q.id]||(current().draft[q.id]={});
+      d.main=choice.dataset.choice;feedback=null;persist();evaluate();return;
+    }
+    const el=event.target.closest('[data-action]');if(!el)return;
+    switch(el.dataset.action){
+      case 'start':startMode(el.dataset.mode);break;
+      case 'go-home':screen='home';feedback=null;persist();render(true);break;
+      case 'hint':{
+        const s=current(),q=QUESTIONS[s.index];s.hints[q.id]=!s.hints[q.id];s.hintSeen=s.hintSeen||{};if(s.hints[q.id])s.hintSeen[q.id]=true;persist();render();break;
+      }
+      case 'check':evaluate();break;
+      case 'next':nextQuestion();break;
+      case 'restart':{
+        const label=mode==='practice'?'la práctica':'la evaluación';
+        if(window.confirm(`¿Volver a intentar ${label}? Tu calificación anterior será reemplazada en este dispositivo.`)){const m=mode;store[m]=newSession();store.attemptCounts=store.attemptCounts||{practice:0,exam:0};store.attemptCounts[m]=(store.attemptCounts[m]||0)+1;store[m].attemptNumber=store.attemptCounts[m];store[m].started=true;screen='question';feedback=null;persist();render(true);}break;
+      }
+      case 'review':reviewQuestion=Number(el.dataset.id);screen='review';render(true);break;
+      case 'review-prev':reviewQuestion=Math.max(1,reviewQuestion-1);render(true);break;
+      case 'review-next':reviewQuestion=Math.min(25,reviewQuestion+1);render(true);break;
+      case 'back-results':screen='results';render(true);break;
+      case 'copy':copyResults();break;
+      case 'save-image':saveImage();break;
+      case 'share-report':shareReport();break;
+    }
+  });
+  main.addEventListener('input',event=>{
+    if(event.target.id==='student-name'){store.student=event.target.value;persist();const err=$('#identity-error');if(err)err.hidden=true;return;}
+    if(event.target.id==='student-group'){store.group=event.target.value;persist();return;}
+    const field=event.target.closest('[data-field]');if(!field||screen!=='question')return;
+    const q=QUESTIONS[current().index];if(current().answers[q.id])return;
+    const draft=current().draft[q.id]||(current().draft[q.id]={});
+    draft[field.dataset.field]=field.value;
+    if(q.kind==='slider'){const readout=main.querySelector('#measure-readout');if(readout)readout.textContent=`${numberText(Number(field.value))} ${q.unit}`;}
+    persist();
+  });
+  main.addEventListener('change',event=>{
+    const f=event.target.closest('[data-field]');if(!f||screen!=='question')return;
+    const q=QUESTIONS[current().index];if(current().answers[q.id])return;
+    const draft=current().draft[q.id]||(current().draft[q.id]={});draft[f.dataset.field]=f.value;persist();
+  });
+  $('#home-button').addEventListener('click',()=>{screen='home';feedback=null;persist();render(true);});
+  render();
+  </script>
+</body>
+</html>
