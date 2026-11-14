@@ -275,6 +275,25 @@ dialog::backdrop{background:rgba(13,21,54,.78);backdrop-filter:blur(8px)}
 @media(max-width:720px){.sequence-dl{grid-template-columns:1fr}.sequence-dl>div{border-right:0!important;border-bottom:1px solid #e8eaf2!important}.sequence-dl>div:last-child{border-bottom:0!important}.assessment-path{grid-template-columns:1fr}.subject-head{align-items:start}}
 @media print{#printSheet section{break-inside:auto}#printSheet h2,#printSheet h3{break-after:avoid}#printSheet section p{break-inside:avoid}#printSheet h3{font-size:12pt;margin:12px 0 4px}#printSheet .printfoot{font-size:9pt;color:#555}}
 
+
+/* Créditos y contacto del autor */
+.site-footer{padding:42px 0 46px}
+.footer-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,.8fr);gap:38px;align-items:center}
+.footer-about p{margin:0}
+.footer-eyebrow{color:var(--sun);font-size:11px;font-weight:850;letter-spacing:.14em}
+.footer-heading{color:#fff;font-size:clamp(24px,3vw,32px);line-height:1.14;letter-spacing:-.035em;margin:9px 0 18px}
+.footer-credit{font-size:15px;line-height:1.65;max-width:630px;color:#f3f5ff}
+.footer-credit strong{color:#fff}
+.footer-context{font-size:12px;line-height:1.65;max-width:650px;color:#d9def5;margin-top:15px!important}
+.footer-links{display:grid;gap:10px}
+.footer-links a{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:66px;padding:13px 17px;border:1px solid #ffffff3d;border-radius:14px;color:#fff;text-decoration:none;background:#ffffff0d;transition:background .2s,border-color .2s,transform .2s}
+.footer-links a:hover{background:#ffffff20;border-color:var(--sun);transform:translateY(-2px)}
+.footer-links a strong,.footer-links a small{display:block}
+.footer-links a strong{font-size:14px;font-weight:800}
+.footer-links a small{color:#dbe0f5;font-size:12px;line-height:1.4;margin-top:2px}
+.footer-links a>span:last-child{color:var(--sun);font-size:21px}
+@media(max-width:720px){.site-footer{padding:34px 0 38px}.footer-grid{grid-template-columns:1fr;gap:24px}.footer-links{grid-template-columns:1fr}.footer-heading{margin-bottom:14px}}
+@media(prefers-reduced-motion:reduce){.footer-links a{transition:none}.footer-links a:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -290,7 +309,21 @@ dialog::backdrop{background:rgba(13,21,54,.78);backdrop-filter:blur(8px)}
 <section id="guia" class="section"><p class="section-kicker"><span>02</span> / HERRAMIENTAS PARA EL AULA</p><h2 class="sectiontitle">Antes de llevarlo al aula</h2><p class="sectionintro">Cada proyecto ofrece una guía orientativa de trabajo, con propósitos, consignas, cuatro momentos de aprendizaje, evidencias, integración entre disciplinas y evaluación dialogada. La planeación definitiva depende del grupo y del Programa Analítico.</p><div class="sectionpanel"><article><h3>1. Partir de la realidad</h3><p>Pregunta al grupo qué problema reconoce y qué sabe su comunidad. Elige junto al alumnado una investigación pertinente y realizable.</p></article><article><h3>2. Articular el currículo</h3><p>Selecciona el grado, revisa contenidos y PDA oficiales de Fase 6 y relaciona lo elegido con el Programa Analítico de tu escuela.</p></article><article><h3>3. Acompañar y retroalimentar</h3><p>Observa el proceso, conversa sobre la evidencia, atiende necesidades distintas y ayuda a mejorar las propuestas antes de la presentación final.</p></article></div></section>
 <section id="enfoque" class="section"><p class="section-kicker"><span>03</span> / MARCO PEDAGÓGICO</p><h2 class="sectiontitle">Alineación responsable con la NEM</h2><div class="infogrid"><div class="infobox"><b>Campos formativos</b><p>Lenguajes; Saberes y Pensamiento Científico; Ética, Naturaleza y Sociedades; De lo Humano y lo Comunitario.</p></div><div class="infobox"><b>Los siete ejes, en conjunto</b><p>Inclusión; Pensamiento crítico; Interculturalidad crítica; Igualdad de género; Vida saludable; Apropiación de las culturas a través de la lectura y la escritura; Artes y experiencias estéticas.</p></div></div><p class="note" style="margin-top:18px"><b>Importante:</b> la vinculación temática sugerida en las fichas no constituye una transcripción de contenidos ni PDA oficiales. El personal docente selecciona y verifica los correspondientes al grado y los contextualiza en el Programa Analítico. No todos los ejes deben aparecer en cada proyecto.</p></section>
 <section id="fuentes" class="sources"><p class="section-kicker"><span>04</span> / BIBLIOGRAFÍA</p><h2 class="sectiontitle">Referencias oficiales</h2><ul><li><a href="https://educacionbasica.sep.gob.mx/wp-content/uploads/2024/09/Programa_Sintetico_Fase_6.pdf" target="_blank" rel="noopener noreferrer">SEP · Programa Sintético de la Fase 6</a> — contenidos, PDA y evaluación formativa.</li><li><a href="https://telesecundaria.sep.gob.mx/Secundaria/" target="_blank" rel="noopener noreferrer">SEP · La Telesecundaria en la Nueva Escuela Mexicana</a> — contextualización, territorio y proyectos.</li></ul><p class="caption">Material orientativo no oficial. Revisión de diseño pedagógico: noviembre de 2026.</p></section></main>
-<footer><div class="container">Laboratorio de Proyectos Sustentables · Maestra Arleth Vázquez Ramos · Herramienta de apoyo docente, adaptable al contexto de cada Telesecundaria.</div></footer>
+<footer class="site-footer" aria-label="Créditos y contacto">
+  <div class="container footer-grid">
+    <div class="footer-about">
+      <p class="footer-eyebrow">RECURSO EDUCATIVO GRATUITO</p>
+      <h2 class="footer-heading">Conocimiento para compartir</h2>
+      <p class="footer-credit">Material educativo gratuito creado y desarrollado por <strong>Luis Alberto Antonio Narciso</strong>.</p>
+      <p class="footer-context">Laboratorio de Proyectos Sustentables · Maestra Arleth Vázquez Ramos · Herramienta de apoyo docente, adaptable a cada telesecundaria. Material orientativo no oficial.</p>
+    </div>
+    <nav class="footer-links" aria-label="Enlaces y contacto del autor">
+      <a href="https://github.com/narciso1516" target="_blank" rel="noopener noreferrer"><span><strong>GitHub</strong><small>Mi perfil y proyectos</small></span><span aria-hidden="true">↗</span></a>
+      <a href="https://narciso1516.github.io/narcisotesting.com/" target="_blank" rel="noopener noreferrer"><span><strong>Mi página web</strong><small>Conoce más de mi trabajo</small></span><span aria-hidden="true">↗</span></a>
+      <a href="https://wa.me/525584577590" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp al 55 8457 7590"><span><strong>WhatsApp</strong><small>55 8457 7590</small></span><span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+</footer>
 <dialog id="detail" aria-labelledby="dialogTitle"><div class="dhead"><small id="dialogArea"></small><h2 id="dialogTitle"></h2><button id="closeDetail" class="dclose" type="button" aria-label="Cerrar ficha">×</button></div><div id="dnav" class="dnav" role="tablist" aria-label="Secciones de la ficha"></div><div id="dbody" class="dbody" role="tabpanel" aria-live="polite"></div><div class="actions"><button type="button" class="action" id="printBtn">Imprimir / guardar PDF</button><span class="save-note" id="savedHint" role="status" aria-live="polite">✓ Bitácora guardada en este dispositivo</span><button type="button" class="secondary" id="closeBottom">Cerrar</button></div></dialog>
 <div id="printSheet" aria-hidden="true"></div>
 <script>
